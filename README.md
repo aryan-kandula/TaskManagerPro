@@ -1,214 +1,223 @@
 # Task Manager Pro
 
-A modern, feature-rich task management application built with vanilla JavaScript. Task Manager Pro helps you stay organized with an intuitive interface, smart AI assistant, and powerful calendar integrations.
+A modern, feature-rich task management application built with vanilla JavaScript.  
+Task Manager Pro helps you stay organized with an intuitive interface, a smart AI assistant, and powerful calendar integrations.
 
 ![Task Manager Pro](https://img.shields.io/badge/version-2.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
+---
+
+## 🔗 Live Demo
+
+Try Task Manager Pro directly in your browser:
+
+👉 https://aryan-kandula.github.io/TaskManagerPro/TaskManagerPro.html
+
+---
+
 ## 🌟 Features
 
 ### Core Functionality
-- **Task Management**: Create, edit, and delete tasks with ease
-- **Priority System**: Organize tasks by priority (High, Medium, Low)
-- **Due Dates**: Set and track due dates for all your tasks
-- **Task Notes**: Add detailed descriptions and notes to any task
-- **Completion Tracking**: Mark tasks as complete and track your progress
-- **Duplicate Tasks**: Support for multiple instances of the same task
+- **Task Management**: Create, edit, and delete tasks easily
+- **Priority System**: High, Medium, and Low priority levels
+- **Due Dates**: Assign and track deadlines
+- **Task Notes**: Add detailed notes to any task
+- **Completion Tracking**: Mark tasks as complete and track progress
+- **Duplicate Tasks**: Supports multiple instances of the same task
 
 ### Smart Organization
-- **Dashboard View**: Quick overview of all your tasks at a glance
-- **Upcoming Tasks**: See tasks that are coming up, sorted by date
-- **Past Due Section**: Separate, toggleable section for overdue tasks
-- **Statistics**: Real-time stats showing total, pending, completed, and overdue tasks
-- **Flexible Sorting**: Tasks automatically organized by date and completion status
+- **Dashboard View**: Overview of all tasks
+- **Upcoming Tasks**: Automatically sorted by date
+- **Past Due Section**: Toggleable section for overdue tasks
+- **Statistics**: Real-time counts for total, pending, completed, and overdue tasks
+- **Flexible Sorting**: Organized by date and completion status
 
-### AI Assistant
-The built-in AI assistant understands natural language queries about your tasks:
-- "What tasks do I have until Feb 10?"
-- "Show me tasks on March 15"
-- "What are my high priority tasks?"
-- "What tasks are overdue?"
-- "What's my completion rate?"
-- "What tasks do I have today/tomorrow?"
-- "Show me tasks this week/next week"
+### 🤖 AI Assistant
+The built-in AI assistant understands natural language queries such as:
+- “What tasks do I have until Feb 10?”
+- “Show me tasks on March 15”
+- “What are my high priority tasks?”
+- “What tasks are overdue?”
+- “What’s my completion rate?”
+- “What tasks do I have today or tomorrow?”
+- “Show me tasks this week or next week”
 
-### Calendar Integration
-Import tasks from your favorite calendar applications:
-- **Google Calendar**: Import via iCal URL
-- **Canvas LMS**: Direct integration with Canvas calendar
-- **ICS Files**: Upload any standard .ics calendar file
+### 📅 Calendar Integration
+Import tasks from popular calendar services:
+- **Google Calendar** (via iCal URL)
+- **Canvas LMS Calendar**
+- **ICS Files** (standard `.ics` uploads)
 
-### Data Management
-- **Local Storage**: All data stored securely in your browser
-- **Export Options**: Export tasks to JSON or CSV format
-- **Import/Export**: Backup and restore your tasks anytime
-- **Data Persistence**: Tasks saved automatically
+### 💾 Data Management
+- **Local Storage**: Tasks stored securely in your browser
+- **Export Options**: Export tasks as JSON or CSV
+- **Import / Restore**: Backup and restore anytime
+- **Automatic Persistence**: No manual saving required
+
+---
 
 ## 🚀 Getting Started
 
 ### Quick Start
-1. Download `TaskManagerPro.html`
-2. Open the file in any modern web browser
-3. Start adding tasks!
+1. Download or clone the repository
+2. Open `TaskManagerPro.html` in any modern web browser
+3. Start adding tasks immediately
 
-No installation, no dependencies, no build process required.
+No installation.  
+No dependencies.  
+No build process.
 
-### First Time Setup
-1. Click the **"+ Add Task"** button to create your first task
-2. Fill in the task description, due date, priority, and optional notes
-3. Your task will appear on the dashboard automatically
-4. Use the AI Assistant tab to ask questions about your tasks
+---
 
 ## 💡 Usage
 
 ### Adding Tasks
-1. Click **"+ Add Task"** in the header
-2. Enter task details:
+1. Click **“+ Add Task”**
+2. Enter:
    - Task description (required)
    - Due date (required)
-   - Priority level (Low/Medium/High)
-   - Additional notes (optional)
-3. Click **"Add Task"** to save
+   - Priority (Low / Medium / High)
+   - Optional notes
+3. Click **“Add Task”**
 
 ### Managing Tasks
-- **Complete a task**: Click the checkbox next to the task
-- **Delete a task**: Click the "Delete" button on the task card
-- **View past due**: Click "Show Past Due Tasks" to toggle the past due section
+- ✅ Complete a task using the checkbox
+- 🗑️ Delete tasks using the delete button
+- ⏰ Toggle **Past Due Tasks** from the dashboard
 
 ### Using the AI Assistant
-1. Navigate to the **"AI Assistant"** tab
-2. Type your question in natural language
-3. Press Enter or click Send
-4. The assistant will analyze your tasks and provide relevant information
+1. Open the **AI Assistant** tab
+2. Ask questions in plain English
+3. Get instant insights from your task data
 
 ### Importing from Calendars
-1. Click **"Import"** in the header
-2. Choose your calendar source:
-   - **Google Calendar**: Paste your iCal feed URL
-   - **Canvas**: Paste your Canvas calendar feed URL
-   - **ICS File**: Upload a .ics file from your computer
-3. Click the corresponding import button
-4. Tasks will be automatically added to your list
+1. Click **Import**
+2. Choose a source:
+   - Google Calendar (iCal URL)
+   - Canvas Calendar
+   - ICS file upload
+3. Tasks are added automatically
 
-### Exporting Data
-1. Go to the **"Settings"** tab
-2. Choose your export format:
-   - **JSON**: Full data export with all task details
-   - **CSV**: Spreadsheet-compatible format
-3. Your browser will download the file
+### Exporting Tasks
+1. Open the **Settings** tab
+2. Choose:
+   - **JSON** for full backups
+   - **CSV** for spreadsheets
+3. File downloads automatically
+
+---
 
 ## 🎨 Design
 
-Task Manager Pro features a modern, glassmorphic design with:
+Task Manager Pro features a modern glassmorphic UI:
 - Dark theme optimized for reduced eye strain
 - Smooth animations and transitions
-- Responsive layout that works on all devices
-- Color-coded priority system
-- Gradient accents and visual feedback
+- Responsive layout (desktop & mobile)
+- Color-coded priorities
+- Clean gradients and visual feedback
+
+---
 
 ## 🔧 Technical Details
 
 ### Technologies Used
-- **HTML5**: Semantic markup and structure
-- **CSS3**: Modern styling with flexbox, grid, and animations
-- **Vanilla JavaScript**: No frameworks or libraries required
-- **LocalStorage API**: Client-side data persistence
-- **Fetch API**: Calendar integration and CORS proxy support
+- **HTML5** – Semantic structure
+- **CSS3** – Flexbox, Grid, animations
+- **Vanilla JavaScript** – No frameworks
+- **LocalStorage API** – Client-side persistence
+- **Fetch API** – Calendar integration & proxy support
 
 ### Browser Compatibility
-- Chrome/Edge (recommended)
+- Chrome / Edge (recommended)
 - Firefox
 - Safari
 - Opera
 
-Requires a modern browser with JavaScript and LocalStorage enabled.
+Requires JavaScript and LocalStorage enabled.
 
-### File Structure
+---
+
+## 📁 File Structure
 ```
 TaskManagerPro/
 │
-├── TaskManagerPro.html          # Main application file
-├── README.md                     # This file
-└── LICENSE                       # MIT License
+├── TaskManagerPro.html # Main application file
+├── README.md # Project documentation
+└── LICENSE # MIT License
 ```
 
-## 📊 Data Storage
-
-All task data is stored locally in your browser using the LocalStorage API. This means:
-- ✅ Your data never leaves your computer
-- ✅ No account or login required
-- ✅ Complete privacy
-- ⚠️ Data is specific to each browser
-- ⚠️ Clearing browser data will remove tasks
-
-**Recommendation**: Regularly export your tasks as a backup.
+---
 
 ## 🔐 Privacy & Security
 
-- **No tracking**: Task Manager Pro does not collect any user data
-- **No analytics**: No third-party analytics or tracking scripts
-- **Local-only**: All data stays on your device
-- **No servers**: Application runs entirely in your browser
-- **Open source**: Full transparency - inspect the code yourself
+- No tracking or analytics
+- No accounts or logins
+- No servers or backend
+- All data stays on your device
+- Fully open source and transparent
+
+⚠️ Clearing browser data will remove tasks  
+✅ Export regularly for backups
+
+---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Here's how you can help:
+Contributions are welcome!
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create a feature branch  
+   `git checkout -b feature/AmazingFeature`
+3. Commit changes  
+   `git commit -m "Add AmazingFeature"`
+4. Push the branch  
+   `git push origin feature/AmazingFeature`
 5. Open a Pull Request
 
-### Ideas for Contributions
-- Additional calendar integrations
-- More AI assistant capabilities
+### Contribution Ideas
 - Task categories and tags
 - Recurring tasks
-- Mobile app version
-- Theme customization
+- More AI queries
+- Custom themes
+- Mobile enhancements
 - Multi-language support
 
-## 📝 License
+---
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 🗺️ Roadmap
+
+Planned features:
+- [ ] Task categories & labels
+- [ ] Recurring tasks
+- [ ] Search & filters
+- [ ] Drag-and-drop ordering
+- [ ] Task reminders
+- [ ] Mobile-first UI
+- [ ] Theme customization
+- [ ] Task sharing
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.  
+See the [LICENSE](LICENSE) file for details.
+
+---
 
 ## 👤 Author
 
 **Aryan Kandula**
 
-## 🙏 Acknowledgments
+---
 
-- Inspired by modern productivity apps
-- Built with a focus on simplicity and user experience
-- Designed for students and professionals alike
+## ⭐ Support the Project
 
-## 📮 Support
-
-If you encounter any issues or have questions:
-1. Check the existing issues in the repository
-2. Open a new issue with a detailed description
-3. Include browser version and steps to reproduce any bugs
-
-## 🗺️ Roadmap
-
-Future features planned:
-- [ ] Task categories and labels
-- [ ] Recurring tasks
-- [ ] Task sharing capabilities
-- [ ] Mobile-optimized interface
-- [ ] Custom themes
-- [ ] Task reminders
-- [ ] Search and filter functionality
-- [ ] Drag-and-drop task reordering
-
-## ⭐ Show Your Support
-
-If you find Task Manager Pro useful, please consider:
-- Starring this repository
-- Sharing it with others
-- Contributing to the project
+If you find Task Manager Pro useful:
+- ⭐ Star this repository
+- 🧑‍💻 Share it with others
+- 🔧 Contribute new features
 
 ---
 
