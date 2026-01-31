@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager Pro - Aryan Kandula</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --bg: #000000;
+            --glass-light: rgba(255, 255, 255, 0.05);
+            --glass-medium: rgba(255, 255, 255, 0.1);
+            --glass-heavy: rgba(255, 255, 255, 0.15);
+            --text: #ffffff;
+            --text-dim: #a0a0b8;
+            --primary: #00d4ff;
+            --secondary: #00ff88;
+            --accent: #ff006e;
+        }
+        
+        html, body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .app { position: relative; z-index: 1; min-height: 100vh; }
+        
+        .glass {
+            background: var(--glass-medium);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+        }
+        
+        .splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeOut 0.8s ease-out 2.2s forwards;
+        }
+        
+        .splash-logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 24px;
+            background: conic-gradient(from 0deg, #ff006e, #ff00ff, #0066ff, #00d4ff, #00ff88, #ffff00, #ff6600, #ff0066);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 50px;
+            font-weight: 700;
+            animation: logoSpin 3s linear infinite, logoFloat 3s ease-in-out infinite;
+            box-shadow: 0 0 60px rgba(255, 0, 255, 0.5), 0 0 120px rgba(0, 212, 255, 0.2);
+        }
+        
+        @keyframes logoSpin { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
+        @keyframes logoFloat { 0%, 100% { transform: translateY(0px) rotateY(0deg); } 50% { transform: translateY(-20px) rotateY(360deg); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+        @keyframes slideDown { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .splash-text { font-size: 28px; font-weight: 700; color: var(--text); animation: slideUp 0.8s ease-out 0.3s backwards; }
+        .splash-subtitle { font-size: 12px; color: var(--text-dim); animation: slideUp 0.8s ease-out 0.6s backwards; }
+        
+        header { padding: 16px 24px; position: sticky; top: 0; z-index: 100; animation: slideDown 0.6s ease-out; }
+        header.glass { margin: 12px 24px 0; border-radius: 20px; }
+        
+        .header-content { max-width: 1600px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo-section { display: flex; align-items: center; gap: 16px; }
+        
+        .logo {
+            width: 48px;
+            height: 48px;
+            background: conic-gradient(from 0deg, #ff006e, #ff00ff, #0066ff, #00d4ff, #00ff88, #ffff00, #ff6600, #ff0066);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 24px;
+            color: #000;
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
+            animation: logoHover 4s ease-in-out infinite;
+        }
+        
+        @keyframes logoHover { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
+        
+        .header-title { font-size: 24px; font-weight: 700; background: linear-gradient(90deg, #ff006e, #ff00ff, #0066ff, #00d4ff, #00ff88); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .header-subtitle { font-size: 11px; color: var(--text-dim); }
+        
+        .header-actions { display: flex; gap: 12px; }
+        
+        button {
+            padding: 10px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--glass-light);
+            color: var(--primary);
+            backdrop-filter: blur(10px);
+        }
+        
+        button:hover {
+            box-shadow: 0 6px 24px rgba(0, 212, 255, 0.18);
+        }
+        
+        button:active {
+            box-shadow: 0 2px 8px rgba(0, 212, 255, 0.08);
+        }
+        
+        .nav-tabs { display: flex; gap: 8px; padding: 16px 24px; overflow-x: auto; max-width: 1600px; margin: 0 auto; }
+        
+        .nav-tab {
+            padding: 10px 16px;
+            border: none;
+            background: var(--glass-light);
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-tab:hover { 
+            box-shadow: 0 6px 24px rgba(0, 212, 255, 0.15);
+        }
+        
+        .nav-tab.active { 
+            background: var(--glass-heavy); 
+            color: var(--primary); 
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.18);
+        }
+        
+        .container { max-width: 1600px; margin: 0 auto; padding: 24px; }
+        
+        .content { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .tab { display: none; }
+        .tab.active { display: block; }
+        
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+        .stat.glass { 
+            padding: 20px; 
+            animation: slideUp 0.6s ease-out backwards;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .stat:nth-child(1) { animation-delay: 0.1s; }
+        .stat:nth-child(2) { animation-delay: 0.2s; }
+        .stat:nth-child(3) { animation-delay: 0.3s; }
+        .stat:nth-child(4) { animation-delay: 0.4s; }
+        
+        .stat:hover { 
+            box-shadow: 0 6px 24px rgba(0, 212, 255, 0.15);
+        }
+        
+        .stat-value {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .stat:hover .stat-value {
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+        }
+        
+        .stat-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px; }
+        .stat-value { 
+            font-size: 36px; 
+            font-weight: 700; 
+            background: linear-gradient(90deg, #ff006e, #00d4ff, #00ff88); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            background-clip: text;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .dashboard-section { margin-bottom: 32px; }
+        .section-title { font-size: 20px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+        .section-title .icon { font-size: 24px; }
+        
+        .cards-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        
+        @keyframes cardSlide { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .task-card.glass {
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: cardSlide 0.4s ease-out backwards;
+            display: flex;
+            gap: 12px;
+        }
+        
+        .task-card:hover { 
+            box-shadow: 0 6px 24px rgba(0, 212, 255, 0.15); 
+        }
+        .task-card.done { 
+            opacity: 0.6; 
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .task-card.done .task-text { 
+            text-decoration: line-through; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .task-card.done:hover {
+            opacity: 0.8;
+        }
+        
+        /* Improved checkbox and content layout */
+        .task-checkbox-container {
+            flex-shrink: 0;
+            padding-top: 2px;
+        }
+        
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            appearance: none;
+            -webkit-appearance: none;
+            background: transparent;
+            position: relative;
+        }
+        
+        .task-checkbox:hover {
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+        
+        .task-checkbox:checked {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+        
+        .task-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            color: #000;
+            font-weight: bold;
+            font-size: 14px;
+            animation: checkPop 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        @keyframes checkPop {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(0deg); }
+            50% { transform: translate(-50%, -50%) scale(1.2) rotate(10deg); }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+        }
+        
+        .task-content {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .task-text {
+            font-size: 15px;
+            font-weight: 600;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.4;
+        }
+        
+        .task-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 12px;
+        }
+        
+        .task-date {
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .priority-badge {
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .priority-high { background: rgba(255, 0, 110, 0.2); color: #ff006e; }
+        .priority-medium { background: rgba(0, 212, 255, 0.2); color: #00d4ff; }
+        .priority-low { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+        
+        .task-notes {
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-top: 4px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
+        }
+        
+        .task-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .task-btn {
+            padding: 6px 12px;
+            font-size: 11px;
+            background: var(--glass-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-dim);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .task-btn:hover { 
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.15);
+        }
+        
+        .task-btn.delete:hover { 
+            color: var(--accent); 
+            box-shadow: 0 5px 20px rgba(255, 0, 110, 0.18);
+        }
+        
+        .toggle-section-btn {
+            margin-bottom: 16px;
+            width: 100%;
+            padding: 12px;
+            font-size: 14px;
+            background: var(--glass-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .toggle-section-btn:hover {
+            box-shadow: 0 6px 24px rgba(255, 0, 110, 0.15);
+        }
+        
+        .toggle-section-btn .count {
+            background: rgba(255, 0, 110, 0.2);
+            color: var(--accent);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .hidden-section {
+            display: none;
+        }
+        
+        .hidden-section.show {
+            display: block;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .modal.active { 
+            display: flex; 
+            animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        .modal-content.glass {
+            max-width: 600px;
+            width: 90%;
+            padding: 32px;
+            animation: modalSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+        
+        @keyframes modalSlideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px) scale(0.95); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+        
+        .modal-title { font-size: 24px; font-weight: 700; margin-bottom: 24px; }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text-dim); }
+        
+        input[type="text"], input[type="date"], textarea, select {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--glass-light);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        select {
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300d4ff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 40px;
+        }
+        
+        select option {
+            background: #1a1a1a;
+            color: var(--text);
+            padding: 10px;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.12);
+            background: var(--glass-medium);
+        }
+        
+        input:hover, textarea:hover, select:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        textarea { resize: vertical; min-height: 100px; }
+        
+        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+        
+        .ai-assistant.glass { padding: 24px; }
+        .ai-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+        
+        .ai-messages {
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 16px;
+            padding: 16px;
+            background: var(--glass-light);
+            border-radius: 12px;
+        }
+        
+        .ai-message {
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            max-width: 80%;
+            line-height: 1.5;
+        }
+        
+        .ai-message.user {
+            background: var(--glass-medium);
+            margin-left: auto;
+            text-align: right;
+        }
+        
+        .ai-message.assistant {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+        
+        .ai-input-group {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .ai-input-group input {
+            flex: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .cards-row { grid-template-columns: 1fr; }
+            .header-actions { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="splash">
+        <div>
+            <div class="splash-logo">✓</div>
+            <div class="splash-text">Task Manager Pro</div>
+            <div class="splash-subtitle">Aryan Kandula</div>
+        </div>
+    </div>
+
+    <div class="app">
+        <header class="glass">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">✓</div>
+                    <div>
+                        <div class="header-title">Task Manager Pro</div>
+                        <div class="header-subtitle">Enhanced by Aryan Kandula</div>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button onclick="openAddModal()">➕ Add Task</button>
+                    <button onclick="openImportModal()">📥 Import</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('dashboard')">📊 Dashboard</button>
+            <button class="nav-tab" onclick="switchTab('tasks')">📋 All Tasks</button>
+            <button class="nav-tab" onclick="switchTab('ai')">🤖 AI Assistant</button>
+            <button class="nav-tab" onclick="switchTab('settings')">⚙️ Settings</button>
+        </div>
+
+        <div class="container">
+            <div id="dashboard" class="tab active">
+                <div class="stats" id="stats"></div>
+                <div class="dashboard-section">
+                    <div class="section-title"><span class="icon">🔥</span> Upcoming Tasks</div>
+                    <div class="cards-row" id="upcomingTasks"></div>
+                </div>
+                <div class="dashboard-section">
+                    <button class="toggle-section-btn" onclick="togglePastDue()">
+                        <span id="pastDueToggleText">Show Past Due Tasks</span>
+                        <span class="count" id="pastDueCount">0</span>
+                    </button>
+                    <div class="hidden-section" id="pastDueSection">
+                        <div class="section-title"><span class="icon">⚠️</span> Past Due Tasks</div>
+                        <div class="cards-row" id="pastDueTasks"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tasks" class="tab">
+                <div class="cards-row" id="allTasks"></div>
+            </div>
+
+            <div id="ai" class="tab">
+                <div class="ai-assistant glass">
+                    <div class="ai-title">🤖 AI Task Assistant</div>
+                    <div class="ai-messages" id="aiMessages">
+                        <div class="ai-message assistant">
+                            Hi! Ask me about your tasks. I can help you with:
+                            <br>• Tasks due on specific dates (e.g., "tasks until Feb 10")
+                            <br>• High priority tasks
+                            <br>• Overdue tasks
+                            <br>• Today's or tomorrow's tasks
+                            <br>• Completion rate
+                            <br>• Tasks in date ranges
+                        </div>
+                    </div>
+                    <div class="ai-input-group">
+                        <input type="text" id="aiInput" placeholder="Ask about your tasks..." onkeypress="handleAIInput(event)">
+                        <button onclick="sendAIMessage()">Send</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="settings" class="tab">
+                <div class="glass" style="padding: 24px;">
+                    <h2 style="margin-bottom: 20px;">⚙️ Settings</h2>
+                    <button onclick="exportData('json')" style="margin-right: 10px;">📤 Export JSON</button>
+                    <button onclick="exportData('csv')" style="margin-right: 10px;">📤 Export CSV</button>
+                    <button onclick="clearAll()" style="color: var(--accent);">🗑️ Clear All Tasks</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="addModal" class="modal">
+        <div class="modal-content glass">
+            <div class="modal-title">➕ Add New Task</div>
+            <div class="form-group">
+                <label class="form-label">Task Description</label>
+                <input type="text" id="taskText" placeholder="Enter task description...">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Due Date</label>
+                <input type="date" id="taskDate">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Priority</label>
+                <select id="taskPriority">
+                    <option value="low">Low</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Notes (Optional)</label>
+                <textarea id="taskNotes" placeholder="Add additional notes..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button onclick="closeAddModal()">Cancel</button>
+                <button onclick="addTask()" style="background: var(--primary); color: #000;">Add Task</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="importModal" class="modal">
+        <div class="modal-content glass">
+            <div class="modal-title">📥 Import Tasks</div>
+            <div class="form-group">
+                <label class="form-label">Google Calendar URL</label>
+                <input type="text" id="googleUrl" placeholder="Paste Google Calendar iCal URL...">
+                <button onclick="importGoogle()" style="margin-top: 10px;">Import from Google</button>
+            </div>
+            <div class="form-group" style="margin-top: 20px;">
+                <label class="form-label">Canvas Calendar URL</label>
+                <input type="text" id="canvasUrl" placeholder="Paste Canvas Calendar Feed URL...">
+                <button onclick="importCanvas()" style="margin-top: 10px;">Import from Canvas</button>
+            </div>
+            <div class="form-group" style="margin-top: 20px;">
+                <label class="form-label">Upload ICS File</label>
+                <input type="file" id="icsFile" accept=".ics" style="padding: 10px;">
+                <button onclick="importICS()" style="margin-top: 10px;">Import ICS File</button>
+            </div>
+            <div class="modal-actions">
+                <button onclick="closeImportModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+        let currentTab = 'dashboard';
+        let pastDueVisible = false;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        // Function to check if a task already exists
+        function isDuplicateTask(newTask) {
+            return tasks.some(task => 
+                task.text.toLowerCase().trim() === newTask.text.toLowerCase().trim() &&
+                task.date === newTask.date &&
+                task.source === newTask.source
+            );
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(tab).classList.add('active');
+            event.target.classList.add('active');
+            currentTab = tab;
+            render();
+        }
+
+        function addTask() {
+            const text = document.getElementById('taskText').value.trim();
+            const date = document.getElementById('taskDate').value;
+            const priority = document.getElementById('taskPriority').value;
+            const notes = document.getElementById('taskNotes').value.trim();
+            
+            if (!text || !date) return alert('Please fill in task and date');
+            
+            // Allow duplicate tasks - removed duplicate check
+            tasks.push({
+                id: Date.now() + Math.random(),
+                text,
+                date,
+                priority,
+                notes,
+                done: false,
+                source: 'manual'
+            });
+            
+            save();
+            closeAddModal();
+            render();
+        }
+
+        function toggleTask(id) {
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                task.done = !task.done;
+                save();
+                render();
+            }
+        }
+
+        function deleteTask(id) {
+            if (confirm('Delete this task?')) {
+                tasks = tasks.filter(t => t.id !== id);
+                save();
+                render();
+            }
+        }
+
+        function animateCounter(element, start, end, duration) {
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.round(current);
+            }, 16);
+        }
+
+        function togglePastDue() {
+            pastDueVisible = !pastDueVisible;
+            const section = document.getElementById('pastDueSection');
+            const toggleText = document.getElementById('pastDueToggleText');
+            
+            if (pastDueVisible) {
+                section.classList.add('show');
+                toggleText.textContent = 'Hide Past Due Tasks';
+            } else {
+                section.classList.remove('show');
+                toggleText.textContent = 'Show Past Due Tasks';
+            }
+        }
+
+        function render() {
+            const pending = tasks.filter(t => !t.done);
+            const done = tasks.filter(t => t.done);
+            const overdue = pending.filter(t => new Date(t.date) < today);
+            const upcoming = pending.filter(t => new Date(t.date) >= today);
+            
+            // Update stats with animation
+            const statsContainer = document.getElementById('stats');
+            const prevStats = {
+                total: parseInt(statsContainer.querySelector('.stat:nth-child(1) .stat-value')?.textContent || '0'),
+                pending: parseInt(statsContainer.querySelector('.stat:nth-child(2) .stat-value')?.textContent || '0'),
+                done: parseInt(statsContainer.querySelector('.stat:nth-child(3) .stat-value')?.textContent || '0'),
+                overdue: parseInt(statsContainer.querySelector('.stat:nth-child(4) .stat-value')?.textContent || '0')
+            };
+            
+            statsContainer.innerHTML = `
+                <div class="stat glass">
+                    <div class="stat-label">Total Tasks</div>
+                    <div class="stat-value" id="stat-total">${prevStats.total}</div>
+                </div>
+                <div class="stat glass">
+                    <div class="stat-label">Pending</div>
+                    <div class="stat-value" id="stat-pending">${prevStats.pending}</div>
+                </div>
+                <div class="stat glass">
+                    <div class="stat-label">Completed</div>
+                    <div class="stat-value" id="stat-done">${prevStats.done}</div>
+                </div>
+                <div class="stat glass">
+                    <div class="stat-label">Overdue</div>
+                    <div class="stat-value" id="stat-overdue" style="color: var(--accent);">${prevStats.overdue}</div>
+                </div>
+            `;
+            
+            // Animate the counters
+            setTimeout(() => {
+                animateCounter(document.getElementById('stat-total'), prevStats.total, tasks.length, 500);
+                animateCounter(document.getElementById('stat-pending'), prevStats.pending, pending.length, 500);
+                animateCounter(document.getElementById('stat-done'), prevStats.done, done.length, 500);
+                animateCounter(document.getElementById('stat-overdue'), prevStats.overdue, overdue.length, 500);
+            }, 50);
+            
+            document.getElementById('pastDueCount').textContent = overdue.length;
+            
+            // Render upcoming tasks
+            const upcomingSorted = upcoming.sort((a, b) => new Date(a.date) - new Date(b.date));
+            document.getElementById('upcomingTasks').innerHTML = upcomingSorted.length 
+                ? upcomingSorted.map(renderTaskCard).join('') 
+                : '<p style="color: var(--text-dim);">No upcoming tasks</p>';
+            
+            // Render past due tasks
+            const overdueSorted = overdue.sort((a, b) => new Date(a.date) - new Date(b.date));
+            document.getElementById('pastDueTasks').innerHTML = overdueSorted.length 
+                ? overdueSorted.map(renderTaskCard).join('') 
+                : '<p style="color: var(--text-dim);">No past due tasks</p>';
+            
+            // Render all tasks
+            const allSorted = [...tasks].sort((a, b) => {
+                if (a.done !== b.done) return a.done ? 1 : -1;
+                return new Date(a.date) - new Date(b.date);
+            });
+            document.getElementById('allTasks').innerHTML = allSorted.length 
+                ? allSorted.map(renderTaskCard).join('') 
+                : '<p style="color: var(--text-dim);">No tasks yet</p>';
+        }
+
+        function renderTaskCard(task) {
+            const taskDate = new Date(task.date);
+            const isOverdue = !task.done && taskDate < today;
+            const dateStr = taskDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            
+            return `
+                <div class="task-card glass ${task.done ? 'done' : ''}">
+                    <div class="task-checkbox-container">
+                        <input type="checkbox" class="task-checkbox" 
+                               ${task.done ? 'checked' : ''} 
+                               onchange="toggleTask(${task.id})">
+                    </div>
+                    <div class="task-content">
+                        <div class="task-text">${esc(task.text)}</div>
+                        <div class="task-meta">
+                            <div class="task-date ${isOverdue ? 'style="color: var(--accent);"' : ''}">
+                                📅 ${dateStr}
+                            </div>
+                            <div class="priority-badge priority-${task.priority}">
+                                ${task.priority}
+                            </div>
+                        </div>
+                        ${task.notes ? `<div class="task-notes">${esc(task.notes)}</div>` : ''}
+                        <div class="task-actions">
+                            <button class="task-btn delete" onclick="deleteTask(${task.id})">🗑️ Delete</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function importGoogle() {
+            let url = document.getElementById('googleUrl').value;
+            if (!url) return alert('Paste a URL');
+            try {
+                const res = await fetch(url);
+                const text = await res.text();
+                parseICS(text, 'google');
+            } catch (e) {
+                alert('Error: ' + e.message);
+            }
+        }
+
+        async function importCanvas() {
+            let url = document.getElementById('canvasUrl').value;
+            if (!url) return alert('Paste Canvas Calendar Feed URL');
+            
+            try {
+                const res = await fetch(url);
+                const text = await res.text();
+                parseICS(text, 'canvas');
+            } catch (e) {
+                try {
+                    const corsUrl = 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(url);
+                    const res = await fetch(corsUrl);
+                    const text = await res.text();
+                    if (text && text.includes('VEVENT')) {
+                        parseICS(text, 'canvas');
+                    } else {
+                        alert('Make sure the Canvas Calendar Feed URL is correct');
+                    }
+                } catch (e2) {
+                    alert('Error accessing Canvas. Make sure the URL is correct: ' + e.message);
+                }
+            }
+        }
+
+        function importICS() {
+            const file = document.getElementById('icsFile').files[0];
+            if (!file) return alert('Select a file');
+            const reader = new FileReader();
+            reader.onload = e => parseICS(e.target.result, 'ics-file');
+            reader.readAsText(file);
+        }
+
+        function parseICS(text, source) {
+            const lines = text.split('\n');
+            let count = 0, skipped = 0, event = null;
+            for (let line of lines) {
+                line = line.trim();
+                if (line === 'BEGIN:VEVENT') {
+                    event = { id: Date.now() + Math.random(), text: '', date: '', notes: '', done: false, source, priority: 'medium' };
+                } else if (line === 'END:VEVENT' && event && event.text && event.date) {
+                    let d = event.date;
+                    if (d.includes('T')) d = d.substring(0, 8);
+                    event.date = `${d.substring(0, 4)}-${d.substring(4, 6)}-${d.substring(6, 8)}`;
+                    
+                    // Check for duplicates before adding
+                    if (!isDuplicateTask(event)) {
+                        tasks.push(event);
+                        count++;
+                    } else {
+                        skipped++;
+                    }
+                    event = null;
+                } else if (event) {
+                    if (line.startsWith('SUMMARY:')) event.text = line.substring(8);
+                    else if (line.startsWith('DTSTART')) event.date = line.split(':').pop();
+                    else if (line.startsWith('DESCRIPTION:')) event.notes = line.substring(12);
+                }
+            }
+            if (count > 0 || skipped > 0) {
+                save();
+                closeImportModal();
+                render();
+                let message = `✅ Imported ${count} task(s)`;
+                if (skipped > 0) {
+                    message += `\n⚠️ Skipped ${skipped} duplicate(s)`;
+                }
+                alert(message);
+            } else {
+                alert('❌ No events found');
+            }
+        }
+
+        function handleAIInput(e) {
+            if (e.key === 'Enter') sendAIMessage();
+        }
+
+        function sendAIMessage() {
+            const input = document.getElementById('aiInput');
+            const query = input.value.toLowerCase().trim();
+            if (!query) return;
+            
+            const msgEl = document.getElementById('aiMessages');
+            const userMsg = document.createElement('div');
+            userMsg.className = 'ai-message user';
+            userMsg.textContent = input.value;
+            msgEl.appendChild(userMsg);
+            msgEl.scrollTop = msgEl.scrollHeight;
+            
+            let response = '';
+            
+            // Enhanced AI with date parsing
+            if (query.includes('until') || query.includes('before') || query.includes('by')) {
+                response = handleDateRangeQuery(query);
+            } else if (query.includes('on') && (query.includes('jan') || query.includes('feb') || query.includes('mar') || 
+                      query.includes('apr') || query.includes('may') || query.includes('jun') || query.includes('jul') || 
+                      query.includes('aug') || query.includes('sep') || query.includes('oct') || query.includes('nov') || 
+                      query.includes('dec') || /\d/.test(query))) {
+                response = handleSpecificDateQuery(query);
+            } else if (query.includes('between')) {
+                response = handleBetweenQuery(query);
+            } else if (query.includes('high') || query.includes('priority')) {
+                const high = tasks.filter(t => t.priority === 'high' && !t.done);
+                response = high.length ? `${high.length} high priority task(s): ${high.map(t => t.text).join(', ')}` : 'No high priority tasks!';
+            } else if (query.includes('overdue') || query.includes('past due')) {
+                const overdue = tasks.filter(t => !t.done && new Date(t.date) < today);
+                response = overdue.length ? `${overdue.length} overdue: ${overdue.map(t => `${t.text} (${new Date(t.date).toLocaleDateString()})`).join(', ')}` : 'No overdue tasks! 🎉';
+            } else if (query.includes('completion') || query.includes('rate')) {
+                const total = tasks.length;
+                const done = tasks.filter(t => t.done).length;
+                const rate = total ? Math.round(done/total*100) : 0;
+                response = `${rate}% done (${done}/${total} tasks)`;
+            } else if (query.includes('tomorrow')) {
+                const tomorrow = new Date(today);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const tmr = tasks.filter(t => !t.done && new Date(t.date).toDateString() === tomorrow.toDateString());
+                response = tmr.length ? `${tmr.length} task(s) tomorrow: ${tmr.map(t => t.text).join(', ')}` : 'No tasks tomorrow';
+            } else if (query.includes('today')) {
+                const todayTasks = tasks.filter(t => !t.done && new Date(t.date).toDateString() === today.toDateString());
+                response = todayTasks.length ? `Today: ${todayTasks.map(t => t.text).join(', ')}` : 'No tasks for today';
+            } else if (query.includes('pending') || query.includes('remaining')) {
+                const pending = tasks.filter(t => !t.done);
+                response = pending.length ? `${pending.length} pending task(s)` : 'All caught up!';
+            } else if (query.includes('next week')) {
+                response = handleNextWeekQuery();
+            } else if (query.includes('this week')) {
+                response = handleThisWeekQuery();
+            } else {
+                response = 'Ask about: tasks on specific dates (e.g., "tasks until Feb 10"), overdue, upcoming, high priority, completion rate, today/tomorrow, this week, or next week!';
+            }
+            
+            const assistantMsg = document.createElement('div');
+            assistantMsg.className = 'ai-message assistant';
+            assistantMsg.textContent = response;
+            msgEl.appendChild(assistantMsg);
+            msgEl.scrollTop = msgEl.scrollHeight;
+            input.value = '';
+        }
+
+        function parseDate(dateStr) {
+            // Parse various date formats
+            const months = {
+                'jan': 0, 'january': 0,
+                'feb': 1, 'february': 1,
+                'mar': 2, 'march': 2,
+                'apr': 3, 'april': 3,
+                'may': 4,
+                'jun': 5, 'june': 5,
+                'jul': 6, 'july': 6,
+                'aug': 7, 'august': 7,
+                'sep': 8, 'september': 8,
+                'oct': 9, 'october': 9,
+                'nov': 10, 'november': 10,
+                'dec': 11, 'december': 11
+            };
+            
+            // Match patterns like "Feb 10", "February 10", "10 Feb", etc.
+            const patterns = [
+                /(\w+)\s+(\d{1,2})/i,  // "Feb 10"
+                /(\d{1,2})\s+(\w+)/i,  // "10 Feb"
+            ];
+            
+            for (let pattern of patterns) {
+                const match = dateStr.match(pattern);
+                if (match) {
+                    let month, day;
+                    if (isNaN(match[1])) {
+                        // Month name first
+                        month = months[match[1].toLowerCase()];
+                        day = parseInt(match[2]);
+                    } else {
+                        // Day first
+                        day = parseInt(match[1]);
+                        month = months[match[2].toLowerCase()];
+                    }
+                    
+                    if (month !== undefined && day) {
+                        const year = new Date().getFullYear();
+                        return new Date(year, month, day);
+                    }
+                }
+            }
+            
+            return null;
+        }
+
+        function handleDateRangeQuery(query) {
+            const date = parseDate(query);
+            if (!date) return 'Please specify a valid date (e.g., "Feb 10", "February 10")';
+            
+            const relevantTasks = tasks.filter(t => !t.done && new Date(t.date) <= date);
+            
+            if (relevantTasks.length === 0) {
+                return `No tasks due until ${date.toLocaleDateString()}`;
+            }
+            
+            const taskList = relevantTasks
+                .sort((a, b) => new Date(a.date) - new Date(b.date))
+                .map(t => `${t.text} (${new Date(t.date).toLocaleDateString()})`)
+                .join(', ');
+            
+            return `${relevantTasks.length} task(s) until ${date.toLocaleDateString()}: ${taskList}`;
+        }
+
+        function handleSpecificDateQuery(query) {
+            const date = parseDate(query);
+            if (!date) return 'Please specify a valid date (e.g., "on Feb 10", "on February 10")';
+            
+            const tasksOnDate = tasks.filter(t => {
+                const taskDate = new Date(t.date);
+                return taskDate.toDateString() === date.toDateString() && !t.done;
+            });
+            
+            if (tasksOnDate.length === 0) {
+                return `No tasks on ${date.toLocaleDateString()}`;
+            }
+            
+            const taskList = tasksOnDate.map(t => t.text).join(', ');
+            return `${tasksOnDate.length} task(s) on ${date.toLocaleDateString()}: ${taskList}`;
+        }
+
+        function handleBetweenQuery(query) {
+            // Simple between query handler - can be enhanced
+            return 'For date ranges, try asking "tasks until [date]" or "tasks on [date]"';
+        }
+
+        function handleThisWeekQuery() {
+            const startOfWeek = new Date(today);
+            startOfWeek.setDate(today.getDate() - today.getDay());
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(startOfWeek.getDate() + 6);
+            
+            const weekTasks = tasks.filter(t => {
+                const taskDate = new Date(t.date);
+                return !t.done && taskDate >= startOfWeek && taskDate <= endOfWeek;
+            });
+            
+            if (weekTasks.length === 0) return 'No tasks this week';
+            
+            return `${weekTasks.length} task(s) this week: ${weekTasks.map(t => `${t.text} (${new Date(t.date).toLocaleDateString()})`).join(', ')}`;
+        }
+
+        function handleNextWeekQuery() {
+            const startOfNextWeek = new Date(today);
+            startOfNextWeek.setDate(today.getDate() + (7 - today.getDay()));
+            const endOfNextWeek = new Date(startOfNextWeek);
+            endOfNextWeek.setDate(startOfNextWeek.getDate() + 6);
+            
+            const nextWeekTasks = tasks.filter(t => {
+                const taskDate = new Date(t.date);
+                return !t.done && taskDate >= startOfNextWeek && taskDate <= endOfNextWeek;
+            });
+            
+            if (nextWeekTasks.length === 0) return 'No tasks next week';
+            
+            return `${nextWeekTasks.length} task(s) next week: ${nextWeekTasks.map(t => `${t.text} (${new Date(t.date).toLocaleDateString()})`).join(', ')}`;
+        }
+
+        function exportData(fmt) {
+            let data;
+            if (fmt === 'csv') {
+                data = 'Task,Date,Priority,Status,Notes\n';
+                tasks.forEach(t => {
+                    data += `"${t.text}","${t.date}","${t.priority}","${t.done ? 'Done' : 'Pending'}","${t.notes}"\n`;
+                });
+            } else {
+                data = JSON.stringify(tasks, null, 2);
+            }
+            const blob = new Blob([data], { type: fmt === 'csv' ? 'text/csv' : 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `tasks.${fmt}`;
+            a.click();
+        }
+
+        function clearAll() {
+            if (confirm('Delete all tasks?')) {
+                tasks = [];
+                save();
+                render();
+            }
+        }
+
+        function openAddModal() {
+            document.getElementById('addModal').classList.add('active');
+            document.getElementById('taskText').focus();
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').classList.remove('active');
+            document.getElementById('taskText').value = '';
+            document.getElementById('taskNotes').value = '';
+        }
+
+        function openImportModal() {
+            document.getElementById('importModal').classList.add('active');
+        }
+
+        function closeImportModal() {
+            document.getElementById('importModal').classList.remove('active');
+        }
+
+        function save() {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+        function esc(t) {
+            const d = document.createElement('div');
+            d.textContent = t;
+            return d.innerHTML;
+        }
+
+        document.addEventListener('click', e => {
+            if (e.target.id === 'addModal') closeAddModal();
+            if (e.target.id === 'importModal') closeImportModal();
+        });
+
+        render();
+    </script>
+</body>
+</html>
