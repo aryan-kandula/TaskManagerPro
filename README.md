@@ -12,7 +12,7 @@ Featuring a full iOS 26-style liquid glassmorphic design, intelligent AI assista
 
 ## 🔗 Live Demo
 
-👉 [https://aryan-kandula.github.io/TaskManagerPro/TaskManagerPro.html](https://aryan-kandula.github.io/TaskManagerPro/TaskManagerPro.html)
+👉 [https://aryan-kandula.github.io/TaskManagerPro/TaskManagerPro.html](https://aryan-kandula.github.io/TaskManagerPro/)
 
 ---
 
