@@ -1,1215 +1,1122 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Manager Pro - Aryan Kandula</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
-        :root {
-            --bg: #000000;
-            --glass-light: rgba(255, 255, 255, 0.05);
-            --glass-medium: rgba(255, 255, 255, 0.1);
-            --glass-heavy: rgba(255, 255, 255, 0.15);
-            --text: #ffffff;
-            --text-dim: #a0a0b8;
-            --primary: #00d4ff;
-            --secondary: #00ff88;
-            --accent: #ff006e;
-        }
-        
-        html, body {
-            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            overflow-x: hidden;
-        }
-        
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.03) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        .app { position: relative; z-index: 1; min-height: 100vh; }
-        
-        .glass {
-            background: var(--glass-medium);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-        }
-        
-        .splash {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            animation: fadeOut 0.8s ease-out 2.2s forwards;
-        }
-        
-        .splash-logo {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 24px;
-            background: conic-gradient(from 0deg, #ff006e, #ff00ff, #0066ff, #00d4ff, #00ff88, #ffff00, #ff6600, #ff0066);
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #000;
-            font-size: 50px;
-            font-weight: 700;
-            animation: logoSpin 3s linear infinite, logoFloat 3s ease-in-out infinite;
-            box-shadow: 0 0 60px rgba(255, 0, 255, 0.5), 0 0 120px rgba(0, 212, 255, 0.2);
-        }
-        
-        @keyframes logoSpin { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(360deg); } }
-        @keyframes logoFloat { 0%, 100% { transform: translateY(0px) rotateY(0deg); } 50% { transform: translateY(-20px) rotateY(360deg); } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
-        @keyframes slideDown { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        
-        .splash-text { font-size: 28px; font-weight: 700; color: var(--text); animation: slideUp 0.8s ease-out 0.3s backwards; }
-        .splash-subtitle { font-size: 12px; color: var(--text-dim); animation: slideUp 0.8s ease-out 0.6s backwards; }
-        
-        header { padding: 16px 24px; position: sticky; top: 0; z-index: 100; animation: slideDown 0.6s ease-out; }
-        header.glass { margin: 12px 24px 0; border-radius: 20px; }
-        
-        .header-content { max-width: 1600px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-        .logo-section { display: flex; align-items: center; gap: 16px; }
-        
-        .logo {
-            width: 48px;
-            height: 48px;
-            background: conic-gradient(from 0deg, #ff006e, #ff00ff, #0066ff, #00d4ff, #00ff88, #ffff00, #ff6600, #ff0066);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 24px;
-            color: #000;
-            box-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
-            animation: logoHover 4s ease-in-out infinite;
-        }
-        
-        @keyframes logoHover { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-6px); } }
-        
-        .header-title { font-size: 24px; font-weight: 700; background: linear-gradient(90deg, #ff006e, #ff00ff, #0066ff, #00d4ff, #00ff88); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .header-subtitle { font-size: 11px; color: var(--text-dim); }
-        
-        .header-actions { display: flex; gap: 12px; }
-        
-        button {
-            padding: 10px 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            font-family: inherit;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: var(--glass-light);
-            color: var(--primary);
-            backdrop-filter: blur(10px);
-        }
-        
-        button:hover {
-            box-shadow: 0 6px 24px rgba(0, 212, 255, 0.18);
-        }
-        
-        button:active {
-            box-shadow: 0 2px 8px rgba(0, 212, 255, 0.08);
-        }
-        
-        .nav-tabs { display: flex; gap: 8px; padding: 16px 24px; overflow-x: auto; max-width: 1600px; margin: 0 auto; }
-        
-        .nav-tab {
-            padding: 10px 16px;
-            border: none;
-            background: var(--glass-light);
-            color: var(--text-dim);
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            border-radius: 12px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            white-space: nowrap;
-            backdrop-filter: blur(10px);
-        }
-        
-        .nav-tab:hover { 
-            box-shadow: 0 6px 24px rgba(0, 212, 255, 0.15);
-        }
-        
-        .nav-tab.active { 
-            background: var(--glass-heavy); 
-            color: var(--primary); 
-            border: 1px solid rgba(0, 212, 255, 0.2);
-            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.18);
-        }
-        
-        .container { max-width: 1600px; margin: 0 auto; padding: 24px; }
-        
-        .content { animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
-        .tab { display: none; }
-        .tab.active { display: block; }
-        
-        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
-        .stat.glass { 
-            padding: 20px; 
-            animation: slideUp 0.6s ease-out backwards;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .stat:nth-child(1) { animation-delay: 0.1s; }
-        .stat:nth-child(2) { animation-delay: 0.2s; }
-        .stat:nth-child(3) { animation-delay: 0.3s; }
-        .stat:nth-child(4) { animation-delay: 0.4s; }
-        
-        .stat:hover { 
-            box-shadow: 0 6px 24px rgba(0, 212, 255, 0.15);
-        }
-        
-        .stat-value {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .stat:hover .stat-value {
-            text-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
-        }
-        
-        .stat-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px; }
-        .stat-value { 
-            font-size: 36px; 
-            font-weight: 700; 
-            background: linear-gradient(90deg, #ff006e, #00d4ff, #00ff88); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-            background-clip: text;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .dashboard-section { margin-bottom: 32px; }
-        .section-title { font-size: 20px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
-        .section-title .icon { font-size: 24px; }
-        
-        .cards-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-        
-        @keyframes cardSlide { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .task-card.glass {
-            padding: 20px;
-            position: relative;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: cardSlide 0.4s ease-out backwards;
-            display: flex;
-            gap: 12px;
-        }
-        
-        .task-card:hover { 
-            box-shadow: 0 6px 24px rgba(0, 212, 255, 0.15); 
-        }
-        .task-card.done { 
-            opacity: 0.6; 
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .task-card.done .task-text { 
-            text-decoration: line-through; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .task-card.done:hover {
-            opacity: 0.8;
-        }
-        
-        /* Improved checkbox and content layout */
-        .task-checkbox-container {
-            flex-shrink: 0;
-            padding-top: 2px;
-        }
-        
-        .task-checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            appearance: none;
-            -webkit-appearance: none;
-            background: transparent;
-            position: relative;
-        }
-        
-        .task-checkbox:hover {
-            border-color: var(--primary);
-            transform: scale(1.1);
-        }
-        
-        .task-checkbox:checked {
-            background: var(--primary);
-            border-color: var(--primary);
-            transform: scale(1.05);
-        }
-        
-        .task-checkbox:checked::after {
-            content: '✓';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            color: #000;
-            font-weight: bold;
-            font-size: 14px;
-            animation: checkPop 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-        
-        @keyframes checkPop {
-            0% { transform: translate(-50%, -50%) scale(0) rotate(0deg); }
-            50% { transform: translate(-50%, -50%) scale(1.2) rotate(10deg); }
-            100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-        }
-        
-        .task-content {
-            flex: 1;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .task-text {
-            font-size: 15px;
-            font-weight: 600;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            line-height: 1.4;
-        }
-        
-        .task-meta {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            font-size: 12px;
-        }
-        
-        .task-date {
-            color: var(--text-dim);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        
-        .priority-badge {
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .priority-high { background: rgba(255, 0, 110, 0.2); color: #ff006e; }
-        .priority-medium { background: rgba(0, 212, 255, 0.2); color: #00d4ff; }
-        .priority-low { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
-        
-        .task-notes {
-            font-size: 13px;
-            color: var(--text-dim);
-            margin-top: 4px;
-            line-height: 1.5;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            white-space: pre-wrap;
-        }
-        
-        .task-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 8px;
-        }
-        
-        .task-btn {
-            padding: 6px 12px;
-            font-size: 11px;
-            background: var(--glass-light);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            color: var(--text-dim);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .task-btn:hover { 
-            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.15);
-        }
-        
-        .task-btn.delete:hover { 
-            color: var(--accent); 
-            box-shadow: 0 5px 20px rgba(255, 0, 110, 0.18);
-        }
-        
-        .toggle-section-btn {
-            margin-bottom: 16px;
-            width: 100%;
-            padding: 12px;
-            font-size: 14px;
-            background: var(--glass-light);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: var(--text);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        
-        .toggle-section-btn:hover {
-            box-shadow: 0 6px 24px rgba(255, 0, 110, 0.15);
-        }
-        
-        .toggle-section-btn .count {
-            background: rgba(255, 0, 110, 0.2);
-            color: var(--accent);
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 12px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        
-        .hidden-section {
-            display: none;
-        }
-        
-        .hidden-section.show {
-            display: block;
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .modal.active { 
-            display: flex; 
-            animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-        
-        .modal-content.glass {
-            max-width: 600px;
-            width: 90%;
-            padding: 32px;
-            animation: modalSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-origin: center;
-        }
-        
-        @keyframes modalSlideUp {
-            from { 
-                opacity: 0; 
-                transform: translateY(30px) scale(0.95); 
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0) scale(1); 
-            }
-        }
-        
-        .modal-title { font-size: 24px; font-weight: 700; margin-bottom: 24px; }
-        
-        .form-group { margin-bottom: 20px; }
-        .form-label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text-dim); }
-        
-        input[type="text"], input[type="date"], textarea, select {
-            width: 100%;
-            padding: 12px 16px;
-            background: var(--glass-light);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: var(--text);
-            font-family: inherit;
-            font-size: 14px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        select {
-            cursor: pointer;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300d4ff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 40px;
-        }
-        
-        select option {
-            background: #1a1a1a;
-            color: var(--text);
-            padding: 10px;
-        }
-        
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.12);
-            background: var(--glass-medium);
-        }
-        
-        input:hover, textarea:hover, select:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-        
-        textarea { resize: vertical; min-height: 100px; }
-        
-        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
-        
-        .ai-assistant.glass { padding: 24px; }
-        .ai-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
-        
-        .ai-messages {
-            height: 300px;
-            overflow-y: auto;
-            margin-bottom: 16px;
-            padding: 16px;
-            background: var(--glass-light);
-            border-radius: 12px;
-        }
-        
-        .ai-message {
-            padding: 10px 14px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            max-width: 80%;
-            line-height: 1.5;
-        }
-        
-        .ai-message.user {
-            background: var(--glass-medium);
-            margin-left: auto;
-            text-align: right;
-        }
-        
-        .ai-message.assistant {
-            background: rgba(0, 212, 255, 0.1);
-            border: 1px solid rgba(0, 212, 255, 0.2);
-        }
-        
-        .ai-input-group {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .ai-input-group input {
-            flex: 1;
-        }
-        
-        @media (max-width: 768px) {
-            .stats { grid-template-columns: repeat(2, 1fr); }
-            .cards-row { grid-template-columns: 1fr; }
-            .header-actions { flex-direction: column; }
-        }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Task Manager Pro — Aryan Kandula</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════ TOKENS ═══════════════ */
+:root {
+  --ease: cubic-bezier(0.34,1.56,0.64,1);
+  --ease-s: cubic-bezier(0.4,0,0.2,1);
+  --ease-spring: cubic-bezier(0.175,0.885,0.32,1.275);
+  --font: 'Sora', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --r: 22px; --r-sm: 14px; --r-xs: 8px; --r-pill: 100px;
+}
+[data-theme="dark"] {
+  --bg: #04060f;
+  --bg2: #070912;
+  --glass: rgba(255,255,255,0.055);
+  --glass-2: rgba(255,255,255,0.09);
+  --glass-3: rgba(255,255,255,0.13);
+  --glass-strong: rgba(255,255,255,0.18);
+  --bd: rgba(255,255,255,0.10);
+  --bd2: rgba(255,255,255,0.16);
+  --bd3: rgba(255,255,255,0.22);
+  --tx: #f2f5ff;
+  --tx2: #8899bb;
+  --tx3: #3d4d6a;
+  --pri: #5aabff;
+  --pri-glow: rgba(90,171,255,0.25);
+  --pri-dim: rgba(90,171,255,0.12);
+  --acc: #ff5b8d;
+  --grn: #3dffc0;
+  --gld: #ffcc4f;
+  --purp: #b87fff;
+  --blur: blur(40px) saturate(1.8);
+  --blur-light: blur(20px) saturate(1.4);
+  --sh: 0 24px 80px rgba(0,0,10,0.6), 0 4px 20px rgba(0,0,0,0.4);
+  --sh-sm: 0 8px 32px rgba(0,0,0,0.4);
+  --inset: inset 0 1px 0 rgba(255,255,255,0.10), inset 0 -1px 0 rgba(0,0,0,0.2);
+  --orb1: rgba(20,70,220,0.2);
+  --orb2: rgba(120,40,200,0.14);
+  --orb3: rgba(0,140,100,0.10);
+  --orb4: rgba(200,60,120,0.08);
+}
+[data-theme="light"] {
+  --bg: #dce4f0;
+  --bg2: #cfd8e8;
+  --glass: rgba(255,255,255,0.52);
+  --glass-2: rgba(255,255,255,0.68);
+  --glass-3: rgba(255,255,255,0.82);
+  --glass-strong: rgba(255,255,255,0.92);
+  --bd: rgba(0,0,0,0.07);
+  --bd2: rgba(0,0,0,0.11);
+  --bd3: rgba(0,0,0,0.16);
+  --tx: #08111f;
+  --tx2: #4a5a78;
+  --tx3: #8899bb;
+  --pri: #1a7fff;
+  --pri-glow: rgba(26,127,255,0.2);
+  --pri-dim: rgba(26,127,255,0.10);
+  --acc: #e0004e;
+  --grn: #00b87a;
+  --gld: #d48800;
+  --purp: #8844dd;
+  --blur: blur(40px) saturate(2.2);
+  --blur-light: blur(20px) saturate(1.8);
+  --sh: 0 24px 80px rgba(0,0,0,0.12), 0 4px 20px rgba(0,0,0,0.08);
+  --sh-sm: 0 8px 32px rgba(0,0,0,0.10);
+  --inset: inset 0 1px 0 rgba(255,255,255,0.9), inset 0 -1px 0 rgba(0,0,0,0.04);
+  --orb1: rgba(80,150,255,0.22);
+  --orb2: rgba(180,100,255,0.16);
+  --orb3: rgba(0,200,140,0.14);
+  --orb4: rgba(255,80,140,0.10);
+}
+
+/* ═══════════════ RESET ═══════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;height:100%;}
+body{font-family:var(--font);background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden;transition:background .6s var(--ease-s),color .5s var(--ease-s);}
+button,input,select,textarea{font-family:inherit;}
+img{display:block;}
+
+/* ═══════════════ BG ORBS ═══════════════ */
+.bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.orb{position:absolute;border-radius:50%;filter:blur(100px);animation:orbFloat 24s ease-in-out infinite alternate;}
+.o1{width:700px;height:700px;background:var(--orb1);top:-200px;left:-150px;animation-duration:26s;}
+.o2{width:600px;height:600px;background:var(--orb2);bottom:-100px;right:-100px;animation-duration:30s;animation-delay:-10s;}
+.o3{width:450px;height:450px;background:var(--orb3);top:40%;left:30%;animation-duration:20s;animation-delay:-6s;}
+.o4{width:350px;height:350px;background:var(--orb4);bottom:20%;left:-50px;animation-duration:22s;animation-delay:-14s;}
+@keyframes orbFloat{from{transform:translate(0,0) scale(1);}to{transform:translate(50px,40px) scale(1.1);}}
+
+/* ═══════════════ GLASS CORE ═══════════════ */
+.g{
+  background:var(--glass);
+  backdrop-filter:var(--blur);
+  -webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--bd);
+  border-radius:var(--r);
+  box-shadow:var(--sh),var(--inset);
+  transition:background .4s,border-color .3s,box-shadow .3s;
+}
+.g2{background:var(--glass-2);}
+.g3{background:var(--glass-3);}
+.g:hover{border-color:var(--bd2);}
+
+/* ═══════════════ PAGES ═══════════════ */
+#landing{position:fixed;inset:0;z-index:9000;overflow-y:auto;display:flex;flex-direction:column;}
+#app{position:relative;z-index:1;min-height:100vh;display:none;}
+
+/* ═══════════════ LANDING ═══════════════ */
+.land-bg{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.land-wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:40px 24px 80px;display:flex;flex-direction:column;min-height:100vh;}
+
+/* Hero section */
+.land-hero{text-align:center;padding:60px 0 40px;animation:fadeUp .8s var(--ease-s) both;}
+.land-logo{
+  width:110px;height:110px;
+  background:conic-gradient(from 30deg,#ff5b8d,#b87fff,#5aabff,#3dffc0,#ffcc4f,#ff5b8d);
+  border-radius:32px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:56px;color:#fff;
+  margin:0 auto 28px;
+  box-shadow:0 0 80px rgba(90,171,255,.35), 0 0 160px rgba(184,127,255,.2), var(--inset);
+  animation:logoPulse 3s ease-in-out infinite;
+  border:1px solid rgba(255,255,255,.2);
+}
+@keyframes logoPulse{0%,100%{box-shadow:0 0 80px rgba(90,171,255,.35),0 0 160px rgba(184,127,255,.2),var(--inset);}50%{box-shadow:0 0 120px rgba(90,171,255,.5),0 0 200px rgba(184,127,255,.3),var(--inset);}}
+.land-title{font-size:clamp(2.2rem,6vw,4rem);font-weight:800;letter-spacing:-.04em;line-height:1.05;margin-bottom:14px;}
+.land-title .grad{background:linear-gradient(135deg,var(--pri) 0%,var(--purp) 40%,var(--acc) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.land-sub{font-size:1.05rem;color:var(--tx2);max-width:500px;margin:0 auto 36px;line-height:1.7;}
+.land-cta{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;border-radius:var(--r-pill);font-size:15px;font-weight:700;cursor:pointer;border:none;background:linear-gradient(135deg,var(--pri),var(--purp));color:#fff;box-shadow:0 8px 40px var(--pri-glow),0 0 0 1px rgba(255,255,255,.15);transition:all .3s var(--ease);animation:ctaPulse 2.5s ease-in-out infinite;}
+@keyframes ctaPulse{0%,100%{box-shadow:0 8px 40px var(--pri-glow),0 0 0 1px rgba(255,255,255,.15);}50%{box-shadow:0 12px 60px var(--pri-glow),0 0 0 1px rgba(255,255,255,.2),0 0 0 8px rgba(90,171,255,.08);}}
+.land-cta:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 16px 60px var(--pri-glow);}
+.land-cta:active{transform:translateY(0) scale(.98);}
+.land-note{font-size:11px;color:var(--tx3);margin-top:14px;font-family:var(--mono);}
+
+/* Feature cards */
+.land-features{margin:20px 0 40px;}
+.features-title{text-align:center;font-size:14px;font-weight:600;color:var(--tx2);font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;margin-bottom:24px;}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:700px){.features-grid{grid-template-columns:1fr;}}
+.feat-card{padding:22px 20px;animation:fadeUp .7s var(--ease-s) both;transition:all .3s var(--ease);}
+.feat-card:hover{transform:translateY(-5px);border-color:var(--bd2);}
+.feat-icon{font-size:28px;margin-bottom:12px;display:block;}
+.feat-name{font-size:14px;font-weight:700;margin-bottom:6px;}
+.feat-desc{font-size:12px;color:var(--tx2);line-height:1.65;}
+
+/* How to use steps */
+.land-steps{margin-bottom:40px;}
+.steps-title{text-align:center;font-size:14px;font-weight:600;color:var(--tx2);font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;margin-bottom:24px;}
+.steps-list{display:flex;flex-direction:column;gap:12px;}
+.step{display:flex;align-items:flex-start;gap:16px;padding:18px 20px;animation:fadeUp .6s var(--ease-s) both;}
+.step-num{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--pri),var(--purp));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 4px 16px var(--pri-glow);}
+.step-body{}
+.step-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+.step-desc{font-size:12px;color:var(--tx2);line-height:1.6;}
+
+/* Bottom CTA */
+.land-bottom{text-align:center;padding:20px 0 40px;animation:fadeUp .8s .4s var(--ease-s) both;}
+.land-bottom p{font-size:13px;color:var(--tx2);margin-bottom:20px;}
+
+/* ═══════════════ TRANSITION ═══════════════ */
+.page-transition{
+  position:fixed;inset:0;z-index:99999;
+  background:var(--bg);
+  pointer-events:none;
+  opacity:0;
+}
+.page-transition.in{animation:transIn .5s var(--ease-s) forwards;}
+.page-transition.out{animation:transOut .5s var(--ease-s) .2s forwards;}
+@keyframes transIn{from{opacity:0;}to{opacity:1;}}
+@keyframes transOut{from{opacity:1;}to{opacity:0;}}
+
+/* ═══════════════ APP LAYOUT ═══════════════ */
+.app-page{max-width:1400px;margin:0 auto;padding:0 20px 80px;}
+
+/* ═══════════════ HEADER ═══════════════ */
+.hdr{
+  position:sticky;top:14px;z-index:500;
+  max-width:1400px;margin:14px auto 0;
+  padding:12px 18px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  border-radius:var(--r-pill) !important;
+}
+.hdr-left{display:flex;align-items:center;gap:12px;}
+.hdr-logo{
+  width:40px;height:40px;
+  background:conic-gradient(from 30deg,#ff5b8d,#b87fff,#5aabff,#3dffc0,#ffcc4f,#ff5b8d);
+  border-radius:13px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;color:#fff;flex-shrink:0;
+  box-shadow:0 0 20px var(--pri-glow);
+  animation:logoFloat 4s ease-in-out infinite;
+  border:1px solid rgba(255,255,255,.2);
+}
+@keyframes logoFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+.hdr-name{font-size:15px;font-weight:700;letter-spacing:-.02em;}
+.hdr-sub{font-size:10px;color:var(--tx2);font-family:var(--mono);}
+.hdr-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+
+/* Refresh pill */
+.rpill{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:var(--r-pill);font-size:11px;font-family:var(--mono);color:var(--grn);background:rgba(61,255,192,.07);border:1px solid rgba(61,255,192,.18);cursor:pointer;transition:all .3s;position:relative;}
+.rpill:hover{background:rgba(61,255,192,.13);}
+.rdot{width:6px;height:6px;border-radius:50%;background:var(--grn);animation:grnPulse 2s infinite;}
+@keyframes grnPulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(61,255,192,.4);}50%{opacity:.8;box-shadow:0 0 0 6px rgba(61,255,192,0);}}
+.rbadge{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:var(--acc);font-size:9px;color:#fff;display:none;align-items:center;justify-content:center;font-weight:700;}
+.rbadge.show{display:flex;}
+
+/* Theme toggle */
+.ttoggle{width:50px;height:26px;background:var(--glass-2);border:1px solid var(--bd2);border-radius:var(--r-pill);cursor:pointer;position:relative;flex-shrink:0;transition:all .4s;}
+.ttoggle::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#5aabff,#b87fff);transition:transform .4s var(--ease);box-shadow:0 2px 8px rgba(90,171,255,.5);}
+[data-theme="light"] .ttoggle::after{transform:translateX(24px);background:linear-gradient(135deg,#ffcc4f,#ff8800);}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:var(--r-pill);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--bd);background:var(--glass-2);color:var(--tx);backdrop-filter:var(--blur-light);-webkit-backdrop-filter:var(--blur-light);transition:all .25s var(--ease-s);white-space:nowrap;position:relative;overflow:hidden;}
+.btn::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.08) 0%,transparent 60%);pointer-events:none;}
+.btn:hover{transform:translateY(-2px);box-shadow:var(--sh-sm);border-color:var(--bd2);}
+.btn:active{transform:translateY(0);}
+.btn.pri{background:linear-gradient(135deg,var(--pri),var(--purp));color:#fff;border-color:transparent;box-shadow:0 4px 24px var(--pri-glow);}
+.btn.pri:hover{box-shadow:0 8px 36px var(--pri-glow);}
+.btn.acc{color:var(--acc);}
+
+/* ═══════════════ NAV ═══════════════ */
+.nav{display:flex;gap:4px;padding:16px 0 10px;overflow-x:auto;scrollbar-width:none;}
+.nav::-webkit-scrollbar{display:none;}
+.nbtn{padding:8px 16px;border-radius:var(--r-pill);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;border:1px solid transparent;background:transparent;color:var(--tx2);transition:all .25s var(--ease-s);}
+.nbtn:hover{color:var(--tx);background:var(--glass-2);}
+.nbtn.on{background:var(--glass-strong);color:var(--pri);border-color:var(--bd2);box-shadow:0 4px 20px var(--pri-glow);}
+
+/* ═══════════════ TABS ═══════════════ */
+.tab{display:none;animation:tabFadeIn .4s var(--ease-s);}
+.tab.on{display:block;}
+@keyframes tabFadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* ═══════════════ STATS ═══════════════ */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.stat{padding:22px 24px;transition:all .3s var(--ease-s);cursor:default;}
+.stat:hover{transform:translateY(-4px);border-color:var(--bd2);}
+.stat-lbl{font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;color:var(--tx2);margin-bottom:10px;}
+.stat-val{font-size:34px;font-weight:700;font-family:var(--mono);}
+.c-pri{color:var(--pri);}
+.c-grn{color:var(--grn);}
+.c-acc{color:var(--acc);}
+.c-gld{color:var(--gld);}
+
+/* ═══════════════ SECTION HEAD ═══════════════ */
+.sh{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:-.01em;margin-bottom:14px;margin-top:30px;color:var(--tx);}
+.sh::after{content:'';flex:1;height:1px;background:var(--bd);}
+
+/* ═══════════════ TASK GRID ═══════════════ */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:14px;}
+.empty-state{color:var(--tx2);font-size:13px;font-family:var(--mono);padding:24px 0;text-align:center;}
+
+/* ═══════════════ TASK CARD — iOS 26 ═══════════════ */
+.tc{
+  padding:18px 20px;
+  display:flex;gap:13px;
+  cursor:pointer;
+  transition:all .3s var(--ease-s);
+  animation:cardPop .4s var(--ease-s) both;
+  position:relative;overflow:hidden;
+}
+.tc::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--pri-dim),transparent 60%);
+  opacity:0;transition:opacity .3s;pointer-events:none;
+  border-radius:inherit;
+}
+.tc:hover{transform:translateY(-5px) scale(1.01);border-color:var(--bd2);}
+.tc:hover::before{opacity:1;}
+.tc.done-card{opacity:.5;}
+.tc.done-card .tc-title{text-decoration:line-through;}
+.tc.od-card{border-color:rgba(255,91,141,.25);}
+@keyframes cardPop{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+
+/* Checkbox */
+.chk{width:20px;height:20px;flex-shrink:0;margin-top:2px;border:2px solid var(--bd2);border-radius:7px;cursor:pointer;appearance:none;-webkit-appearance:none;background:transparent;transition:all .3s var(--ease);position:relative;}
+.chk:hover{border-color:var(--pri);transform:scale(1.15);}
+.chk:checked{background:var(--pri);border-color:var(--pri);}
+.chk:checked::after{content:'✓';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:11px;font-weight:700;}
+
+.tc-body{flex:1;min-width:0;}
+.tc-title{font-size:14px;font-weight:600;line-height:1.4;margin-bottom:8px;word-wrap:break-word;}
+.tc-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:8px;}
+.tc-date{font-size:11px;color:var(--tx2);font-family:var(--mono);}
+.tc-date.od{color:var(--acc);}
+.badge{font-size:9px;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:3px 9px;border-radius:var(--r-pill);}
+.bh{background:rgba(255,91,141,.14);color:var(--acc);}
+.bm{background:rgba(90,171,255,.14);color:var(--pri);}
+.bl{background:rgba(61,255,192,.14);color:var(--grn);}
+.bc{background:rgba(184,127,255,.14);color:var(--purp);}
+
+/* Urgency bar */
+.ubar{height:3px;border-radius:var(--r-pill);background:var(--bd);overflow:hidden;margin-top:4px;}
+.ufill{height:100%;border-radius:var(--r-pill);transition:width 1s var(--ease-s);}
+.tc-foot{display:flex;gap:6px;margin-top:10px;}
+.tc-btn{font-size:10px;font-family:var(--mono);padding:4px 10px;border-radius:8px;background:var(--glass-2);border:1px solid var(--bd);color:var(--tx2);cursor:pointer;transition:all .2s;}
+.tc-btn:hover{color:var(--tx);border-color:var(--bd2);}
+.tc-btn.del:hover{color:var(--acc);}
+
+/* Past due toggle */
+.pd-toggle{width:100%;padding:12px 16px;background:var(--glass-2);border:1px solid var(--bd);border-radius:var(--r-sm);color:var(--tx);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;transition:all .3s;}
+.pd-toggle:hover{border-color:var(--bd2);}
+.pd-hidden{display:none;}
+.pd-hidden.show{display:block;}
+.pd-cnt{background:rgba(255,91,141,.16);color:var(--acc);padding:2px 9px;border-radius:var(--r-pill);font-size:11px;font-family:var(--mono);font-weight:700;}
+
+/* ═══════════════ WEEK VIEW ═══════════════ */
+.wgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:24px;}
+.wday{padding:14px 8px;text-align:center;border-radius:var(--r-sm);}
+.wday.today{border-color:var(--pri);background:var(--pri-dim);}
+.wday-name{font-size:9px;font-family:var(--mono);text-transform:uppercase;color:var(--tx2);margin-bottom:4px;letter-spacing:.1em;}
+.wday-num{font-size:20px;font-weight:700;margin-bottom:8px;}
+.wday.today .wday-num{color:var(--pri);}
+.wday-tasks{display:flex;flex-direction:column;gap:3px;}
+.wdt{font-size:9px;font-family:var(--mono);padding:2px 6px;border-radius:5px;background:var(--pri-dim);color:var(--pri);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;transition:all .2s;}
+.wdt:hover{background:var(--glass-3);}
+.wdt.od{background:rgba(255,91,141,.12);color:var(--acc);}
+
+/* ═══════════════ AI ═══════════════ */
+.ai-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.ai-chat{padding:24px;}
+.ai-hdr{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.ai-glow{width:10px;height:10px;border-radius:50%;background:var(--grn);box-shadow:0 0 12px var(--grn);animation:grnPulse 2s infinite;}
+.ai-title{font-size:16px;font-weight:700;}
+.ai-subtitle{font-size:11px;color:var(--tx2);font-family:var(--mono);}
+.ai-msgs{height:340px;overflow-y:auto;padding:14px;background:rgba(0,0,0,.12);border-radius:var(--r-sm);margin-bottom:14px;scrollbar-width:thin;scrollbar-color:var(--bd) transparent;}
+[data-theme="light"] .ai-msgs{background:rgba(0,0,0,.04);}
+.ai-msg{max-width:86%;padding:11px 15px;border-radius:18px;margin-bottom:10px;font-size:13px;line-height:1.65;animation:fadeUp .3s var(--ease-s);}
+.ai-msg.user{background:linear-gradient(135deg,var(--pri),var(--purp));color:#fff;margin-left:auto;border-bottom-right-radius:5px;}
+.ai-msg.bot{background:var(--glass-2);border:1px solid var(--bd);border-bottom-left-radius:5px;}
+.ai-msg.think{background:var(--glass);border:1px dashed var(--bd2);color:var(--tx2);font-style:italic;}
+.ai-irow{display:flex;gap:10px;}
+.ai-irow input{flex:1;}
+
+.ai-sug{padding:22px;}
+.ai-sug-title{font-size:12px;font-weight:600;color:var(--tx2);font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;}
+.sug-list{display:flex;flex-direction:column;gap:7px;}
+.sug{padding:10px 14px;text-align:left;background:var(--glass-2);border:1px solid var(--bd);border-radius:var(--r-sm);color:var(--tx);font-family:var(--font);font-size:12px;cursor:pointer;transition:all .25s;}
+.sug:hover{border-color:var(--pri);color:var(--pri);background:var(--pri-dim);}
+
+.ai-snap{margin-top:14px;padding:16px;border-radius:var(--r-sm);background:var(--glass-2);}
+.ai-snap-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--bd);font-size:12px;}
+.ai-snap-row:last-child{border-bottom:none;}
+.ai-snap-row span:last-child{font-family:var(--mono);font-weight:700;color:var(--pri);}
+
+/* ═══════════════ TIMER ═══════════════ */
+.timer-ring{width:170px;height:170px;border-radius:50%;margin:0 auto 8px;position:relative;display:flex;align-items:center;justify-content:center;}
+.timer-ring svg{position:absolute;inset:0;transform:rotate(-90deg);}
+.timer-ring circle{fill:none;stroke:var(--bd);stroke-width:5;}
+.timer-ring circle.prog{stroke:url(#timerGrad);stroke-linecap:round;transition:stroke-dashoffset 1s linear;}
+.timer-disp{font-size:46px;font-weight:300;font-family:var(--mono);color:var(--pri);text-shadow:0 0 40px var(--pri-glow);}
+.timer-task{font-size:11px;font-family:var(--mono);color:var(--tx2);text-align:center;margin-bottom:18px;padding:0 20px;}
+
+/* ═══════════════ DETAIL PANEL — iOS 26 ═══════════════ */
+.detail-ov{position:fixed;inset:0;z-index:5000;background:rgba(0,0,0,.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;opacity:0;transition:opacity .4s;}
+.detail-ov.open{display:flex;opacity:1;}
+.detail-panel{
+  width:min(760px,95vw);max-height:92vh;
+  overflow-y:auto;border-radius:36px;
+  border:1px solid rgba(255,255,255,.2);
+  position:relative;
+  animation:detailSpring .55s var(--ease-spring);
+  scrollbar-width:none;
+  /* Deep iOS 26 blue glass */
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(30,80,255,.22) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 80%, rgba(120,40,220,.18) 0%, transparent 55%),
+    linear-gradient(155deg, rgba(8,18,60,.9) 0%, rgba(12,24,80,.85) 50%, rgba(6,14,50,.92) 100%);
+  backdrop-filter:blur(60px) saturate(2.5);
+  -webkit-backdrop-filter:blur(60px) saturate(2.5);
+  box-shadow:
+    0 48px 140px rgba(0,0,100,.65),
+    0 0 0 1px rgba(255,255,255,.15),
+    inset 0 1px 0 rgba(255,255,255,.18),
+    inset 0 -1px 0 rgba(0,0,80,.3);
+}
+[data-theme="light"] .detail-panel{
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(150,200,255,.35) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 80%, rgba(180,140,255,.25) 0%, transparent 55%),
+    linear-gradient(155deg, rgba(200,220,255,.82) 0%, rgba(210,225,255,.78) 50%, rgba(205,222,255,.85) 100%);
+  box-shadow:
+    0 48px 140px rgba(0,40,180,.18),
+    0 0 0 1px rgba(255,255,255,.7),
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 -1px 0 rgba(0,40,180,.08);
+}
+.detail-panel::-webkit-scrollbar{display:none;}
+@keyframes detailSpring{from{opacity:0;transform:scale(.82) translateY(48px);}to{opacity:1;transform:scale(1) translateY(0);}}
+
+.dp-orbs{position:absolute;inset:0;border-radius:36px;overflow:hidden;pointer-events:none;}
+.dp-orb{position:absolute;border-radius:50%;filter:blur(70px);}
+.dp-o1{width:320px;height:320px;background:rgba(30,90,255,.2);top:-80px;right:-50px;animation:orbFloat 18s ease-in-out infinite alternate;}
+.dp-o2{width:240px;height:240px;background:rgba(140,40,220,.18);bottom:-50px;left:-30px;animation:orbFloat 22s ease-in-out infinite alternate-reverse;}
+.dp-o3{width:180px;height:180px;background:rgba(0,160,200,.14);top:45%;left:45%;animation:orbFloat 16s ease-in-out infinite alternate;}
+
+.dp-content{position:relative;z-index:1;padding:38px 38px 34px;}
+.dp-close{position:absolute;top:22px;right:22px;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;z-index:2;backdrop-filter:blur(10px);}
+[data-theme="light"] .dp-close{color:rgba(10,20,60,.7);background:rgba(255,255,255,.5);border-color:rgba(255,255,255,.7);}
+.dp-close:hover{background:rgba(255,91,141,.25);border-color:rgba(255,91,141,.4);color:#fff;}
+
+.dp-pill{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:var(--r-pill);font-size:10px;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:18px;border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(10px);}
+.dp-title{font-size:clamp(18px,3vw,26px);font-weight:700;color:#fff;line-height:1.3;margin-bottom:22px;}
+[data-theme="light"] .dp-title{color:#061030;}
+
+.dp-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:22px;}
+.dp-card{padding:16px 18px;border-radius:22px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(12px);}
+[data-theme="light"] .dp-card{background:rgba(255,255,255,.52);border-color:rgba(255,255,255,.75);}
+.dp-card-lbl{font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.45);margin-bottom:7px;}
+[data-theme="light"] .dp-card-lbl{color:rgba(6,16,48,.45);}
+.dp-card-val{font-size:15px;font-weight:600;color:#fff;line-height:1.3;}
+[data-theme="light"] .dp-card-val{color:#061030;}
+
+.dp-urg{margin-bottom:22px;}
+.dp-urg-lbl{font-size:11px;font-family:var(--mono);color:rgba(255,255,255,.45);margin-bottom:9px;display:flex;justify-content:space-between;}
+[data-theme="light"] .dp-urg-lbl{color:rgba(6,16,48,.45);}
+.dp-urg-track{height:7px;border-radius:var(--r-pill);background:rgba(255,255,255,.1);overflow:hidden;}
+[data-theme="light"] .dp-urg-track{background:rgba(0,0,0,.08);}
+.dp-urg-fill{height:100%;border-radius:var(--r-pill);transition:width 1.4s var(--ease-s);}
+
+.dp-notes{padding:18px 20px;border-radius:22px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);margin-bottom:22px;}
+[data-theme="light"] .dp-notes{background:rgba(255,255,255,.45);border-color:rgba(255,255,255,.7);}
+.dp-notes-lbl{font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.4);margin-bottom:10px;}
+[data-theme="light"] .dp-notes-lbl{color:rgba(6,16,48,.4);}
+.dp-notes-txt{font-size:14px;line-height:1.75;color:rgba(255,255,255,.82);white-space:pre-wrap;}
+[data-theme="light"] .dp-notes-txt{color:rgba(6,16,48,.82);}
+
+.dp-timer{padding:20px;border-radius:22px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);text-align:center;margin-bottom:22px;}
+[data-theme="light"] .dp-timer{background:rgba(255,255,255,.45);border-color:rgba(255,255,255,.7);}
+.dp-timer-lbl{font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.4);margin-bottom:12px;}
+[data-theme="light"] .dp-timer-lbl{color:rgba(6,16,48,.4);}
+.dp-timer-disp{font-size:38px;font-weight:300;font-family:var(--mono);color:#fff;margin-bottom:14px;}
+[data-theme="light"] .dp-timer-disp{color:#061030;}
+.dp-timer-btns{display:flex;gap:9px;justify-content:center;}
+.dp-tbtn{padding:8px 18px;border-radius:var(--r-pill);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#fff;transition:all .25s;backdrop-filter:blur(10px);}
+[data-theme="light"] .dp-tbtn{background:rgba(10,20,60,.08);border-color:rgba(10,20,60,.15);color:#061030;}
+.dp-tbtn:hover{background:rgba(90,171,255,.25);border-color:rgba(90,171,255,.45);}
+.dp-tbtn.start{background:rgba(90,171,255,.2);border-color:rgba(90,171,255,.38);}
+
+.dp-actions{display:flex;gap:10px;flex-wrap:wrap;}
+.dp-act{flex:1;padding:13px;border-radius:16px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#fff;transition:all .25s;min-width:110px;text-align:center;backdrop-filter:blur(10px);}
+[data-theme="light"] .dp-act{background:rgba(255,255,255,.5);border-color:rgba(255,255,255,.72);color:#061030;}
+.dp-act:hover{background:rgba(255,255,255,.15);transform:translateY(-2px);}
+.dp-act.done{background:rgba(61,255,192,.14);border-color:rgba(61,255,192,.28);color:var(--grn);}
+.dp-act.done:hover{background:rgba(61,255,192,.24);}
+.dp-act.del{background:rgba(255,91,141,.14);border-color:rgba(255,91,141,.28);color:#ff5b8d;}
+.dp-act.del:hover{background:rgba(255,91,141,.24);}
+
+/* ═══════════════ MODALS ═══════════════ */
+.modal{position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.65);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:none;align-items:center;justify-content:center;}
+.modal.open{display:flex;animation:fadeIn .3s;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.mbox{width:min(560px,93vw);padding:32px;border-radius:30px;animation:mboxIn .45s var(--ease-spring);}
+@keyframes mboxIn{from{opacity:0;transform:scale(.88) translateY(24px);}to{opacity:1;transform:scale(1) translateY(0);}}
+.mtitle{font-size:20px;font-weight:700;margin-bottom:24px;}
+.fg{margin-bottom:18px;}
+.flbl{display:block;font-size:11px;font-weight:600;font-family:var(--mono);text-transform:uppercase;letter-spacing:.09em;color:var(--tx2);margin-bottom:8px;}
+.finput{width:100%;padding:11px 15px;background:var(--glass-2);border:1px solid var(--bd);border-radius:var(--r-sm);color:var(--tx);font-family:var(--font);font-size:13px;transition:all .3s;}
+.finput:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px var(--pri-dim);}
+.finput::placeholder{color:var(--tx3);}
+select.finput{cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%235aabff' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;}
+select.finput option{background:#111827;color:#fff;}
+textarea.finput{resize:vertical;min-height:88px;}
+.macts{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;}
+
+/* ═══════════════ SETTINGS ═══════════════ */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.scard{padding:24px;}
+.scard h3{font-size:14px;font-weight:700;margin-bottom:16px;}
+.srow{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd);font-size:13px;}
+.srow:last-child{border-bottom:none;}
+.src-item{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--glass-2);border:1px solid var(--bd);border-radius:var(--r-sm);margin-bottom:10px;}
+.src-icon{font-size:20px;flex-shrink:0;}
+.src-info{flex:1;min-width:0;}
+.src-name{font-size:13px;font-weight:600;}
+.src-url{font-size:10px;font-family:var(--mono);color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* ═══════════════ TOAST ═══════════════ */
+.tcontainer{position:fixed;bottom:26px;right:26px;z-index:99990;display:flex;flex-direction:column;gap:10px;}
+.toast{padding:12px 18px;border-radius:var(--r-sm);font-size:13px;font-weight:500;background:var(--glass-strong);border:1px solid var(--bd);backdrop-filter:var(--blur);box-shadow:var(--sh);animation:toastSlide .4s var(--ease) both;max-width:300px;}
+.toast.ok{border-color:rgba(61,255,192,.35);color:var(--grn);}
+.toast.inf{border-color:rgba(90,171,255,.35);color:var(--pri);}
+.toast.warn{border-color:rgba(255,204,79,.35);color:var(--gld);}
+@keyframes toastSlide{from{opacity:0;transform:translateX(22px);}to{opacity:1;transform:translateX(0);}}
+
+/* ═══════════════ UTILITY ═══════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+@media(max-width:768px){.stats{grid-template-columns:1fr 1fr;}.wgrid{grid-template-columns:repeat(4,1fr);}.ai-wrap{grid-template-columns:1fr;}.sgrid{grid-template-columns:1fr;}.dp-grid{grid-template-columns:1fr;}.features-grid{grid-template-columns:1fr;}}
+@media(max-width:480px){.wgrid{display:none;}.dp-content{padding:24px 20px 20px;}.hdr-name{display:none;}.land-title{font-size:2rem;}}
+</style>
 </head>
 <body>
-    <div class="splash">
-        <div>
-            <div class="splash-logo">✓</div>
-            <div class="splash-text">Task Manager Pro</div>
-            <div class="splash-subtitle">Aryan Kandula</div>
-        </div>
+
+<!-- ── FAVICON ── -->
+<script>
+(function(){try{var s=64,c=document.createElement('canvas');c.width=s;c.height=s;var x=c.getContext('2d'),r=16;x.beginPath();x.moveTo(r,0);x.lineTo(s-r,0);x.quadraticCurveTo(s,0,s,r);x.lineTo(s,s-r);x.quadraticCurveTo(s,s,s-r,s);x.lineTo(r,s);x.quadraticCurveTo(0,s,0,s-r);x.lineTo(0,r);x.quadraticCurveTo(0,0,r,0);x.closePath();var g=x.createConicGradient?x.createConicGradient(.5,s/2,s/2):x.createLinearGradient(0,0,s,s);if(x.createConicGradient){g.addColorStop(0,'#ff5b8d');g.addColorStop(.2,'#b87fff');g.addColorStop(.4,'#5aabff');g.addColorStop(.6,'#3dffc0');g.addColorStop(.8,'#ffcc4f');g.addColorStop(1,'#ff5b8d');}else{g.addColorStop(0,'#ff5b8d');g.addColorStop(.5,'#5aabff');g.addColorStop(1,'#3dffc0');}x.fillStyle=g;x.fill();x.strokeStyle='rgba(255,255,255,0.9)';x.lineWidth=6;x.lineCap='round';x.lineJoin='round';x.beginPath();x.moveTo(14,32);x.lineTo(26,46);x.lineTo(50,18);x.stroke();var l=document.createElement('link');l.rel='icon';l.type='image/png';l.href=c.toDataURL();document.head.appendChild(l);}catch(e){}}());
+// Apply saved theme instantly
+(function(){var t=localStorage.getItem('tmp_theme');if(t)document.documentElement.setAttribute('data-theme',t);})();
+</script>
+
+<!-- ══════════════════════════════════════
+     BACKGROUND (shared by both pages)
+══════════════════════════════════════ -->
+<div class="bg-canvas">
+  <div class="orb o1"></div><div class="orb o2"></div>
+  <div class="orb o3"></div><div class="orb o4"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     LANDING PAGE
+══════════════════════════════════════ -->
+<div id="landing">
+  <div class="land-wrap">
+
+    <!-- Hero -->
+    <div class="land-hero">
+      <div class="land-logo">✓</div>
+      <h1 class="land-title">Task Manager<br/><span class="grad">Pro</span></h1>
+      <p class="land-sub">Your intelligent student productivity hub — built with AI, designed for focus, and crafted to keep your academic life effortlessly organized.</p>
+      <button class="land-cta" onclick="enterApp()">
+        <span>Get Started</span>
+        <span style="font-size:18px;">→</span>
+      </button>
+      <div class="land-note">Made by Aryan Kandula &nbsp;·&nbsp; All data stays on your device</div>
     </div>
 
-    <div class="app">
-        <header class="glass">
-            <div class="header-content">
-                <div class="logo-section">
-                    <div class="logo">✓</div>
-                    <div>
-                        <div class="header-title">Task Manager Pro</div>
-                        <div class="header-subtitle">Enhanced by Aryan Kandula</div>
-                    </div>
-                </div>
-                <div class="header-actions">
-                    <button onclick="openAddModal()">➕ Add Task</button>
-                    <button onclick="openImportModal()">📥 Import</button>
-                </div>
-            </div>
-        </header>
-
-        <div class="nav-tabs">
-            <button class="nav-tab active" onclick="switchTab('dashboard')">📊 Dashboard</button>
-            <button class="nav-tab" onclick="switchTab('tasks')">📋 All Tasks</button>
-            <button class="nav-tab" onclick="switchTab('ai')">🤖 AI Assistant</button>
-            <button class="nav-tab" onclick="switchTab('settings')">⚙️ Settings</button>
+    <!-- Features -->
+    <div class="land-features">
+      <div class="features-title">Everything You Need</div>
+      <div class="features-grid">
+        <div class="g feat-card" style="animation-delay:.05s;">
+          <span class="feat-icon">🤖</span>
+          <div class="feat-name">AI Study Assistant</div>
+          <div class="feat-desc">Powered by Claude AI — asks about your schedule, tells you what to focus on, and gives real study advice based on your actual deadlines.</div>
         </div>
-
-        <div class="container">
-            <div id="dashboard" class="tab active">
-                <div class="stats" id="stats"></div>
-                <div class="dashboard-section">
-                    <div class="section-title"><span class="icon">🔥</span> Upcoming Tasks</div>
-                    <div class="cards-row" id="upcomingTasks"></div>
-                </div>
-                <div class="dashboard-section">
-                    <button class="toggle-section-btn" onclick="togglePastDue()">
-                        <span id="pastDueToggleText">Show Past Due Tasks</span>
-                        <span class="count" id="pastDueCount">0</span>
-                    </button>
-                    <div class="hidden-section" id="pastDueSection">
-                        <div class="section-title"><span class="icon">⚠️</span> Past Due Tasks</div>
-                        <div class="cards-row" id="pastDueTasks"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="tasks" class="tab">
-                <div class="cards-row" id="allTasks"></div>
-            </div>
-
-            <div id="ai" class="tab">
-                <div class="ai-assistant glass">
-                    <div class="ai-title">🤖 AI Task Assistant</div>
-                    <div class="ai-messages" id="aiMessages">
-                        <div class="ai-message assistant">
-                            Hi! Ask me about your tasks. I can help you with:
-                            <br>• Tasks due on specific dates (e.g., "tasks until Feb 10")
-                            <br>• High priority tasks
-                            <br>• Overdue tasks
-                            <br>• Today's or tomorrow's tasks
-                            <br>• Completion rate
-                            <br>• Tasks in date ranges
-                        </div>
-                    </div>
-                    <div class="ai-input-group">
-                        <input type="text" id="aiInput" placeholder="Ask about your tasks..." onkeypress="handleAIInput(event)">
-                        <button onclick="sendAIMessage()">Send</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="settings" class="tab">
-                <div class="glass" style="padding: 24px;">
-                    <h2 style="margin-bottom: 20px;">⚙️ Settings</h2>
-                    <button onclick="exportData('json')" style="margin-right: 10px;">📤 Export JSON</button>
-                    <button onclick="exportData('csv')" style="margin-right: 10px;">📤 Export CSV</button>
-                    <button onclick="clearAll()" style="color: var(--accent);">🗑️ Clear All Tasks</button>
-                </div>
-            </div>
+        <div class="g feat-card" style="animation-delay:.1s;">
+          <span class="feat-icon">🔄</span>
+          <div class="feat-name">Auto-Refresh Sources</div>
+          <div class="feat-desc">Paste your Canvas or Google Calendar URL once. Tasks sync automatically every 5 minutes — new assignments appear without you lifting a finger.</div>
         </div>
+        <div class="g feat-card" style="animation-delay:.15s;">
+          <span class="feat-icon">📋</span>
+          <div class="feat-name">Task Detail View</div>
+          <div class="feat-desc">Click any task to open a full immersive detail panel with urgency scoring, countdown timer, notes, and a built-in focus timer.</div>
+        </div>
+        <div class="g feat-card" style="animation-delay:.2s;">
+          <span class="feat-icon">📅</span>
+          <div class="feat-name">Week Calendar View</div>
+          <div class="feat-desc">See your entire week at a glance with tasks plotted on each day. Spot busy days before they sneak up on you.</div>
+        </div>
+        <div class="g feat-card" style="animation-delay:.25s;">
+          <span class="feat-icon">⏱️</span>
+          <div class="feat-name">Pomodoro Study Timer</div>
+          <div class="feat-desc">Select a task and start a 25, 50, or 5-minute focus session with an animated ring timer. Study smarter, not longer.</div>
+        </div>
+        <div class="g feat-card" style="animation-delay:.3s;">
+          <span class="feat-icon">🌗</span>
+          <div class="feat-name">Dark &amp; Light Mode</div>
+          <div class="feat-desc">Full iOS 26-style liquid glassmorphic design in both dark and light themes. Switch instantly with the toggle in the top bar.</div>
+        </div>
+      </div>
     </div>
 
-    <div id="addModal" class="modal">
-        <div class="modal-content glass">
-            <div class="modal-title">➕ Add New Task</div>
-            <div class="form-group">
-                <label class="form-label">Task Description</label>
-                <input type="text" id="taskText" placeholder="Enter task description...">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Due Date</label>
-                <input type="date" id="taskDate">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Priority</label>
-                <select id="taskPriority">
-                    <option value="low">Low</option>
-                    <option value="medium" selected>Medium</option>
-                    <option value="high">High</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Notes (Optional)</label>
-                <textarea id="taskNotes" placeholder="Add additional notes..."></textarea>
-            </div>
-            <div class="modal-actions">
-                <button onclick="closeAddModal()">Cancel</button>
-                <button onclick="addTask()" style="background: var(--primary); color: #000;">Add Task</button>
-            </div>
+    <!-- How to use -->
+    <div class="land-steps">
+      <div class="steps-title">How to Use It</div>
+      <div class="steps-list">
+        <div class="g step" style="animation-delay:.05s;">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Add Tasks Manually</div>
+            <div class="step-desc">Hit <strong>+ Add Task</strong> in the header. Fill in the description, due date, priority, and which course it's for. Tasks are sorted automatically by urgency.</div>
+          </div>
         </div>
+        <div class="g step" style="animation-delay:.1s;">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Import from Canvas or Google Calendar</div>
+            <div class="step-desc">Click <strong>Import</strong>, paste your Canvas Calendar Feed URL or Google iCal link. Tasks will be imported and the app will auto-refresh every 5 minutes going forward.</div>
+          </div>
+        </div>
+        <div class="g step" style="animation-delay:.15s;">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Click Any Task to Open It</div>
+            <div class="step-desc">Tap a task card to open the full detail panel. You'll see the urgency score, time remaining, your notes, and a focus timer — all in a beautiful deep-glass view.</div>
+          </div>
+        </div>
+        <div class="g step" style="animation-delay:.2s;">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Ask the AI Assistant</div>
+            <div class="step-desc">Go to the <strong>AI Assistant</strong> tab and ask anything — <em>"what should I focus on today?"</em>, <em>"am I falling behind?"</em>, <em>"what's due this week?"</em> The AI reads all your tasks and responds intelligently.</div>
+          </div>
+        </div>
+        <div class="g step" style="animation-delay:.25s;">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <div class="step-title">Use the Study Timer</div>
+            <div class="step-desc">Go to <strong>Study Timer</strong>, pick a task from the list, and start a Pomodoro session. The animated ring tracks your time and notifies you when the session ends.</div>
+          </div>
+        </div>
+        <div class="g step" style="animation-delay:.3s;">
+          <div class="step-num">6</div>
+          <div class="step-body">
+            <div class="step-title">Check Your Week View</div>
+            <div class="step-desc">Switch to <strong>Week View</strong> to see tasks plotted across each day of the current week. Click any task chip to open its detail panel instantly.</div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div id="importModal" class="modal">
-        <div class="modal-content glass">
-            <div class="modal-title">📥 Import Tasks</div>
-            <div class="form-group">
-                <label class="form-label">Google Calendar URL</label>
-                <input type="text" id="googleUrl" placeholder="Paste Google Calendar iCal URL...">
-                <button onclick="importGoogle()" style="margin-top: 10px;">Import from Google</button>
-            </div>
-            <div class="form-group" style="margin-top: 20px;">
-                <label class="form-label">Canvas Calendar URL</label>
-                <input type="text" id="canvasUrl" placeholder="Paste Canvas Calendar Feed URL...">
-                <button onclick="importCanvas()" style="margin-top: 10px;">Import from Canvas</button>
-            </div>
-            <div class="form-group" style="margin-top: 20px;">
-                <label class="form-label">Upload ICS File</label>
-                <input type="file" id="icsFile" accept=".ics" style="padding: 10px;">
-                <button onclick="importICS()" style="margin-top: 10px;">Import ICS File</button>
-            </div>
-            <div class="modal-actions">
-                <button onclick="closeImportModal()">Close</button>
-            </div>
-        </div>
+    <!-- Bottom CTA -->
+    <div class="land-bottom">
+      <p>Ready to get on top of your deadlines?</p>
+      <button class="land-cta" onclick="enterApp()">
+        <span>Open Dashboard</span>
+        <span style="font-size:18px;">→</span>
+      </button>
+      <div class="land-note" style="margin-top:16px;">Your tasks are saved locally — nothing leaves your browser.</div>
     </div>
 
-    <script>
-        let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-        let currentTab = 'dashboard';
-        let pastDueVisible = false;
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+  </div>
+</div>
 
-        // Function to check if a task already exists
-        function isDuplicateTask(newTask) {
-            return tasks.some(task => 
-                task.text.toLowerCase().trim() === newTask.text.toLowerCase().trim() &&
-                task.date === newTask.date &&
-                task.source === newTask.source
-            );
-        }
+<!-- ══════════════════════════════════════
+     APP
+══════════════════════════════════════ -->
+<div id="app">
+<div class="app-page">
 
-        function switchTab(tab) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-            document.getElementById(tab).classList.add('active');
-            event.target.classList.add('active');
-            currentTab = tab;
-            render();
-        }
+  <!-- HEADER -->
+  <header class="g hdr">
+    <div class="hdr-left">
+      <div class="hdr-logo">✓</div>
+      <div><div class="hdr-name">Task Manager Pro</div><div class="hdr-sub">Aryan Kandula</div></div>
+    </div>
+    <div class="hdr-right">
+      <div class="rpill" id="rpill" onclick="manualRefresh()" title="Auto-refreshes every 5 min">
+        <div class="rdot"></div><span id="rlbl">Live</span>
+        <div class="rbadge" id="rbadge">0</div>
+      </div>
+      <div class="ttoggle" onclick="toggleTheme()" title="Toggle theme"></div>
+      <button class="btn" onclick="goBack()" title="Back to guide" style="font-size:11px;padding:7px 14px;">← Guide</button>
+      <button class="btn pri" onclick="openAdd()">✚ Add Task</button>
+      <button class="btn" onclick="openImport()">⬇ Import</button>
+    </div>
+  </header>
 
-        function addTask() {
-            const text = document.getElementById('taskText').value.trim();
-            const date = document.getElementById('taskDate').value;
-            const priority = document.getElementById('taskPriority').value;
-            const notes = document.getElementById('taskNotes').value.trim();
-            
-            if (!text || !date) return alert('Please fill in task and date');
-            
-            // Allow duplicate tasks - removed duplicate check
-            tasks.push({
-                id: Date.now() + Math.random(),
-                text,
-                date,
-                priority,
-                notes,
-                done: false,
-                source: 'manual'
-            });
-            
-            save();
-            closeAddModal();
-            render();
-        }
+  <!-- NAV -->
+  <nav class="nav">
+    <button class="nbtn on" onclick="sw('dashboard',this)">📊 Dashboard</button>
+    <button class="nbtn" onclick="sw('tasks',this)">📋 All Tasks</button>
+    <button class="nbtn" onclick="sw('week',this)">📅 Week View</button>
+    <button class="nbtn" onclick="sw('ai',this)">🤖 AI Assistant</button>
+    <button class="nbtn" onclick="sw('timer',this)">⏱ Study Timer</button>
+    <button class="nbtn" onclick="sw('settings',this)">⚙ Settings</button>
+  </nav>
 
-        function toggleTask(id) {
-            const task = tasks.find(t => t.id === id);
-            if (task) {
-                task.done = !task.done;
-                save();
-                render();
-            }
-        }
+  <!-- DASHBOARD -->
+  <div id="tab-dashboard" class="tab on">
+    <div class="stats" id="statsGrid"></div>
+    <div class="sh">🔥 Upcoming</div>
+    <div class="tgrid" id="upcomingGrid"></div>
+    <div style="margin-top:22px;">
+      <button class="pd-toggle" onclick="togglePD()"><span id="pdTxt">Show Past Due</span><span class="pd-cnt" id="pdCnt">0</span></button>
+      <div class="pd-hidden" id="pdSection"><div class="sh">⚠️ Past Due</div><div class="tgrid" id="pastdueGrid"></div></div>
+    </div>
+  </div>
 
-        function deleteTask(id) {
-            if (confirm('Delete this task?')) {
-                tasks = tasks.filter(t => t.id !== id);
-                save();
-                render();
-            }
-        }
+  <!-- ALL TASKS -->
+  <div id="tab-tasks" class="tab">
+    <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+      <select class="finput" style="width:auto;flex-shrink:0;" onchange="renderAll()" id="fPri"><option value="">All Priorities</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select>
+      <select class="finput" style="width:auto;flex-shrink:0;" onchange="renderAll()" id="fStat"><option value="">All Status</option><option value="pending">Pending</option><option value="done">Done</option></select>
+      <input class="finput" style="flex:1;min-width:160px;" placeholder="🔍 Search tasks..." oninput="renderAll()" id="fSearch"/>
+    </div>
+    <div class="tgrid" id="allGrid"></div>
+  </div>
 
-        function animateCounter(element, start, end, duration) {
-            const range = end - start;
-            const increment = range / (duration / 16);
-            let current = start;
-            
-            const timer = setInterval(() => {
-                current += increment;
-                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
-                    current = end;
-                    clearInterval(timer);
-                }
-                element.textContent = Math.round(current);
-            }, 16);
-        }
+  <!-- WEEK VIEW -->
+  <div id="tab-week" class="tab">
+    <div class="wgrid" id="weekGrid"></div>
+    <div class="sh" style="margin-top:8px;">This Week</div>
+    <div class="tgrid" id="weekTaskGrid"></div>
+  </div>
 
-        function togglePastDue() {
-            pastDueVisible = !pastDueVisible;
-            const section = document.getElementById('pastDueSection');
-            const toggleText = document.getElementById('pastDueToggleText');
-            
-            if (pastDueVisible) {
-                section.classList.add('show');
-                toggleText.textContent = 'Hide Past Due Tasks';
-            } else {
-                section.classList.remove('show');
-                toggleText.textContent = 'Show Past Due Tasks';
-            }
-        }
+  <!-- AI -->
+  <div id="tab-ai" class="tab">
+    <div class="ai-wrap">
+      <div class="g ai-chat">
+        <div class="ai-hdr"><div class="ai-glow"></div><div><div class="ai-title">AI Assistant</div><div class="ai-subtitle">Powered by Claude · knows your full schedule</div></div></div>
+        <div class="ai-msgs" id="aiMsgs"><div class="ai-msg bot">Hey! I'm your AI study assistant. I have full access to your tasks and can help you prioritize, plan, and stay on track. Ask anything — like <em>"what should I focus on today?"</em></div></div>
+        <div class="ai-irow"><input class="finput" id="aiIn" placeholder="Ask anything about your tasks..." onkeydown="if(event.key==='Enter')sendAI()"/><button class="btn pri" onclick="sendAI()">Send</button></div>
+      </div>
+      <div>
+        <div class="g ai-sug"><div class="ai-sug-title">Quick Questions</div><div class="sug-list" id="sugList"></div></div>
+        <div class="g ai-snap" id="aiSnap"></div>
+      </div>
+    </div>
+  </div>
 
-        function render() {
-            const pending = tasks.filter(t => !t.done);
-            const done = tasks.filter(t => t.done);
-            const overdue = pending.filter(t => new Date(t.date) < today);
-            const upcoming = pending.filter(t => new Date(t.date) >= today);
-            
-            // Update stats with animation
-            const statsContainer = document.getElementById('stats');
-            const prevStats = {
-                total: parseInt(statsContainer.querySelector('.stat:nth-child(1) .stat-value')?.textContent || '0'),
-                pending: parseInt(statsContainer.querySelector('.stat:nth-child(2) .stat-value')?.textContent || '0'),
-                done: parseInt(statsContainer.querySelector('.stat:nth-child(3) .stat-value')?.textContent || '0'),
-                overdue: parseInt(statsContainer.querySelector('.stat:nth-child(4) .stat-value')?.textContent || '0')
-            };
-            
-            statsContainer.innerHTML = `
-                <div class="stat glass">
-                    <div class="stat-label">Total Tasks</div>
-                    <div class="stat-value" id="stat-total">${prevStats.total}</div>
-                </div>
-                <div class="stat glass">
-                    <div class="stat-label">Pending</div>
-                    <div class="stat-value" id="stat-pending">${prevStats.pending}</div>
-                </div>
-                <div class="stat glass">
-                    <div class="stat-label">Completed</div>
-                    <div class="stat-value" id="stat-done">${prevStats.done}</div>
-                </div>
-                <div class="stat glass">
-                    <div class="stat-label">Overdue</div>
-                    <div class="stat-value" id="stat-overdue" style="color: var(--accent);">${prevStats.overdue}</div>
-                </div>
-            `;
-            
-            // Animate the counters
-            setTimeout(() => {
-                animateCounter(document.getElementById('stat-total'), prevStats.total, tasks.length, 500);
-                animateCounter(document.getElementById('stat-pending'), prevStats.pending, pending.length, 500);
-                animateCounter(document.getElementById('stat-done'), prevStats.done, done.length, 500);
-                animateCounter(document.getElementById('stat-overdue'), prevStats.overdue, overdue.length, 500);
-            }, 50);
-            
-            document.getElementById('pastDueCount').textContent = overdue.length;
-            
-            // Render upcoming tasks
-            const upcomingSorted = upcoming.sort((a, b) => new Date(a.date) - new Date(b.date));
-            document.getElementById('upcomingTasks').innerHTML = upcomingSorted.length 
-                ? upcomingSorted.map(renderTaskCard).join('') 
-                : '<p style="color: var(--text-dim);">No upcoming tasks</p>';
-            
-            // Render past due tasks
-            const overdueSorted = overdue.sort((a, b) => new Date(a.date) - new Date(b.date));
-            document.getElementById('pastDueTasks').innerHTML = overdueSorted.length 
-                ? overdueSorted.map(renderTaskCard).join('') 
-                : '<p style="color: var(--text-dim);">No past due tasks</p>';
-            
-            // Render all tasks
-            const allSorted = [...tasks].sort((a, b) => {
-                if (a.done !== b.done) return a.done ? 1 : -1;
-                return new Date(a.date) - new Date(b.date);
-            });
-            document.getElementById('allTasks').innerHTML = allSorted.length 
-                ? allSorted.map(renderTaskCard).join('') 
-                : '<p style="color: var(--text-dim);">No tasks yet</p>';
-        }
+  <!-- TIMER -->
+  <div id="tab-timer" class="tab">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="g" style="padding:28px;text-align:center;">
+        <div class="sh" style="justify-content:center;margin-top:0;">⏱ Pomodoro Timer</div>
+        <div class="timer-ring">
+          <svg width="170" height="170" viewBox="0 0 170 170">
+            <defs><linearGradient id="timerGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5aabff"/><stop offset="100%" stop-color="#b87fff"/></linearGradient></defs>
+            <circle cx="85" cy="85" r="76"/>
+            <circle cx="85" cy="85" r="76" class="prog" id="timerCircle" stroke-dasharray="477.5" stroke-dashoffset="0"/>
+          </svg>
+          <div class="timer-disp" id="timerDisp">25:00</div>
+        </div>
+        <div class="timer-task" id="timerTask">No task selected</div>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+          <button class="btn pri" onclick="startTimer()">▶ Start</button>
+          <button class="btn" onclick="pauseTimer()">⏸ Pause</button>
+          <button class="btn" onclick="resetTimer()">↺ Reset</button>
+        </div>
+        <div style="margin-top:16px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+          <button class="btn" onclick="setTimer(25)" style="font-size:11px;padding:6px 12px;">25 min</button>
+          <button class="btn" onclick="setTimer(50)" style="font-size:11px;padding:6px 12px;">50 min</button>
+          <button class="btn" onclick="setTimer(5)" style="font-size:11px;padding:6px 12px;">5 min break</button>
+        </div>
+      </div>
+      <div class="g" style="padding:24px;">
+        <div class="sh" style="margin-top:0;">Select Task to Focus</div>
+        <div id="timerList" style="display:flex;flex-direction:column;gap:8px;max-height:420px;overflow-y:auto;"></div>
+      </div>
+    </div>
+  </div>
 
-        function renderTaskCard(task) {
-            const taskDate = new Date(task.date);
-            const isOverdue = !task.done && taskDate < today;
-            const dateStr = taskDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-            
-            return `
-                <div class="task-card glass ${task.done ? 'done' : ''}">
-                    <div class="task-checkbox-container">
-                        <input type="checkbox" class="task-checkbox" 
-                               ${task.done ? 'checked' : ''} 
-                               onchange="toggleTask(${task.id})">
-                    </div>
-                    <div class="task-content">
-                        <div class="task-text">${esc(task.text)}</div>
-                        <div class="task-meta">
-                            <div class="task-date ${isOverdue ? 'style="color: var(--accent);"' : ''}">
-                                📅 ${dateStr}
-                            </div>
-                            <div class="priority-badge priority-${task.priority}">
-                                ${task.priority}
-                            </div>
-                        </div>
-                        ${task.notes ? `<div class="task-notes">${esc(task.notes)}</div>` : ''}
-                        <div class="task-actions">
-                            <button class="task-btn delete" onclick="deleteTask(${task.id})">🗑️ Delete</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
+  <!-- SETTINGS -->
+  <div id="tab-settings" class="tab">
+    <div class="sgrid">
+      <div class="g scard"><h3>🔄 Auto-Refresh Sources</h3><div id="srcList"></div><div style="margin-top:14px;"><button class="btn pri" style="width:100%;" onclick="openImport()">✚ Add Source</button></div></div>
+      <div class="g scard"><h3>📊 Data Management</h3>
+        <div class="srow"><span>Total Tasks</span><span id="sTot" style="font-family:var(--mono);color:var(--pri);">0</span></div>
+        <div class="srow"><span>Completed</span><span id="sDone" style="font-family:var(--mono);color:var(--grn);">0</span></div>
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;">
+          <button class="btn" onclick="exportData('json')" style="justify-content:center;">⬆ Export JSON</button>
+          <button class="btn" onclick="exportData('csv')" style="justify-content:center;">⬆ Export CSV</button>
+          <button class="btn acc" onclick="clearAll()" style="justify-content:center;">🗑 Clear All Tasks</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        async function importGoogle() {
-            let url = document.getElementById('googleUrl').value;
-            if (!url) return alert('Paste a URL');
-            try {
-                const res = await fetch(url);
-                const text = await res.text();
-                parseICS(text, 'google');
-            } catch (e) {
-                alert('Error: ' + e.message);
-            }
-        }
+</div>
+</div>
 
-        async function importCanvas() {
-            let url = document.getElementById('canvasUrl').value;
-            if (!url) return alert('Paste Canvas Calendar Feed URL');
-            
-            try {
-                const res = await fetch(url);
-                const text = await res.text();
-                parseICS(text, 'canvas');
-            } catch (e) {
-                try {
-                    const corsUrl = 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(url);
-                    const res = await fetch(corsUrl);
-                    const text = await res.text();
-                    if (text && text.includes('VEVENT')) {
-                        parseICS(text, 'canvas');
-                    } else {
-                        alert('Make sure the Canvas Calendar Feed URL is correct');
-                    }
-                } catch (e2) {
-                    alert('Error accessing Canvas. Make sure the URL is correct: ' + e.message);
-                }
-            }
-        }
+<!-- ── ADD MODAL ── -->
+<div class="modal" id="addModal">
+  <div class="g mbox">
+    <div class="mtitle">✚ New Task</div>
+    <div class="fg"><label class="flbl">Description</label><input class="finput" id="tText" placeholder="What needs to be done?"/></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div class="fg"><label class="flbl">Due Date</label><input class="finput" type="date" id="tDate"/></div>
+      <div class="fg"><label class="flbl">Priority</label><select class="finput" id="tPri"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select></div>
+    </div>
+    <div class="fg"><label class="flbl">Course / Category</label><input class="finput" id="tCourse" placeholder="e.g. CSC289, Math, Personal..."/></div>
+    <div class="fg"><label class="flbl">Notes</label><textarea class="finput" id="tNotes" placeholder="Any extra details..."></textarea></div>
+    <div class="macts"><button class="btn" onclick="closeM('addModal')">Cancel</button><button class="btn pri" onclick="addTask()">Add Task</button></div>
+  </div>
+</div>
 
-        function importICS() {
-            const file = document.getElementById('icsFile').files[0];
-            if (!file) return alert('Select a file');
-            const reader = new FileReader();
-            reader.onload = e => parseICS(e.target.result, 'ics-file');
-            reader.readAsText(file);
-        }
+<!-- ── IMPORT MODAL ── -->
+<div class="modal" id="importModal">
+  <div class="g mbox">
+    <div class="mtitle">⬇ Import &amp; Auto-Refresh</div>
+    <p style="font-size:12px;color:var(--tx2);margin-bottom:20px;font-family:var(--mono);">Paste a URL once — tasks auto-refresh every 5 minutes from that point on.</p>
+    <div class="fg"><label class="flbl">🔗 Google Calendar iCal URL</label><input class="finput" id="gUrl" placeholder="https://calendar.google.com/...ical..."/><button class="btn" onclick="importUrl('google')" style="margin-top:8px;width:100%;justify-content:center;">Import &amp; Watch</button></div>
+    <div class="fg"><label class="flbl">🎓 Canvas Calendar Feed URL</label><input class="finput" id="cUrl" placeholder="https://canvas.instructure.com/feeds/..."/><button class="btn" onclick="importUrl('canvas')" style="margin-top:8px;width:100%;justify-content:center;">Import &amp; Watch</button></div>
+    <div class="fg"><label class="flbl">📄 Upload .ics File</label><input class="finput" type="file" id="icsFile" accept=".ics"/><button class="btn" onclick="importICS()" style="margin-top:8px;width:100%;justify-content:center;">Import File</button></div>
+    <div class="macts"><button class="btn" onclick="closeM('importModal')">Done</button></div>
+  </div>
+</div>
 
-        function parseICS(text, source) {
-            const lines = text.split('\n');
-            let count = 0, skipped = 0, event = null;
-            for (let line of lines) {
-                line = line.trim();
-                if (line === 'BEGIN:VEVENT') {
-                    event = { id: Date.now() + Math.random(), text: '', date: '', notes: '', done: false, source, priority: 'medium' };
-                } else if (line === 'END:VEVENT' && event && event.text && event.date) {
-                    let d = event.date;
-                    if (d.includes('T')) d = d.substring(0, 8);
-                    event.date = `${d.substring(0, 4)}-${d.substring(4, 6)}-${d.substring(6, 8)}`;
-                    
-                    // Check for duplicates before adding
-                    if (!isDuplicateTask(event)) {
-                        tasks.push(event);
-                        count++;
-                    } else {
-                        skipped++;
-                    }
-                    event = null;
-                } else if (event) {
-                    if (line.startsWith('SUMMARY:')) event.text = line.substring(8);
-                    else if (line.startsWith('DTSTART')) event.date = line.split(':').pop();
-                    else if (line.startsWith('DESCRIPTION:')) event.notes = line.substring(12);
-                }
-            }
-            if (count > 0 || skipped > 0) {
-                save();
-                closeImportModal();
-                render();
-                let message = `✅ Imported ${count} task(s)`;
-                if (skipped > 0) {
-                    message += `\n⚠️ Skipped ${skipped} duplicate(s)`;
-                }
-                alert(message);
-            } else {
-                alert('❌ No events found');
-            }
-        }
+<!-- ── DETAIL PANEL ── -->
+<div class="detail-ov" id="detailOv" onclick="closeDetailEv(event)">
+  <div class="detail-panel" id="detailPanel">
+    <div class="dp-orbs"><div class="dp-orb dp-o1"></div><div class="dp-orb dp-o2"></div><div class="dp-orb dp-o3"></div></div>
+    <div class="dp-content"><button class="dp-close" onclick="closeDetail()">✕</button><div id="dpInner"></div></div>
+  </div>
+</div>
 
-        function handleAIInput(e) {
-            if (e.key === 'Enter') sendAIMessage();
-        }
+<!-- ── TOASTS ── -->
+<div class="tcontainer" id="tcontainer"></div>
 
-        function sendAIMessage() {
-            const input = document.getElementById('aiInput');
-            const query = input.value.toLowerCase().trim();
-            if (!query) return;
-            
-            const msgEl = document.getElementById('aiMessages');
-            const userMsg = document.createElement('div');
-            userMsg.className = 'ai-message user';
-            userMsg.textContent = input.value;
-            msgEl.appendChild(userMsg);
-            msgEl.scrollTop = msgEl.scrollHeight;
-            
-            let response = '';
-            
-            // Enhanced AI with date parsing
-            if (query.includes('until') || query.includes('before') || query.includes('by')) {
-                response = handleDateRangeQuery(query);
-            } else if (query.includes('on') && (query.includes('jan') || query.includes('feb') || query.includes('mar') || 
-                      query.includes('apr') || query.includes('may') || query.includes('jun') || query.includes('jul') || 
-                      query.includes('aug') || query.includes('sep') || query.includes('oct') || query.includes('nov') || 
-                      query.includes('dec') || /\d/.test(query))) {
-                response = handleSpecificDateQuery(query);
-            } else if (query.includes('between')) {
-                response = handleBetweenQuery(query);
-            } else if (query.includes('high') || query.includes('priority')) {
-                const high = tasks.filter(t => t.priority === 'high' && !t.done);
-                response = high.length ? `${high.length} high priority task(s): ${high.map(t => t.text).join(', ')}` : 'No high priority tasks!';
-            } else if (query.includes('overdue') || query.includes('past due')) {
-                const overdue = tasks.filter(t => !t.done && new Date(t.date) < today);
-                response = overdue.length ? `${overdue.length} overdue: ${overdue.map(t => `${t.text} (${new Date(t.date).toLocaleDateString()})`).join(', ')}` : 'No overdue tasks! 🎉';
-            } else if (query.includes('completion') || query.includes('rate')) {
-                const total = tasks.length;
-                const done = tasks.filter(t => t.done).length;
-                const rate = total ? Math.round(done/total*100) : 0;
-                response = `${rate}% done (${done}/${total} tasks)`;
-            } else if (query.includes('tomorrow')) {
-                const tomorrow = new Date(today);
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                const tmr = tasks.filter(t => !t.done && new Date(t.date).toDateString() === tomorrow.toDateString());
-                response = tmr.length ? `${tmr.length} task(s) tomorrow: ${tmr.map(t => t.text).join(', ')}` : 'No tasks tomorrow';
-            } else if (query.includes('today')) {
-                const todayTasks = tasks.filter(t => !t.done && new Date(t.date).toDateString() === today.toDateString());
-                response = todayTasks.length ? `Today: ${todayTasks.map(t => t.text).join(', ')}` : 'No tasks for today';
-            } else if (query.includes('pending') || query.includes('remaining')) {
-                const pending = tasks.filter(t => !t.done);
-                response = pending.length ? `${pending.length} pending task(s)` : 'All caught up!';
-            } else if (query.includes('next week')) {
-                response = handleNextWeekQuery();
-            } else if (query.includes('this week')) {
-                response = handleThisWeekQuery();
-            } else {
-                response = 'Ask about: tasks on specific dates (e.g., "tasks until Feb 10"), overdue, upcoming, high priority, completion rate, today/tomorrow, this week, or next week!';
-            }
-            
-            const assistantMsg = document.createElement('div');
-            assistantMsg.className = 'ai-message assistant';
-            assistantMsg.textContent = response;
-            msgEl.appendChild(assistantMsg);
-            msgEl.scrollTop = msgEl.scrollHeight;
-            input.value = '';
-        }
+<script>
+/* ════════════════ STATE ════════════════ */
+var tasks=JSON.parse(localStorage.getItem('tmp_tasks')||'[]');
+var sources=JSON.parse(localStorage.getItem('tmp_sources')||'[]');
+var curTab='dashboard';
+var pdVisible=false;
+var timerSec=25*60, timerTotal=25*60, timerRunning=false, timerIv=null, timerTid=null;
+var dtSec=25*60, dtRunning=false, dtIv=null;
+var newFromRefresh=0;
+var TODAY=new Date(); TODAY.setHours(0,0,0,0);
 
-        function parseDate(dateStr) {
-            // Parse various date formats
-            const months = {
-                'jan': 0, 'january': 0,
-                'feb': 1, 'february': 1,
-                'mar': 2, 'march': 2,
-                'apr': 3, 'april': 3,
-                'may': 4,
-                'jun': 5, 'june': 5,
-                'jul': 6, 'july': 6,
-                'aug': 7, 'august': 7,
-                'sep': 8, 'september': 8,
-                'oct': 9, 'october': 9,
-                'nov': 10, 'november': 10,
-                'dec': 11, 'december': 11
-            };
-            
-            // Match patterns like "Feb 10", "February 10", "10 Feb", etc.
-            const patterns = [
-                /(\w+)\s+(\d{1,2})/i,  // "Feb 10"
-                /(\d{1,2})\s+(\w+)/i,  // "10 Feb"
-            ];
-            
-            for (let pattern of patterns) {
-                const match = dateStr.match(pattern);
-                if (match) {
-                    let month, day;
-                    if (isNaN(match[1])) {
-                        // Month name first
-                        month = months[match[1].toLowerCase()];
-                        day = parseInt(match[2]);
-                    } else {
-                        // Day first
-                        day = parseInt(match[1]);
-                        month = months[match[2].toLowerCase()];
-                    }
-                    
-                    if (month !== undefined && day) {
-                        const year = new Date().getFullYear();
-                        return new Date(year, month, day);
-                    }
-                }
-            }
-            
-            return null;
-        }
+/* ════════════════ LANDING ════════════════ */
+function enterApp(){
+  var landing=document.getElementById('landing');
+  landing.style.transition='opacity .6s, transform .6s';
+  landing.style.opacity='0';
+  landing.style.transform='scale(.97)';
+  setTimeout(function(){
+    landing.style.display='none';
+    var app=document.getElementById('app');
+    app.style.display='block';
+    app.style.opacity='0';
+    app.style.transition='opacity .5s';
+    setTimeout(function(){app.style.opacity='1';},20);
+    renderDash();
+    renderAISugs();
+  },500);
+}
 
-        function handleDateRangeQuery(query) {
-            const date = parseDate(query);
-            if (!date) return 'Please specify a valid date (e.g., "Feb 10", "February 10")';
-            
-            const relevantTasks = tasks.filter(t => !t.done && new Date(t.date) <= date);
-            
-            if (relevantTasks.length === 0) {
-                return `No tasks due until ${date.toLocaleDateString()}`;
-            }
-            
-            const taskList = relevantTasks
-                .sort((a, b) => new Date(a.date) - new Date(b.date))
-                .map(t => `${t.text} (${new Date(t.date).toLocaleDateString()})`)
-                .join(', ');
-            
-            return `${relevantTasks.length} task(s) until ${date.toLocaleDateString()}: ${taskList}`;
-        }
+function goBack(){
+  var app=document.getElementById('app');
+  app.style.transition='opacity .4s';
+  app.style.opacity='0';
+  setTimeout(function(){
+    app.style.display='none';
+    var landing=document.getElementById('landing');
+    landing.style.display='flex';
+    landing.style.opacity='0';
+    landing.style.transform='scale(.97)';
+    landing.style.transition='opacity .5s, transform .5s';
+    setTimeout(function(){landing.style.opacity='1';landing.style.transform='scale(1)';},20);
+  },400);
+}
 
-        function handleSpecificDateQuery(query) {
-            const date = parseDate(query);
-            if (!date) return 'Please specify a valid date (e.g., "on Feb 10", "on February 10")';
-            
-            const tasksOnDate = tasks.filter(t => {
-                const taskDate = new Date(t.date);
-                return taskDate.toDateString() === date.toDateString() && !t.done;
-            });
-            
-            if (tasksOnDate.length === 0) {
-                return `No tasks on ${date.toLocaleDateString()}`;
-            }
-            
-            const taskList = tasksOnDate.map(t => t.text).join(', ');
-            return `${tasksOnDate.length} task(s) on ${date.toLocaleDateString()}: ${taskList}`;
-        }
+/* ════════════════ THEME ════════════════ */
+function toggleTheme(){
+  var t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',t);
+  localStorage.setItem('tmp_theme',t);
+}
 
-        function handleBetweenQuery(query) {
-            // Simple between query handler - can be enhanced
-            return 'For date ranges, try asking "tasks until [date]" or "tasks on [date]"';
-        }
+/* ════════════════ TOAST ════════════════ */
+function toast(msg,type,dur){
+  type=type||'inf'; dur=dur||3500;
+  var el=document.createElement('div');
+  el.className='toast '+type;
+  el.textContent=msg;
+  document.getElementById('tcontainer').appendChild(el);
+  setTimeout(function(){
+    el.style.opacity='0';el.style.transform='translateX(22px)';el.style.transition='all .4s';
+    setTimeout(function(){el.remove();},400);
+  },dur);
+}
 
-        function handleThisWeekQuery() {
-            const startOfWeek = new Date(today);
-            startOfWeek.setDate(today.getDate() - today.getDay());
-            const endOfWeek = new Date(startOfWeek);
-            endOfWeek.setDate(startOfWeek.getDate() + 6);
-            
-            const weekTasks = tasks.filter(t => {
-                const taskDate = new Date(t.date);
-                return !t.done && taskDate >= startOfWeek && taskDate <= endOfWeek;
-            });
-            
-            if (weekTasks.length === 0) return 'No tasks this week';
-            
-            return `${weekTasks.length} task(s) this week: ${weekTasks.map(t => `${t.text} (${new Date(t.date).toLocaleDateString()})`).join(', ')}`;
-        }
+/* ════════════════ TABS ════════════════ */
+function sw(tab,btn){
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
+  document.querySelectorAll('.nbtn').forEach(function(b){b.classList.remove('on');});
+  document.getElementById('tab-'+tab).classList.add('on');
+  if(btn)btn.classList.add('on');
+  curTab=tab;
+  renderTab(tab);
+}
+function renderTab(tab){
+  if(tab==='dashboard')renderDash();
+  else if(tab==='tasks')renderAll();
+  else if(tab==='week')renderWeek();
+  else if(tab==='ai')renderAISugs();
+  else if(tab==='timer')renderTimerTab();
+  else if(tab==='settings')renderSettings();
+}
 
-        function handleNextWeekQuery() {
-            const startOfNextWeek = new Date(today);
-            startOfNextWeek.setDate(today.getDate() + (7 - today.getDay()));
-            const endOfNextWeek = new Date(startOfNextWeek);
-            endOfNextWeek.setDate(startOfNextWeek.getDate() + 6);
-            
-            const nextWeekTasks = tasks.filter(t => {
-                const taskDate = new Date(t.date);
-                return !t.done && taskDate >= startOfNextWeek && taskDate <= endOfNextWeek;
-            });
-            
-            if (nextWeekTasks.length === 0) return 'No tasks next week';
-            
-            return `${nextWeekTasks.length} task(s) next week: ${nextWeekTasks.map(t => `${t.text} (${new Date(t.date).toLocaleDateString()})`).join(', ')}`;
-        }
+/* ════════════════ URGENCY ════════════════ */
+function urgScore(t){
+  if(t.done)return 0;
+  var due=new Date(t.date), diff=Math.ceil((due-TODAY)/86400000), s=0;
+  if(diff<0)s=100; else if(diff===0)s=95; else if(diff<=1)s=85; else if(diff<=3)s=70; else if(diff<=7)s=50; else if(diff<=14)s=30; else s=15;
+  if(t.priority==='high')s=Math.min(100,s+15);
+  if(t.priority==='low')s=Math.max(5,s-15);
+  return s;
+}
+function urgColor(s){if(s>=90)return'#ff5b8d';if(s>=70)return'#ffcc4f';if(s>=50)return'#5aabff';return'#3dffc0';}
 
-        function exportData(fmt) {
-            let data;
-            if (fmt === 'csv') {
-                data = 'Task,Date,Priority,Status,Notes\n';
-                tasks.forEach(t => {
-                    data += `"${t.text}","${t.date}","${t.priority}","${t.done ? 'Done' : 'Pending'}","${t.notes}"\n`;
-                });
-            } else {
-                data = JSON.stringify(tasks, null, 2);
-            }
-            const blob = new Blob([data], { type: fmt === 'csv' ? 'text/csv' : 'application/json' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `tasks.${fmt}`;
-            a.click();
-        }
+/* ════════════════ TASK CARD ════════════════ */
+function mkCard(t,delay){
+  delay=delay||0;
+  var due=new Date(t.date), isOD=!t.done&&due<TODAY;
+  var ds=due.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  var sc=urgScore(t), col=urgColor(sc);
+  var dl=Math.ceil((due-TODAY)/86400000);
+  var dlbl=isOD?Math.abs(dl)+'d overdue':dl===0?'Due today':dl+'d left';
+  return'<div class="g tc '+(t.done?'done-card':'')+' '+(isOD?'od-card':'')+'" style="animation-delay:'+delay+'ms" onclick="openDetail('+t.id+')">'
+    +'<div onclick="event.stopPropagation()"><input type="checkbox" class="chk" '+(t.done?'checked':'')+' onchange="toggleTask('+t.id+')"/></div>'
+    +'<div class="tc-body"><div class="tc-title">'+esc(t.text)+'</div>'
+    +'<div class="tc-meta"><span class="tc-date '+(isOD?'od':'')+'">📅 '+ds+'</span>'
+    +'<span class="badge b'+t.priority.charAt(0)+'">'+t.priority+'</span>'
+    +(t.course?'<span class="badge bc">'+esc(t.course)+'</span>':'')
+    +'<span style="font-size:10px;font-family:var(--mono);color:'+col+';">'+dlbl+'</span></div>'
+    +'<div class="ubar"><div class="ufill" style="width:'+sc+'%;background:'+col+';"></div></div>'
+    +'<div class="tc-foot" onclick="event.stopPropagation()"><button class="tc-btn" onclick="openDetail('+t.id+')">👁 View</button><button class="tc-btn del" onclick="delTask('+t.id+')">🗑</button></div>'
+    +'</div></div>';
+}
 
-        function clearAll() {
-            if (confirm('Delete all tasks?')) {
-                tasks = [];
-                save();
-                render();
-            }
-        }
+/* ════════════════ DASHBOARD ════════════════ */
+function renderDash(){
+  var pen=tasks.filter(function(t){return!t.done;}), dn=tasks.filter(function(t){return t.done;});
+  var od=pen.filter(function(t){return new Date(t.date)<TODAY;}), up=pen.filter(function(t){return new Date(t.date)>=TODAY;});
+  document.getElementById('statsGrid').innerHTML='<div class="g stat"><div class="stat-lbl">Total</div><div class="stat-val c-pri" id="sv0">0</div></div><div class="g stat"><div class="stat-lbl">Pending</div><div class="stat-val c-gld" id="sv1">0</div></div><div class="g stat"><div class="stat-lbl">Done</div><div class="stat-val c-grn" id="sv2">0</div></div><div class="g stat"><div class="stat-lbl">Overdue</div><div class="stat-val c-acc" id="sv3">0</div></div>';
+  [tasks.length,pen.length,dn.length,od.length].forEach(function(v,i){animCnt('sv'+i,v);});
+  document.getElementById('pdCnt').textContent=od.length;
+  var upS=up.slice().sort(function(a,b){return new Date(a.date)-new Date(b.date);});
+  document.getElementById('upcomingGrid').innerHTML=upS.length?upS.map(function(t,i){return mkCard(t,i*40);}).join(''):'<div class="empty-state">No upcoming tasks 🎉</div>';
+  var odS=od.slice().sort(function(a,b){return new Date(a.date)-new Date(b.date);});
+  document.getElementById('pastdueGrid').innerHTML=odS.length?odS.map(function(t,i){return mkCard(t,i*40);}).join(''):'<div class="empty-state">No past due tasks</div>';
+}
+function animCnt(id,target){var el=document.getElementById(id);if(!el)return;var cur=0,step=Math.ceil(target/20)||1,iv=setInterval(function(){cur=Math.min(cur+step,target);el.textContent=cur;if(cur>=target)clearInterval(iv);},28);}
 
-        function openAddModal() {
-            document.getElementById('addModal').classList.add('active');
-            document.getElementById('taskText').focus();
-        }
+/* ════════════════ ALL TASKS ════════════════ */
+function renderAll(){
+  var fp=document.getElementById('fPri'),fs=document.getElementById('fStat'),sq=document.getElementById('fSearch');
+  var f=tasks.slice();
+  if(fp&&fp.value)f=f.filter(function(t){return t.priority===fp.value;});
+  if(fs&&fs.value==='pending')f=f.filter(function(t){return!t.done;});
+  if(fs&&fs.value==='done')f=f.filter(function(t){return t.done;});
+  if(sq&&sq.value.trim()){var q=sq.value.toLowerCase();f=f.filter(function(t){return t.text.toLowerCase().includes(q)||(t.notes||'').toLowerCase().includes(q)||(t.course||'').toLowerCase().includes(q);});}
+  f.sort(function(a,b){if(a.done!==b.done)return a.done?1:-1;return urgScore(b)-urgScore(a);});
+  document.getElementById('allGrid').innerHTML=f.length?f.map(function(t,i){return mkCard(t,i*30);}).join(''):'<div class="empty-state">No tasks match your filters</div>';
+}
 
-        function closeAddModal() {
-            document.getElementById('addModal').classList.remove('active');
-            document.getElementById('taskText').value = '';
-            document.getElementById('taskNotes').value = '';
-        }
+/* ════════════════ WEEK VIEW ════════════════ */
+function renderWeek(){
+  var sow=new Date(TODAY);sow.setDate(TODAY.getDate()-TODAY.getDay());
+  var days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],wHTML='',wTasks=[];
+  for(var i=0;i<7;i++){
+    var d=new Date(sow);d.setDate(sow.getDate()+i);
+    var isT=d.toDateString()===TODAY.toDateString();
+    var dt=tasks.filter(function(t){return new Date(t.date).toDateString()===d.toDateString()&&!t.done;});
+    wTasks=wTasks.concat(dt);
+    var isOD=d<TODAY&&!isT;
+    wHTML+='<div class="g wday '+(isT?'today':'')+'"><div class="wday-name">'+days[i]+'</div><div class="wday-num">'+d.getDate()+'</div><div class="wday-tasks">'+dt.slice(0,3).map(function(t){return'<div class="wdt '+(isOD?'od':'')+'" onclick="openDetail('+t.id+')" title="'+esc(t.text)+'">'+esc(t.text)+'</div>';}).join('')+(dt.length>3?'<div style="font-size:9px;color:var(--tx3);font-family:var(--mono);">+'+( dt.length-3)+' more</div>':'')+'</div></div>';
+  }
+  document.getElementById('weekGrid').innerHTML=wHTML;
+  var ws=wTasks.sort(function(a,b){return new Date(a.date)-new Date(b.date);});
+  document.getElementById('weekTaskGrid').innerHTML=ws.length?ws.map(function(t,i){return mkCard(t,i*30);}).join(''):'<div class="empty-state">No tasks this week</div>';
+}
 
-        function openImportModal() {
-            document.getElementById('importModal').classList.add('active');
-        }
+/* ════════════════ AI ════════════════ */
+var sugs=["What should I focus on today?","Am I falling behind on anything?","What are my highest priority tasks?","How's my completion rate?","What's due this week?","Give me a study plan for tomorrow","Which tasks are overdue?","How many days until my next deadline?"];
+function renderAISugs(){
+  document.getElementById('sugList').innerHTML=sugs.map(function(s){return'<button class="sug" onclick="askAI('+JSON.stringify(s)+')">'+s+'</button>';}).join('');
+  var pen=tasks.filter(function(t){return!t.done;}),od=pen.filter(function(t){return new Date(t.date)<TODAY;});
+  var hi=pen.filter(function(t){return t.priority==='high';}),rate=tasks.length?Math.round(tasks.filter(function(t){return t.done;}).length/tasks.length*100):0;
+  var nd=pen.slice().sort(function(a,b){return new Date(a.date)-new Date(b.date);})[0];
+  document.getElementById('aiSnap').innerHTML='<div style="font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--tx2);margin-bottom:12px;">Live Snapshot</div><div class="ai-snap-row"><span>Completion rate</span><span>'+rate+'%</span></div><div class="ai-snap-row"><span>Overdue tasks</span><span style="color:var(--acc);">'+od.length+'</span></div><div class="ai-snap-row"><span>High priority</span><span style="color:var(--gld);">'+hi.length+'</span></div><div class="ai-snap-row"><span>Next deadline</span><span>'+(nd?new Date(nd.date).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'None')+'</span></div>';
+}
+function askAI(msg){document.getElementById('aiIn').value=msg;sendAI();}
+async function sendAI(){
+  var inp=document.getElementById('aiIn'),q=inp.value.trim();if(!q)return;inp.value='';
+  addMsg(q,'user');var thk=addMsg('Thinking...','think');
+  var pen=tasks.filter(function(t){return!t.done;}),od=pen.filter(function(t){return new Date(t.date)<TODAY;}),dn=tasks.filter(function(t){return t.done;});
+  var rate=tasks.length?Math.round(dn.length/tasks.length*100):0;
+  var ctx=tasks.slice(0,50).map(function(t){var due=new Date(t.date),dl=Math.ceil((due-TODAY)/86400000);return'- "'+t.text+'" | Due: '+t.date+' ('+(dl>0?dl+'d left':dl===0?'due today':Math.abs(dl)+'d overdue')+') | '+t.priority+' priority | '+(t.done?'done':'pending')+(t.course?' | '+t.course:'');}).join('\n');
+  var sys='You are a smart, concise AI study assistant inside Task Manager Pro for a college student named Aryan.\n\nDate: '+TODAY.toDateString()+'\nStats: '+tasks.length+' total | '+pen.length+' pending | '+od.length+' overdue | '+dn.length+' done | '+rate+'% completion\n\nTASKS:\n'+(ctx||'No tasks yet.')+'\n\nBe direct, helpful, specific. Under 200 words unless asked for detail. Give concrete prioritized lists for planning questions.';
+  try{
+    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:sys,messages:[{role:'user',content:q}]})});
+    var data=await res.json();thk.remove();
+    addMsg(data.content&&data.content[0]?data.content[0].text:"Sorry, couldn't get a response.",'bot');
+  }catch(e){thk.remove();addMsg(aiFallback(q),'bot');}
+}
+function aiFallback(q){
+  var query=q.toLowerCase(),pen=tasks.filter(function(t){return!t.done;}),od=pen.filter(function(t){return new Date(t.date)<TODAY;});
+  var hi=pen.filter(function(t){return t.priority==='high';}),rate=tasks.length?Math.round(tasks.filter(function(t){return t.done;}).length/tasks.length*100):0;
+  if(query.includes('today')||query.includes('focus')){var td=pen.filter(function(t){return new Date(t.date)<=TODAY;}).sort(function(a,b){return urgScore(b)-urgScore(a);});if(!td.length)return"You're all clear for today! 🎉";return"Focus on:\n"+td.slice(0,3).map(function(t,i){return(i+1)+'. '+t.text+' ('+t.priority+')';}).join('\n');}
+  if(query.includes('overdue')||query.includes('behind')){if(!od.length)return"Not behind on anything! 🎉";return od.length+' overdue:\n'+od.slice(0,5).map(function(t){return'• '+t.text;}).join('\n');}
+  if(query.includes('high')||query.includes('priority')){if(!hi.length)return'No high priority tasks right now!';return hi.length+' high priority:\n'+hi.map(function(t){return'• '+t.text;}).join('\n');}
+  if(query.includes('completion')||query.includes('rate'))return'Completion rate: '+rate+'% ('+tasks.filter(function(t){return t.done;}).length+'/'+tasks.length+').'+(rate>=70?' Great! 🔥':rate>=40?' Keep going! 💪':' Time to start! 📚');
+  return'You have '+pen.length+' pending tasks, '+od.length+' overdue. Rate: '+rate+'%. Ask me "what should I focus on today?" for specific advice!';
+}
+function addMsg(txt,type){var msgs=document.getElementById('aiMsgs'),el=document.createElement('div');el.className='ai-msg '+type;el.style.whiteSpace='pre-wrap';el.textContent=txt;msgs.appendChild(el);msgs.scrollTop=msgs.scrollHeight;return el;}
 
-        function closeImportModal() {
-            document.getElementById('importModal').classList.remove('active');
-        }
+/* ════════════════ TIMER ════════════════ */
+function renderTimerTab(){
+  var pen=tasks.filter(function(t){return!t.done;}).sort(function(a,b){return urgScore(b)-urgScore(a);});
+  document.getElementById('timerList').innerHTML=pen.length?pen.slice(0,20).map(function(t){return'<button onclick="selTimer('+t.id+')" class="btn" style="text-align:left;border-radius:10px;padding:10px 14px;width:100%;'+(timerTid===t.id?'border-color:var(--pri);color:var(--pri);':'')+'"><span style="flex:1;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+esc(t.text)+'</span><span class="badge b'+t.priority.charAt(0)+'" style="flex-shrink:0;margin-left:8px;">'+t.priority+'</span></button>';}).join(''):'<div class="empty-state">Add some tasks first</div>';
+}
+function selTimer(id){timerTid=id;var t=tasks.find(function(t){return t.id===id;});document.getElementById('timerTask').textContent=t?t.text:'';renderTimerTab();toast('Task selected','inf');}
+function setTimer(m){resetTimer();timerSec=m*60;timerTotal=m*60;updTimer();}
+function startTimer(){if(timerRunning)return;timerRunning=true;timerIv=setInterval(function(){timerSec--;updTimer();if(timerSec<=0){clearInterval(timerIv);timerRunning=false;toast('⏰ Timer done! Take a break.','ok');document.getElementById('timerDisp').textContent='Done!';}},1000);}
+function pauseTimer(){clearInterval(timerIv);timerRunning=false;}
+function resetTimer(){clearInterval(timerIv);timerRunning=false;updTimer();}
+function updTimer(){var m=Math.floor(timerSec/60).toString().padStart(2,'0'),s=(timerSec%60).toString().padStart(2,'0');document.getElementById('timerDisp').textContent=m+':'+s;var circle=document.getElementById('timerCircle');if(circle)circle.style.strokeDashoffset=477.5*(timerSec/timerTotal);}
 
-        function save() {
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-        }
+/* ════════════════ DETAIL ════════════════ */
+function openDetail(id){
+  var t=tasks.find(function(t){return t.id===id;});if(!t)return;
+  var due=new Date(t.date),isOD=!t.done&&due<TODAY,dl=Math.ceil((due-TODAY)/86400000);
+  var dlbl=isOD?Math.abs(dl)+' days overdue':dl===0?'Due today':dl+' days left';
+  var sc=urgScore(t),col=urgColor(sc);
+  var pColors={high:'#ff5b8d',medium:'#5aabff',low:'#3dffc0'},pc=pColors[t.priority]||'#5aabff';
+  document.getElementById('dpInner').innerHTML=
+    '<div class="dp-pill" style="background:'+pc+'1a;color:'+pc+';border-color:'+pc+'33;">'+t.priority.toUpperCase()+' PRIORITY'+(isOD?' · <span style="color:#ff5b8d;">OVERDUE</span>':'')+'</div>'
+    +'<div class="dp-title">'+esc(t.text)+'</div>'
+    +'<div class="dp-grid">'
+    +'<div class="dp-card"><div class="dp-card-lbl">Due Date</div><div class="dp-card-val">'+due.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+'</div></div>'
+    +'<div class="dp-card"><div class="dp-card-lbl">Time Left</div><div class="dp-card-val" style="color:'+col+';">'+dlbl+'</div></div>'
+    +'<div class="dp-card"><div class="dp-card-lbl">Status</div><div class="dp-card-val" style="color:'+(t.done?'var(--grn)':'var(--tx)')+';">'+(t.done?'✓ Completed':'Pending')+'</div></div>'
+    +'<div class="dp-card"><div class="dp-card-lbl">Source</div><div class="dp-card-val" style="font-size:13px;">'+(t.source==='manual'?'✏️ Manual':t.source==='canvas'?'🎓 Canvas':t.source==='google'?'🔗 Google':'📄 ICS')+'</div></div>'
+    +(t.course?'<div class="dp-card" style="grid-column:1/-1;"><div class="dp-card-lbl">Course</div><div class="dp-card-val">'+esc(t.course)+'</div></div>':'')
+    +'</div>'
+    +'<div class="dp-urg"><div class="dp-urg-lbl"><span>Urgency Score</span><span style="color:'+col+';">'+sc+'/100</span></div><div class="dp-urg-track"><div class="dp-urg-fill" id="dpUrgFill" style="width:0%;background:'+col+';"></div></div></div>'
+    +(t.notes?'<div class="dp-notes"><div class="dp-notes-lbl">Notes</div><div class="dp-notes-txt">'+esc(t.notes)+'</div></div>':'')
+    +'<div class="dp-timer"><div class="dp-timer-lbl">⏱ Focus Timer</div><div class="dp-timer-disp" id="dpTimerDisp">25:00</div><div class="dp-timer-btns"><button class="dp-tbtn start" onclick="startDT('+id+')">▶ Start</button><button class="dp-tbtn" onclick="pauseDT()">⏸ Pause</button><button class="dp-tbtn" onclick="resetDT()">↺ Reset</button></div></div>'
+    +'<div class="dp-actions"><button class="dp-act done" onclick="toggleFromDetail('+id+')">'+(t.done?'↩ Mark Pending':'✓ Mark Done')+'</button><button class="dp-act del" onclick="delFromDetail('+id+')">🗑 Delete</button></div>';
+  var ov=document.getElementById('detailOv');ov.classList.add('open');document.body.style.overflow='hidden';
+  requestAnimationFrame(function(){requestAnimationFrame(function(){var f=document.getElementById('dpUrgFill');if(f)f.style.width=sc+'%';});});
+  if(dtIv)clearInterval(dtIv);dtSec=25*60;dtRunning=false;updDT();
+}
+function closeDetail(){var ov=document.getElementById('detailOv');ov.style.opacity='0';setTimeout(function(){ov.classList.remove('open');ov.style.opacity='';document.body.style.overflow='';},350);if(dtIv)clearInterval(dtIv);}
+function closeDetailEv(e){if(e.target===document.getElementById('detailOv'))closeDetail();}
+function toggleFromDetail(id){toggleTask(id);closeDetail();}
+function delFromDetail(id){if(confirm('Delete this task?')){delTask(id);closeDetail();}}
+function startDT(id){if(dtRunning)return;dtRunning=true;dtIv=setInterval(function(){dtSec--;updDT();if(dtSec<=0){clearInterval(dtIv);dtRunning=false;toast('Focus session complete! 🎉','ok');}},1000);}
+function pauseDT(){clearInterval(dtIv);dtRunning=false;}
+function resetDT(){clearInterval(dtIv);dtRunning=false;dtSec=25*60;updDT();}
+function updDT(){var m=Math.floor(dtSec/60).toString().padStart(2,'0'),s=(dtSec%60).toString().padStart(2,'0'),el=document.getElementById('dpTimerDisp');if(el)el.textContent=m+':'+s;}
 
-        function esc(t) {
-            const d = document.createElement('div');
-            d.textContent = t;
-            return d.innerHTML;
-        }
+/* ════════════════ TASK CRUD ════════════════ */
+function addTask(){
+  var text=document.getElementById('tText').value.trim(),date=document.getElementById('tDate').value;
+  var priority=document.getElementById('tPri').value,notes=document.getElementById('tNotes').value.trim(),course=document.getElementById('tCourse').value.trim();
+  if(!text||!date){toast('Please fill in task and date','warn');return;}
+  tasks.push({id:Date.now()+Math.random(),text:text,date:date,priority:priority,notes:notes,course:course,done:false,source:'manual',added:Date.now()});
+  save();closeM('addModal');renderTab(curTab);toast('Task added!','ok');
+}
+function toggleTask(id){var t=tasks.find(function(t){return t.id===id;});if(t){t.done=!t.done;save();renderTab(curTab);}}
+function delTask(id){if(confirm('Delete this task?')){tasks=tasks.filter(function(t){return t.id!==id;});save();renderTab(curTab);toast('Deleted','inf');}}
 
-        document.addEventListener('click', e => {
-            if (e.target.id === 'addModal') closeAddModal();
-            if (e.target.id === 'importModal') closeImportModal();
-        });
+/* ════════════════ IMPORT ════════════════ */
+async function importUrl(type){
+  var url=(type==='google'?document.getElementById('gUrl'):document.getElementById('cUrl')).value.trim();
+  if(!url){toast('Please paste a URL','warn');return;}
+  toast('Fetching from '+type+'...','inf');
+  try{
+    var text;
+    try{var r=await fetch(url);text=await r.text();}catch(e){var r2=await fetch('https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(url));text=await r2.text();}
+    if(!text||!text.includes('VEVENT')){toast('No events found in that URL','warn');return;}
+    if(!sources.find(function(s){return s.url===url;})){sources.push({url:url,type:type,lastChecked:Date.now(),enabled:true});localStorage.setItem('tmp_sources',JSON.stringify(sources));}
+    var cnt=parseICS(text,type);toast('Imported '+cnt+' task(s) from '+type+'!','ok');renderTab(curTab);
+  }catch(e){toast('Import failed: '+e.message,'warn');}
+}
+function importICS(){var f=document.getElementById('icsFile').files[0];if(!f){toast('Select a file','warn');return;}var rd=new FileReader();rd.onload=function(e){var cnt=parseICS(e.target.result,'ics-file');toast('Imported '+cnt+' task(s)','ok');renderTab(curTab);};rd.readAsText(f);}
+function parseICS(text,source){
+  var lines=text.split('\n'),cnt=0,ev=null;
+  for(var i=0;i<lines.length;i++){
+    var line=lines[i].trim();
+    if(line==='BEGIN:VEVENT'){ev={id:Date.now()+Math.random(),text:'',date:'',notes:'',done:false,source:source,priority:'medium',added:Date.now()};}
+    else if(line==='END:VEVENT'&&ev&&ev.text&&ev.date){var d=ev.date;if(d.includes('T'))d=d.substring(0,8);ev.date=d.substring(0,4)+'-'+d.substring(4,6)+'-'+d.substring(6,8);if(!tasks.some(function(t){return t.text.toLowerCase()===ev.text.toLowerCase()&&t.date===ev.date&&t.source===source;})){tasks.push(ev);cnt++;}ev=null;}
+    else if(ev){if(line.startsWith('SUMMARY:'))ev.text=line.substring(8);else if(line.startsWith('DTSTART'))ev.date=line.split(':').pop();else if(line.startsWith('DESCRIPTION:'))ev.notes=line.substring(12);}
+  }
+  save();return cnt;
+}
 
-        render();
-    </script>
+/* ════════════════ AUTO REFRESH ════════════════ */
+async function autoRefresh(){
+  for(var i=0;i<sources.length;i++){
+    var src=sources[i];if(!src.enabled)continue;
+    try{
+      var text;
+      try{var r=await fetch(src.url);text=await r.text();}catch(e){var r2=await fetch('https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(src.url));text=await r2.text();}
+      if(!text||!text.includes('VEVENT'))continue;
+      var before=tasks.length;parseICS(text,src.type);var added=tasks.length-before;
+      if(added>0){newFromRefresh+=added;var badge=document.getElementById('rbadge');badge.textContent=newFromRefresh;badge.classList.add('show');toast(added+' new task(s) from '+src.type,'inf');renderTab(curTab);}
+      src.lastChecked=Date.now();localStorage.setItem('tmp_sources',JSON.stringify(sources));
+    }catch(e){}
+  }
+}
+function manualRefresh(){newFromRefresh=0;document.getElementById('rbadge').classList.remove('show');document.getElementById('rlbl').textContent='Syncing...';autoRefresh().then(function(){document.getElementById('rlbl').textContent='Live';toast('Sources checked','inf');});}
+setInterval(autoRefresh,5*60*1000);
+
+/* ════════════════ SETTINGS ════════════════ */
+function renderSettings(){
+  document.getElementById('sTot').textContent=tasks.length;
+  document.getElementById('sDone').textContent=tasks.filter(function(t){return t.done;}).length;
+  var list=document.getElementById('srcList');
+  if(!sources.length){list.innerHTML='<div class="empty-state" style="padding:10px 0;">No sources added yet</div>';return;}
+  list.innerHTML=sources.map(function(s,i){return'<div class="src-item"><div class="src-icon">'+(s.type==='canvas'?'🎓':'🔗')+'</div><div class="src-info"><div class="src-name">'+(s.type==='canvas'?'Canvas':'Google Calendar')+'</div><div class="src-url">'+s.url+'</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;"><span style="font-size:10px;font-family:var(--mono);color:var(--grn);">● Active</span><button onclick="rmSrc('+i+')" style="font-size:10px;padding:3px 8px;color:var(--acc);background:none;border:none;cursor:pointer;">Remove</button></div></div>';}).join('');
+}
+function rmSrc(i){sources.splice(i,1);localStorage.setItem('tmp_sources',JSON.stringify(sources));renderSettings();toast('Source removed','inf');}
+function togglePD(){pdVisible=!pdVisible;document.getElementById('pdSection').classList.toggle('show',pdVisible);document.getElementById('pdTxt').textContent=pdVisible?'Hide Past Due':'Show Past Due';}
+
+/* ════════════════ MODALS ════════════════ */
+function openAdd(){document.getElementById('addModal').classList.add('open');document.getElementById('tText').focus();}
+function openImport(){document.getElementById('importModal').classList.add('open');}
+function closeM(id){document.getElementById(id).classList.remove('open');if(id==='addModal'){['tText','tNotes','tCourse'].forEach(function(i){document.getElementById(i).value='';});}}
+document.addEventListener('click',function(e){if(e.target.id==='addModal')closeM('addModal');if(e.target.id==='importModal')closeM('importModal');});
+
+/* ════════════════ EXPORT / CLEAR ════════════════ */
+function exportData(fmt){var data;if(fmt==='csv'){data='Task,Date,Priority,Status,Course,Notes\n';tasks.forEach(function(t){data+='"'+t.text+'","'+t.date+'","'+t.priority+'","'+(t.done?'Done':'Pending')+'","'+(t.course||'')+'","'+(t.notes||'')+'"\n';});}else{data=JSON.stringify(tasks,null,2);}var blob=new Blob([data],{type:fmt==='csv'?'text/csv':'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='tasks.'+fmt;a.click();toast('Exported!','ok');}
+function clearAll(){if(confirm('Delete all tasks? Cannot be undone.')){tasks=[];save();renderTab(curTab);toast('All tasks cleared','warn');}}
+
+/* ════════════════ PERSIST ════════════════ */
+function save(){localStorage.setItem('tmp_tasks',JSON.stringify(tasks));}
+function esc(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML;}
+
+/* ════════════════ INIT ════════════════ */
+// Check if user has seen the landing before
+if(localStorage.getItem('tmp_seen')==='1'){
+  document.getElementById('landing').style.display='none';
+  document.getElementById('app').style.display='block';
+  renderDash();renderAISugs();
+} else {
+  localStorage.setItem('tmp_seen','1');
+}
+</script>
 </body>
 </html>
