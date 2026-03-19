@@ -407,7 +407,6 @@ textarea.finput{resize:vertical;min-height:88px;}
     <div style="margin-top:22px;">
       <button class="pd-toggle" onclick="togglePD()"><span id="pdTxt">Show Past Due</span><span class="pd-cnt" id="pdCnt">0</span></button>
       <div class="pd-hidden" id="pdSection">
-        <!-- Bulk actions bar -->
         <div class="bulk-bar g">
           <button class="btn grn" onclick="markAllOverdueDone()" style="font-size:11px;padding:7px 14px;">✓ Mark All Done</button>
           <label>Or from</label>
@@ -553,20 +552,37 @@ var pdVisible=false;
 var timerSec=25*60, timerTotal=25*60, timerRunning=false, timerIv=null, timerTid=null;
 var dtSec=25*60, dtTotal=25*60, dtRunning=false, dtIv=null;
 var newFromRefresh=0;
-var weekOffset=0; // weeks offset from current week
-var selectedWeekDay=null; // date string of selected day in week view
-var TODAY=new Date(); TODAY.setHours(0,0,0,0);
+var weekOffset=0;
+var selectedWeekDay=null; // ALWAYS stored as "YYYY-MM-DD" string
+
+/* ══ TODAY — local midnight, no UTC offset ══ */
+var TODAY=(function(){var d=new Date();d.setHours(0,0,0,0);return d;})();
+
+/* ══ DATE HELPERS ══
+ * parseLocalDate: ONLY accepts "YYYY-MM-DD" → returns local midnight Date (no UTC shift)
+ * toYMD: Date → "YYYY-MM-DD" string (local, no UTC shift)
+ * All date comparisons MUST go through these two functions.
+ * Never pass a task.date string directly to `new Date(string)` — that would be UTC midnight.
+ */
+function parseLocalDate(ymd){
+  // ymd must be "YYYY-MM-DD"
+  var p=ymd.split('-');
+  return new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10));
+}
+function toYMD(d){
+  // Returns local YYYY-MM-DD from a Date object
+  var y=d.getFullYear();
+  var m=String(d.getMonth()+1).padStart(2,'0');
+  var day=String(d.getDate()).padStart(2,'0');
+  return y+'-'+m+'-'+day;
+}
 
 /* ══ SMART PRIORITY from task name ══ */
 function inferPriority(text){
   var t=text.toLowerCase();
-  // High: exams, quizzes, finals, midterms, tests, projects, capstone
   if(/\b(exam|final|midterm|test|quiz|capstone|project sprint|sprint)\b/.test(t)) return 'high';
-  // Medium: labs, assessments, assignments, homework, lab assessment
   if(/\b(lab|assessment|assignment|homework|hw|module lab|hands-on)\b/.test(t)) return 'medium';
-  // Low: exercises, guided exercises, attendance, surveys, podcasts, discussions, extra credit
   if(/\b(exercise|guided|attendance|survey|podcast|discussion|extra credit|ec|start.stop|career|peeling)\b/.test(t)) return 'low';
-  // Default medium
   return 'medium';
 }
 
@@ -621,7 +637,7 @@ function renderTab(t){
 /* ══ URGENCY ══ */
 function urgScore(t){
   if(t.done)return 0;
-  var due=new Date(t.date),diff=Math.ceil((due-TODAY)/86400000),s=0;
+  var due=parseLocalDate(t.date),diff=Math.ceil((due-TODAY)/86400000),s=0;
   if(diff<0)s=100;else if(diff===0)s=95;else if(diff<=1)s=85;else if(diff<=3)s=70;else if(diff<=7)s=50;else if(diff<=14)s=30;else s=15;
   if(t.priority==='high')s=Math.min(100,s+15);
   if(t.priority==='low')s=Math.max(5,s-15);
@@ -632,7 +648,7 @@ function urgColor(s){if(s>=90)return'#ff5b8d';if(s>=70)return'#ffcc4f';if(s>=50)
 /* ══ TASK CARD ══ */
 function mkCard(t,delay){
   delay=delay||0;
-  var due=new Date(t.date),isOD=!t.done&&due<TODAY;
+  var due=parseLocalDate(t.date),isOD=!t.done&&due<TODAY;
   var ds=due.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
   var sc=urgScore(t),col=urgColor(sc);
   var dl=Math.ceil((due-TODAY)/86400000);
@@ -652,7 +668,7 @@ function mkCard(t,delay){
 /* ══ DASHBOARD ══ */
 function renderDash(){
   var pen=tasks.filter(function(t){return!t.done;}),dn=tasks.filter(function(t){return t.done;});
-  var od=pen.filter(function(t){return new Date(t.date)<TODAY;}),up=pen.filter(function(t){return new Date(t.date)>=TODAY;});
+  var od=pen.filter(function(t){return parseLocalDate(t.date)<TODAY;}),up=pen.filter(function(t){return parseLocalDate(t.date)>=TODAY;});
   document.getElementById('statsGrid').innerHTML=
     '<div class="g stat" onclick="sw(\'tasks\',document.querySelectorAll(\'.nbtn\')[1])" title="View all tasks"><div class="stat-lbl">Total</div><div class="stat-val c-pri" id="sv0">0</div><div class="stat-hint">↗ All Tasks</div></div>'
     +'<div class="g stat" onclick="goToPending()" title="View pending tasks"><div class="stat-lbl">Pending</div><div class="stat-val c-gld" id="sv1">0</div><div class="stat-hint">↗ Filter Pending</div></div>'
@@ -660,13 +676,12 @@ function renderDash(){
     +'<div class="g stat" onclick="goToOverdue()" title="View overdue tasks"><div class="stat-lbl">Overdue</div><div class="stat-val c-acc" id="sv3">0</div><div class="stat-hint">↗ Past Due</div></div>';
   [tasks.length,pen.length,dn.length,od.length].forEach(function(v,i){animCnt('sv'+i,v);});
   document.getElementById('pdCnt').textContent=od.length;
-  var upS=up.slice().sort(function(a,b){return new Date(a.date)-new Date(b.date);});
+  var upS=up.slice().sort(function(a,b){return parseLocalDate(a.date)-parseLocalDate(b.date);});
   document.getElementById('upcomingGrid').innerHTML=upS.length?upS.map(function(t,i){return mkCard(t,i*40);}).join(''):'<div class="empty-state">No upcoming tasks 🎉</div>';
-  var odS=od.slice().sort(function(a,b){return new Date(a.date)-new Date(b.date);});
+  var odS=od.slice().sort(function(a,b){return parseLocalDate(a.date)-parseLocalDate(b.date);});
   document.getElementById('pastdueGrid').innerHTML=odS.length?odS.map(function(t,i){return mkCard(t,i*40);}).join(''):'<div class="empty-state">No past due tasks</div>';
 }
 
-/* Stat card navigation helpers */
 function goToPending(){
   sw('tasks',document.querySelectorAll('.nbtn')[1]);
   setTimeout(function(){var el=document.getElementById('fStat');if(el){el.value='pending';renderAll();}},50);
@@ -676,7 +691,6 @@ function goToDone(){
   setTimeout(function(){var el=document.getElementById('fStat');if(el){el.value='done';renderAll();}},50);
 }
 function goToOverdue(){
-  // Switch to dashboard and open past due section
   sw('dashboard',document.querySelectorAll('.nbtn')[0]);
   if(!pdVisible){togglePD();}
   setTimeout(function(){var el=document.getElementById('pdSection');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},100);
@@ -686,7 +700,7 @@ function animCnt(id,target){var el=document.getElementById(id);if(!el)return;var
 
 /* ══ BULK ACTIONS ══ */
 function markAllOverdueDone(){
-  var od=tasks.filter(function(t){return!t.done&&new Date(t.date)<TODAY;});
+  var od=tasks.filter(function(t){return!t.done&&parseLocalDate(t.date)<TODAY;});
   if(!od.length){toast('No overdue tasks to mark done','inf');return;}
   od.forEach(function(t){t.done=true;});
   save();renderDash();toast(od.length+' overdue tasks marked done ✓','ok');
@@ -695,8 +709,10 @@ function markRangeDone(){
   var fromVal=document.getElementById('bulkFrom').value;
   var toVal=document.getElementById('bulkTo').value;
   if(!fromVal||!toVal){toast('Please set both from and to dates','warn');return;}
-  var from=new Date(fromVal),to=new Date(toVal);to.setHours(23,59,59);
-  var matched=tasks.filter(function(t){var d=new Date(t.date);return!t.done&&d>=from&&d<=to;});
+  // Use parseLocalDate for both to avoid UTC shift on the range boundaries too
+  var from=parseLocalDate(fromVal),to=parseLocalDate(toVal);
+  to.setHours(23,59,59);
+  var matched=tasks.filter(function(t){var d=parseLocalDate(t.date);return!t.done&&d>=from&&d<=to;});
   if(!matched.length){toast('No tasks found in that range','inf');return;}
   matched.forEach(function(t){t.done=true;});
   save();renderDash();toast(matched.length+' tasks marked done ✓','ok');
@@ -714,13 +730,19 @@ function renderAll(){
   document.getElementById('allGrid').innerHTML=f.length?f.map(function(t,i){return mkCard(t,i*30);}).join(''):'<div class="empty-state">No tasks match your filters</div>';
 }
 
-/* ══ WEEK VIEW — navigable, clickable days ══ */
+/* ══ WEEK VIEW ══
+ * FIX: selectedWeekDay is always "YYYY-MM-DD". Never use .toDateString() for storage.
+ * FIX: Day tiles call selectWeekDay with toYMD(d) — always a clean YYYY-MM-DD string.
+ * FIX: Comparisons use toYMD(d) === task.date (both are YYYY-MM-DD).
+ */
 function getWeekStart(offset){
   var d=new Date(TODAY);
   d.setDate(TODAY.getDate()-TODAY.getDay()+(offset*7));
+  d.setHours(0,0,0,0);
   return d;
 }
 function shiftWeek(dir){weekOffset+=dir;selectedWeekDay=null;renderWeek();}
+
 function renderWeek(){
   var sow=getWeekStart(weekOffset);
   var eow=new Date(sow);eow.setDate(sow.getDate()+6);
@@ -728,41 +750,52 @@ function renderWeek(){
   document.getElementById('weekNavTitle').textContent=title;
   var days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   var wHTML='';
+  var todayYMD=toYMD(TODAY);
   for(var i=0;i<7;i++){
-    var d=new Date(sow);d.setDate(sow.getDate()+i);
-    var ds=d.toDateString();
-    var isT=ds===TODAY.toDateString();
-    var isSel=selectedWeekDay===ds;
+    var d=new Date(sow);d.setDate(sow.getDate()+i);d.setHours(0,0,0,0);
+    var dYMD=toYMD(d); // "YYYY-MM-DD" — canonical key
+    var isT=(dYMD===todayYMD);
+    var isSel=(selectedWeekDay===dYMD);
     var isOD=d<TODAY&&!isT;
-    var dt=tasks.filter(function(t){return new Date(t.date).toDateString()===ds&&!t.done;});
-    var dtStr=JSON.stringify(ds);
-    wHTML+='<div class="g wday '+(isT?'today':'')+' '+(isSel?'selected':'')+'" onclick="selectWeekDay('+dtStr+')">'
+    // Match tasks by comparing task.date (YYYY-MM-DD) directly with dYMD
+    var dt=tasks.filter(function(t){return t.date===dYMD&&!t.done;});
+    // Pass dYMD as a JSON string so the onclick gets a proper string arg
+    wHTML+='<div class="g wday '+(isT?'today':'')+' '+(isSel?'selected':'')+'" onclick="selectWeekDay(\''+dYMD+'\')">'
       +'<div class="wday-name">'+days[i]+'</div>'
       +'<div class="wday-num">'+d.getDate()+'</div>'
       +(dt.length?'<div class="wday-cnt has">'+dt.length+' task'+(dt.length>1?'s':'')+'</div>':'<div class="wday-cnt">—</div>')
       +dt.slice(0,2).map(function(t){return'<div class="wdt '+(isOD?'od':'')+'" title="'+esc(t.text)+'">'+esc(t.text.length>18?t.text.substring(0,17)+'…':t.text)+'</div>';}).join('')
-      +(dt.length>2?'<div style="font-size:9px;color:var(--tx3);font-family:var(--mono);margin-top:2px;">+'+( dt.length-2)+' more</div>':'')
+      +(dt.length>2?'<div style="font-size:9px;color:var(--tx3);font-family:var(--mono);margin-top:2px;">+'+(dt.length-2)+' more</div>':'')
       +'</div>';
   }
   document.getElementById('weekGrid').innerHTML=wHTML;
   renderWeekDayDetail();
 }
-function selectWeekDay(ds){
-  selectedWeekDay=(selectedWeekDay===ds)?null:ds;
+
+function selectWeekDay(dYMD){
+  // Toggle selection; dYMD is always "YYYY-MM-DD"
+  selectedWeekDay=(selectedWeekDay===dYMD)?null:dYMD;
   renderWeek();
 }
+
 function renderWeekDayDetail(){
   var container=document.getElementById('weekDayDetail');
   if(!selectedWeekDay){
     // Show all tasks for the week
     var sow=getWeekStart(weekOffset);
     var wTasks=[];
-    for(var i=0;i<7;i++){var d=new Date(sow);d.setDate(sow.getDate()+i);wTasks=wTasks.concat(tasks.filter(function(t){return new Date(t.date).toDateString()===d.toDateString()&&!t.done;}));}
-    wTasks.sort(function(a,b){return new Date(a.date)-new Date(b.date);});
+    for(var i=0;i<7;i++){
+      var d=new Date(sow);d.setDate(sow.getDate()+i);d.setHours(0,0,0,0);
+      var dYMD=toYMD(d);
+      wTasks=wTasks.concat(tasks.filter(function(t){return t.date===dYMD&&!t.done;}));
+    }
+    wTasks.sort(function(a,b){return parseLocalDate(a.date)-parseLocalDate(b.date);});
     container.innerHTML='<div class="sh" style="margin-top:8px;">All Tasks This Week</div><div class="tgrid">'+(wTasks.length?wTasks.map(function(t,i){return mkCard(t,i*30);}).join(''):'<div class="empty-state">No pending tasks this week</div>')+'</div>';
   } else {
-    var selDate=new Date(selectedWeekDay);
-    var dayTasks=tasks.filter(function(t){return new Date(t.date).toDateString()===selectedWeekDay;});
+    // Show tasks for the selected day
+    // selectedWeekDay is "YYYY-MM-DD" — match task.date directly
+    var selDate=parseLocalDate(selectedWeekDay);
+    var dayTasks=tasks.filter(function(t){return t.date===selectedWeekDay;});
     dayTasks.sort(function(a,b){return urgScore(b)-urgScore(a);});
     var dayLabel=selDate.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
     container.innerHTML='<div class="g week-day-detail"><div class="week-day-detail-title">📅 '+esc(dayLabel)+(dayTasks.length?' <span style="font-size:11px;font-family:var(--mono);color:var(--tx2);">('+dayTasks.length+' task'+(dayTasks.length>1?'s':'')+')</span>':'')+' <button class="btn" onclick="selectedWeekDay=null;renderWeek();" style="font-size:10px;padding:4px 10px;margin-left:auto;">✕ Clear</button></div>'
@@ -791,14 +824,14 @@ function renderAISugs(){
   container.querySelectorAll('.ai-sug-btn').forEach(function(btn){
     btn.addEventListener('click',function(){askAI(btn.getAttribute('data-q'));});
   });
-  var pen=tasks.filter(function(t){return!t.done;}),od=pen.filter(function(t){return new Date(t.date)<TODAY;});
+  var pen=tasks.filter(function(t){return!t.done;}),od=pen.filter(function(t){return parseLocalDate(t.date)<TODAY;});
   var hi=pen.filter(function(t){return t.priority==='high';}),rate=tasks.length?Math.round(tasks.filter(function(t){return t.done;}).length/tasks.length*100):0;
-  var nd=pen.slice().sort(function(a,b){return new Date(a.date)-new Date(b.date);})[0];
+  var nd=pen.slice().sort(function(a,b){return parseLocalDate(a.date)-parseLocalDate(b.date);})[0];
   document.getElementById('aiSnap').innerHTML='<div style="font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--tx2);margin-bottom:12px;">Live Snapshot</div>'
     +'<div class="ai-snap-row"><span>Completion rate</span><span>'+rate+'%</span></div>'
     +'<div class="ai-snap-row"><span>Overdue tasks</span><span style="color:var(--acc);">'+od.length+'</span></div>'
     +'<div class="ai-snap-row"><span>High priority</span><span style="color:var(--gld);">'+hi.length+'</span></div>'
-    +'<div class="ai-snap-row"><span>Next deadline</span><span>'+(nd?new Date(nd.date).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'None')+'</span></div>';
+    +'<div class="ai-snap-row"><span>Next deadline</span><span>'+(nd?parseLocalDate(nd.date).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'None')+'</span></div>';
 }
 
 function askAI(msg){addMsg(msg,'user');_runAI(msg);}
@@ -806,10 +839,9 @@ async function sendAI(){var inp=document.getElementById('aiIn'),q=inp.value.trim
 
 async function _runAI(q){
   var thk=addMsg('Thinking...','think');
-  var pen=tasks.filter(function(t){return!t.done;}),od=pen.filter(function(t){return new Date(t.date)<TODAY;}),dn=tasks.filter(function(t){return t.done;});
+  var pen=tasks.filter(function(t){return!t.done;}),od=pen.filter(function(t){return parseLocalDate(t.date)<TODAY;}),dn=tasks.filter(function(t){return t.done;});
   var rate=tasks.length?Math.round(dn.length/tasks.length*100):0;
 
-  // Build compact task context — group duplicates to avoid flooding
   var seen={};
   var uniqueTasks=[];
   tasks.forEach(function(t){
@@ -818,9 +850,8 @@ async function _runAI(q){
   });
 
   var ctx=uniqueTasks.slice(0,40).map(function(t){
-    var due=new Date(t.date),dl=Math.ceil((due-TODAY)/86400000);
+    var due=parseLocalDate(t.date),dl=Math.ceil((due-TODAY)/86400000);
     var dayName=due.toLocaleDateString('en-US',{weekday:'short'});
-    // Truncate long names for context
     var name=t.text.length>60?t.text.substring(0,59)+'…':t.text;
     return'- "'+name+'" | '+t.date+' ('+dayName+') | '+(dl>0?dl+'d':dl===0?'TODAY':Math.abs(dl)+'d OD')+' | '+t.priority+(t.done?' | done':'')+(t.course?' | '+t.course:'');
   }).join('\n');
@@ -860,19 +891,17 @@ async function _runAI(q){
 function aiFallback(q){
   var query=q.toLowerCase();
   var pen=tasks.filter(function(t){return!t.done;});
-  var od=pen.filter(function(t){return new Date(t.date)<TODAY;});
+  var od=pen.filter(function(t){return parseLocalDate(t.date)<TODAY;});
   var hi=pen.filter(function(t){return t.priority==='high';});
   var rate=tasks.length?Math.round(tasks.filter(function(t){return t.done;}).length/tasks.length*100):0;
 
   if(query.includes('schedule')||query.includes('plan')||query.includes('spread')){
     if(!pen.length)return'No pending tasks to schedule! Add some first.';
-    // Deduplicate and sort
     var seen={};var sorted=[];
     pen.forEach(function(t){var k=t.text.substring(0,40)+'|'+t.date;if(!seen[k]){seen[k]=true;sorted.push(t);}});
     sorted.sort(function(a,b){return urgScore(b)-urgScore(a);});
     var sow2=new Date(TODAY);sow2.setDate(TODAY.getDate()-TODAY.getDay());
     var dayNames=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-    // Remaining weekdays (Mon-Fri) starting from today
     var remaining=[];
     for(var i=TODAY.getDay();i<=5;i++)remaining.push(i);
     if(!remaining.length)for(var j=1;j<=5;j++)remaining.push(j);
@@ -897,7 +926,7 @@ function aiFallback(q){
     return out.trim();
   }
   if(query.includes('today')||query.includes('focus')){
-    var td=pen.filter(function(t){return new Date(t.date)<=TODAY;}).sort(function(a,b){return urgScore(b)-urgScore(a);});
+    var td=pen.filter(function(t){return parseLocalDate(t.date)<=TODAY;}).sort(function(a,b){return urgScore(b)-urgScore(a);});
     if(!td.length)return"You're all clear for today! 🎉";
     return'Focus on today:\n'+td.slice(0,5).map(function(t,i){return(i+1)+'. '+t.text.substring(0,60)+(t.text.length>60?'…':'')+' ('+t.priority+')';}).join('\n');
   }
@@ -918,15 +947,15 @@ function aiFallback(q){
   }
   if(query.includes('completion')||query.includes('rate')){return'Completion: '+rate+'% ('+tasks.filter(function(t){return t.done;}).length+'/'+tasks.length+'). '+(rate>=70?'Great work! 🔥':rate>=40?'Keep pushing! 💪':'Time to start! 📚');}
   if(query.includes('7 days')||query.includes('next week')||query.includes('this week')){
-    var nw=pen.filter(function(t){var dl=Math.ceil((new Date(t.date)-TODAY)/86400000);return dl>=0&&dl<=7;}).sort(function(a,b){return new Date(a.date)-new Date(b.date);});
+    var nw=pen.filter(function(t){var dl=Math.ceil((parseLocalDate(t.date)-TODAY)/86400000);return dl>=0&&dl<=7;}).sort(function(a,b){return parseLocalDate(a.date)-parseLocalDate(b.date);});
     if(!nw.length)return'Nothing due in the next 7 days.';
-    return nw.length+' tasks in 7 days:\n'+nw.slice(0,10).map(function(t){var dl=Math.ceil((new Date(t.date)-TODAY)/86400000);return'• '+t.text.substring(0,50)+(t.text.length>50?'…':'')+' — '+(dl===0?'today':dl+'d');}).join('\n');
+    return nw.length+' tasks in 7 days:\n'+nw.slice(0,10).map(function(t){var dl=Math.ceil((parseLocalDate(t.date)-TODAY)/86400000);return'• '+t.text.substring(0,50)+(t.text.length>50?'…':'')+' — '+(dl===0?'today':dl+'d');}).join('\n');
   }
   return'You have '+pen.length+' pending tasks, '+od.length+' overdue. Rate: '+rate+'%.\nTry: "schedule my tasks this week" or "what should I focus on today?"';
 }
 function addMsg(txt,type){var msgs=document.getElementById('aiMsgs'),el=document.createElement('div');el.className='ai-msg '+type;el.style.whiteSpace='pre-wrap';el.textContent=txt;msgs.appendChild(el);msgs.scrollTop=msgs.scrollHeight;return el;}
 
-/* ══ TIMER — fixed reset, custom duration ══ */
+/* ══ TIMER ══ */
 function renderTimerTab(){
   var pen=tasks.filter(function(t){return!t.done;}).sort(function(a,b){return urgScore(b)-urgScore(a);});
   document.getElementById('timerList').innerHTML=pen.length?pen.slice(0,20).map(function(t){return'<button onclick="selTimer('+t.id+')" class="btn" style="text-align:left;border-radius:10px;padding:10px 14px;width:100%;'+(timerTid===t.id?'border-color:var(--pri);color:var(--pri);':'')+'"><span style="flex:1;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+esc(t.text)+'</span><span class="badge b'+t.priority.charAt(0)+'" style="flex-shrink:0;margin-left:8px;">'+t.priority+'</span></button>';}).join(''):'<div class="empty-state">Add some tasks first</div>';
@@ -936,13 +965,13 @@ function setTimer(m){pauseTimer();timerSec=m*60;timerTotal=m*60;updTimer();}
 function setCustomTimer(){var m=parseInt(document.getElementById('customMins').value);if(!m||m<1||m>600){toast('Enter a number between 1 and 600','warn');return;}setTimer(m);toast('Timer set to '+m+' min','inf');}
 function startTimer(){if(timerRunning)return;timerRunning=true;timerIv=setInterval(function(){timerSec--;updTimer();if(timerSec<=0){clearInterval(timerIv);timerRunning=false;toast('⏰ Timer done! Take a break.','ok');document.getElementById('timerDisp').textContent='Done!';}},1000);}
 function pauseTimer(){clearInterval(timerIv);timerRunning=false;}
-function resetTimer(){clearInterval(timerIv);timerRunning=false;timerSec=timerTotal;updTimer();}  // fixed: reset to timerTotal not hardcoded
+function resetTimer(){clearInterval(timerIv);timerRunning=false;timerSec=timerTotal;updTimer();}
 function updTimer(){var m=Math.floor(timerSec/60).toString().padStart(2,'0'),s=(timerSec%60).toString().padStart(2,'0');document.getElementById('timerDisp').textContent=m+':'+s;var circle=document.getElementById('timerCircle');if(circle)circle.style.strokeDashoffset=477.5*(timerSec/timerTotal);}
 
 /* ══ DETAIL PANEL ══ */
 function openDetail(id){
   var t=tasks.find(function(t){return t.id===id;});if(!t)return;
-  var due=new Date(t.date),isOD=!t.done&&due<TODAY,dl=Math.ceil((due-TODAY)/86400000);
+  var due=parseLocalDate(t.date),isOD=!t.done&&due<TODAY,dl=Math.ceil((due-TODAY)/86400000);
   var dlbl=isOD?Math.abs(dl)+' days overdue':dl===0?'Due today':dl+' days left';
   var sc=urgScore(t),col=urgColor(sc);
   var pColors={high:'#ff5b8d',medium:'#5aabff',low:'#3dffc0'},pc=pColors[t.priority]||'#5aabff';
@@ -973,7 +1002,7 @@ function toggleFromDetail(id){toggleTask(id);closeDetail();}
 function delFromDetail(id){if(confirm('Delete this task?')){delTask(id);closeDetail();}}
 function startDT(id){if(dtRunning)return;dtRunning=true;dtIv=setInterval(function(){dtSec--;updDT();if(dtSec<=0){clearInterval(dtIv);dtRunning=false;toast('Focus session complete! 🎉','ok');}},1000);}
 function pauseDT(){clearInterval(dtIv);dtRunning=false;}
-function resetDT(){clearInterval(dtIv);dtRunning=false;dtSec=dtTotal;updDT();}  // fixed: reset to dtTotal
+function resetDT(){clearInterval(dtIv);dtRunning=false;dtSec=dtTotal;updDT();}
 function setDTCustom(){var m=parseInt(document.getElementById('dpCustomMins').value);if(!m||m<1){toast('Enter a valid number of minutes','warn');return;}clearInterval(dtIv);dtRunning=false;dtSec=m*60;dtTotal=m*60;updDT();toast('Timer set to '+m+' min','inf');}
 function updDT(){var m=Math.floor(dtSec/60).toString().padStart(2,'0'),s=(dtSec%60).toString().padStart(2,'0'),el=document.getElementById('dpTimerDisp');if(el)el.textContent=m+':'+s;}
 
@@ -988,7 +1017,11 @@ function addTask(){
 function toggleTask(id){var t=tasks.find(function(t){return t.id===id;});if(t){t.done=!t.done;save();renderTab(curTab);}}
 function delTask(id){if(confirm('Delete this task?')){tasks=tasks.filter(function(t){return t.id!==id;});save();renderTab(curTab);toast('Deleted','inf');}}
 
-/* ══ IMPORT ══ */
+/* ══ IMPORT ══
+ * FIX: parseICS now uses toYMD() to build the date string from local components,
+ * ensuring no UTC shift regardless of timezone. ICS DTSTART YYYYMMDD is always
+ * treated as a local calendar date, never converted through UTC.
+ */
 async function importUrl(type){
   var url=(type==='google'?document.getElementById('gUrl'):document.getElementById('cUrl')).value.trim();
   if(!url){toast('Please paste a URL','warn');return;}
@@ -1002,26 +1035,58 @@ async function importUrl(type){
   }catch(e){toast('Import failed: '+e.message,'warn');}
 }
 function importICS(){var f=document.getElementById('icsFile').files[0];if(!f){toast('Select a file','warn');return;}var rd=new FileReader();rd.onload=function(e){var cnt=parseICS(e.target.result,'ics-file');toast('Imported '+cnt+' task(s)','ok');renderTab(curTab);};rd.readAsText(f);}
-function parseICS(text,source){
-  var lines=text.split('\n'),cnt=0,ev=null;
+
+function parseICS(text, source){
+  // Unfold ICS lines (lines continued with a leading space/tab)
+  var unfolded=text.replace(/\r\n[ \t]/g,'').replace(/\n[ \t]/g,'');
+  var lines=unfolded.split(/\r?\n/);
+  var cnt=0;
+  var ev=null;
+
   for(var i=0;i<lines.length;i++){
     var line=lines[i].trim();
-    if(line==='BEGIN:VEVENT'){ev={id:Date.now()+Math.random(),text:'',date:'',notes:'',done:false,source:source,added:Date.now()};}
+
+    if(line==='BEGIN:VEVENT'){
+      ev={id:Date.now()+Math.random(),text:'',date:'',notes:'',done:false,source:source,added:Date.now()};
+    }
     else if(line==='END:VEVENT'&&ev&&ev.text&&ev.date){
-      var d=ev.date;if(d.includes('T'))d=d.substring(0,8);
-      ev.date=d.substring(0,4)+'-'+d.substring(4,6)+'-'+d.substring(6,8);
-      // Auto-assign priority from task name
+      // Auto priority from task name
       ev.priority=inferPriority(ev.text);
-      if(!tasks.some(function(t){return t.text.toLowerCase()===ev.text.toLowerCase()&&t.date===ev.date&&t.source===source;})){tasks.push(ev);cnt++;}
+
+      // Prevent duplicates (case-insensitive text + same date + same source)
+      if(!tasks.some(function(t){
+        return t.text.toLowerCase()===ev.text.toLowerCase()&&t.date===ev.date&&t.source===source;
+      })){
+        tasks.push(ev);
+        cnt++;
+      }
       ev=null;
     }
     else if(ev){
-      if(line.startsWith('SUMMARY:'))ev.text=line.substring(8).replace(/\\,/g,',').replace(/\\n/g,' ').trim();
-      else if(line.startsWith('DTSTART'))ev.date=line.split(':').pop();
-      else if(line.startsWith('DESCRIPTION:'))ev.notes=line.substring(12).replace(/\\n/g,'\n').replace(/\\,/g,',').trim();
+      if(line.startsWith('SUMMARY:')){
+        ev.text=line.substring(8).replace(/\\,/g,',').replace(/\\n/g,' ').replace(/\\;/g,';').trim();
+      }
+      else if(line.startsWith('DTSTART')){
+        // Value is everything after the colon (handles DTSTART;TZID=... and plain DTSTART:)
+        var raw=line.split(':').slice(1).join(':').trim();
+        // Take only first 8 chars = YYYYMMDD, ignore time portion entirely
+        var d=raw.substring(0,8);
+        if(d.length===8&&/^\d{8}$/.test(d)){
+          // Build YYYY-MM-DD as LOCAL date components — no UTC conversion at all
+          var yr=d.substring(0,4);
+          var mo=d.substring(4,6);
+          var dy=d.substring(6,8);
+          ev.date=yr+'-'+mo+'-'+dy;
+        }
+      }
+      else if(line.startsWith('DESCRIPTION:')){
+        ev.notes=line.substring(12).replace(/\\n/g,'\n').replace(/\\,/g,',').replace(/\\;/g,';').trim();
+      }
     }
   }
-  save();return cnt;
+
+  save();
+  return cnt;
 }
 
 /* ══ AUTO REFRESH ══ */
