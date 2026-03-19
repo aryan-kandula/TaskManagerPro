@@ -951,36 +951,174 @@ function renderWeek(){
 }
 
 /* ════════════════ AI ════════════════ */
-var sugs=["What should I focus on today?","Am I falling behind on anything?","What are my highest priority tasks?","How's my completion rate?","What's due this week?","Give me a study plan for tomorrow","Which tasks are overdue?","How many days until my next deadline?"];
+/* Quick question groups */
+var sugGroups=[
+  {label:'📅 Planning',items:[
+    'Schedule my tasks across this week by importance',
+    'Give me a day-by-day study plan for this week',
+    'What should I work on today?',
+    'Build me a study schedule for the next 3 days'
+  ]},
+  {label:'📊 Status',items:[
+    'Am I falling behind on anything?',
+    "How's my completion rate looking?",
+    'Which tasks are overdue?',
+    'How many days until my next deadline?'
+  ]},
+  {label:'🎯 Priority',items:[
+    'What are my highest priority tasks?',
+    'What is the single most important thing I should do right now?',
+    'Rank all my pending tasks by urgency',
+    'Which tasks can I safely leave until later?'
+  ]},
+  {label:'📚 By Course',items:[
+    'Group my tasks by course or category',
+    'Which course has the most pending work?',
+    'Show me everything due in the next 7 days',
+    'What tasks are due this week vs next week?'
+  ]}
+];
+
 function renderAISugs(){
-  document.getElementById('sugList').innerHTML=sugs.map(function(s){return'<button class="sug" onclick="askAI('+JSON.stringify(s)+')">'+s+'</button>';}).join('');
+  var html='';
+  sugGroups.forEach(function(g){
+    html+='<div style="margin-bottom:14px;">';
+    html+='<div style="font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--tx3);margin-bottom:7px;padding-left:2px;">'+esc(g.label)+'</div>';
+    g.items.forEach(function(s){
+      html+='<button class="sug ai-sug-btn" data-q="'+esc(s)+'">'+esc(s)+'</button>';
+    });
+    html+='</div>';
+  });
+  var container=document.getElementById('sugList');
+  container.innerHTML=html;
+  // Attach click handlers after render — avoids all inline onclick quoting issues
+  container.querySelectorAll('.ai-sug-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){askAI(btn.getAttribute('data-q'));});
+  });
   var pen=tasks.filter(function(t){return!t.done;}),od=pen.filter(function(t){return new Date(t.date)<TODAY;});
   var hi=pen.filter(function(t){return t.priority==='high';}),rate=tasks.length?Math.round(tasks.filter(function(t){return t.done;}).length/tasks.length*100):0;
   var nd=pen.slice().sort(function(a,b){return new Date(a.date)-new Date(b.date);})[0];
-  document.getElementById('aiSnap').innerHTML='<div style="font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--tx2);margin-bottom:12px;">Live Snapshot</div><div class="ai-snap-row"><span>Completion rate</span><span>'+rate+'%</span></div><div class="ai-snap-row"><span>Overdue tasks</span><span style="color:var(--acc);">'+od.length+'</span></div><div class="ai-snap-row"><span>High priority</span><span style="color:var(--gld);">'+hi.length+'</span></div><div class="ai-snap-row"><span>Next deadline</span><span>'+(nd?new Date(nd.date).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'None')+'</span></div>';
+  document.getElementById('aiSnap').innerHTML='<div style="font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--tx2);margin-bottom:12px;">Live Snapshot</div>'
+    +'<div class="ai-snap-row"><span>Completion rate</span><span>'+rate+'%</span></div>'
+    +'<div class="ai-snap-row"><span>Overdue tasks</span><span style="color:var(--acc);">'+od.length+'</span></div>'
+    +'<div class="ai-snap-row"><span>High priority</span><span style="color:var(--gld);">'+hi.length+'</span></div>'
+    +'<div class="ai-snap-row"><span>Next deadline</span><span>'+(nd?new Date(nd.date).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'None')+'</span></div>';
 }
-function askAI(msg){document.getElementById('aiIn').value=msg;sendAI();}
+
+/* askAI fires immediately — never touches the input field */
+function askAI(msg){
+  addMsg(msg,'user');
+  _runAI(msg);
+}
+
 async function sendAI(){
-  var inp=document.getElementById('aiIn'),q=inp.value.trim();if(!q)return;inp.value='';
-  addMsg(q,'user');var thk=addMsg('Thinking...','think');
+  var inp=document.getElementById('aiIn'),q=inp.value.trim();
+  if(!q)return;
+  inp.value='';
+  addMsg(q,'user');
+  _runAI(q);
+}
+
+async function _runAI(q){
+  var thk=addMsg('Thinking...','think');
   var pen=tasks.filter(function(t){return!t.done;}),od=pen.filter(function(t){return new Date(t.date)<TODAY;}),dn=tasks.filter(function(t){return t.done;});
   var rate=tasks.length?Math.round(dn.length/tasks.length*100):0;
-  var ctx=tasks.slice(0,50).map(function(t){var due=new Date(t.date),dl=Math.ceil((due-TODAY)/86400000);return'- "'+t.text+'" | Due: '+t.date+' ('+(dl>0?dl+'d left':dl===0?'due today':Math.abs(dl)+'d overdue')+') | '+t.priority+' priority | '+(t.done?'done':'pending')+(t.course?' | '+t.course:'');}).join('\n');
-  var sys='You are a smart, concise AI study assistant inside Task Manager Pro for a college student named Aryan.\n\nDate: '+TODAY.toDateString()+'\nStats: '+tasks.length+' total | '+pen.length+' pending | '+od.length+' overdue | '+dn.length+' done | '+rate+'% completion\n\nTASKS:\n'+(ctx||'No tasks yet.')+'\n\nBe direct, helpful, specific. Under 200 words unless asked for detail. Give concrete prioritized lists for planning questions.';
+  var ctx=tasks.slice(0,60).map(function(t){
+    var due=new Date(t.date),dl=Math.ceil((due-TODAY)/86400000);
+    var dayName=due.toLocaleDateString('en-US',{weekday:'long'});
+    return'- "'+t.text+'" | Date: '+t.date+' ('+dayName+') | '+(dl>0?dl+'d left':dl===0?'TODAY':Math.abs(dl)+'d overdue')+' | '+t.priority+' priority | '+(t.done?'done':'pending')+(t.course?' | Course: '+t.course:'');
+  }).join('\n');
+  var weekCtx='';
+  var sow=new Date(TODAY);sow.setDate(TODAY.getDate()-TODAY.getDay());
+  for(var i=0;i<7;i++){var d=new Date(sow);d.setDate(sow.getDate()+i);weekCtx+=d.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'})+'\n';}
+  var sys='You are a smart AI study assistant embedded inside Task Manager Pro for a college student named Aryan.\n\n'
+    +'TODAY: '+TODAY.toDateString()+' ('+TODAY.toLocaleDateString('en-US',{weekday:'long'})+')\n'
+    +'THIS WEEK:\n'+weekCtx
+    +'STATS: '+tasks.length+' total | '+pen.length+' pending | '+od.length+' overdue | '+dn.length+' done | '+rate+'% completion\n\n'
+    +'ALL TASKS:\n'+(ctx||'No tasks added yet.')+'\n\n'
+    +'CAPABILITIES:\n'
+    +'- Daily/weekly scheduling: assign each pending task to a specific day this week based on urgency, due date, and workload balance\n'
+    +'- Prioritization: rank tasks, identify what matters most right now\n'
+    +'- Overdue analysis: identify what is late and how late\n'
+    +'- Course-based grouping: group tasks by course or category\n'
+    +'- Study plans: concrete day-by-day schedules with specific tasks on specific days\n'
+    +'- Workload warnings: flag days that look too busy\n\n'
+    +'RULES:\n'
+    +'- Always reference actual task names from the list\n'
+    +'- For scheduling requests output a day-by-day plan:\n'
+    +'  Monday (Mar 20): Task name [high priority, due Wed]\n'
+    +'  Tuesday (Mar 21): Task name + Task name\n'
+    +'- Spread workload sensibly, do not pile everything on one day\n'
+    +'- Put overdue and high-priority tasks on the earliest available day\n'
+    +'- Keep under 300 words unless a full schedule is requested\n'
+    +'- Use plain text with line breaks, no markdown\n'
+    +'- If no tasks exist, encourage adding some';
   try{
-    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:sys,messages:[{role:'user',content:q}]})});
-    var data=await res.json();thk.remove();
+    var res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,system:sys,messages:[{role:'user',content:q}]})
+    });
+    var data=await res.json();
+    thk.remove();
     addMsg(data.content&&data.content[0]?data.content[0].text:"Sorry, couldn't get a response.",'bot');
   }catch(e){thk.remove();addMsg(aiFallback(q),'bot');}
 }
+
 function aiFallback(q){
-  var query=q.toLowerCase(),pen=tasks.filter(function(t){return!t.done;}),od=pen.filter(function(t){return new Date(t.date)<TODAY;});
-  var hi=pen.filter(function(t){return t.priority==='high';}),rate=tasks.length?Math.round(tasks.filter(function(t){return t.done;}).length/tasks.length*100):0;
-  if(query.includes('today')||query.includes('focus')){var td=pen.filter(function(t){return new Date(t.date)<=TODAY;}).sort(function(a,b){return urgScore(b)-urgScore(a);});if(!td.length)return"You're all clear for today! 🎉";return"Focus on:\n"+td.slice(0,3).map(function(t,i){return(i+1)+'. '+t.text+' ('+t.priority+')';}).join('\n');}
-  if(query.includes('overdue')||query.includes('behind')){if(!od.length)return"Not behind on anything! 🎉";return od.length+' overdue:\n'+od.slice(0,5).map(function(t){return'• '+t.text;}).join('\n');}
-  if(query.includes('high')||query.includes('priority')){if(!hi.length)return'No high priority tasks right now!';return hi.length+' high priority:\n'+hi.map(function(t){return'• '+t.text;}).join('\n');}
-  if(query.includes('completion')||query.includes('rate'))return'Completion rate: '+rate+'% ('+tasks.filter(function(t){return t.done;}).length+'/'+tasks.length+').'+(rate>=70?' Great! 🔥':rate>=40?' Keep going! 💪':' Time to start! 📚');
-  return'You have '+pen.length+' pending tasks, '+od.length+' overdue. Rate: '+rate+'%. Ask me "what should I focus on today?" for specific advice!';
+  var query=q.toLowerCase();
+  var pen=tasks.filter(function(t){return!t.done;});
+  var od=pen.filter(function(t){return new Date(t.date)<TODAY;});
+  var hi=pen.filter(function(t){return t.priority==='high';});
+  var rate=tasks.length?Math.round(tasks.filter(function(t){return t.done;}).length/tasks.length*100):0;
+  if(query.includes('schedule')||query.includes('plan')||query.includes('spread')){
+    if(!pen.length)return"No pending tasks to schedule! Add some first.";
+    var sorted=pen.slice().sort(function(a,b){return urgScore(b)-urgScore(a);});
+    var sow2=new Date(TODAY);sow2.setDate(TODAY.getDate()-TODAY.getDay());
+    var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    var remaining=[];
+    for(var i=TODAY.getDay();i<=6;i++)remaining.push(i);
+    if(!remaining.length)remaining=[1,2,3,4,5];
+    var plan={};
+    sorted.forEach(function(t,idx){var di=remaining[idx%remaining.length];if(!plan[di])plan[di]=[];plan[di].push(t);});
+    var out='Suggested schedule for the rest of this week:\n\n';
+    remaining.forEach(function(di){
+      var dd=new Date(sow2);dd.setDate(sow2.getDate()+di);
+      var dt=plan[di]||[];
+      out+=days[di]+' ('+dd.toLocaleDateString('en-US',{month:'short',day:'numeric'})+'):\n';
+      if(!dt.length)out+='  — Free\n'; else dt.forEach(function(t){out+='  • '+t.text+' ['+t.priority+']\n';});
+      out+='\n';
+    });
+    return out.trim();
+  }
+  if(query.includes('today')||query.includes('focus')){
+    var td=pen.filter(function(t){return new Date(t.date)<=TODAY;}).sort(function(a,b){return urgScore(b)-urgScore(a);});
+    if(!td.length)return"You're all clear for today! 🎉";
+    return"Focus on today:\n"+td.slice(0,4).map(function(t,i){return(i+1)+'. '+t.text+' ('+t.priority+')';}).join('\n');
+  }
+  if(query.includes('overdue')||query.includes('behind')){
+    if(!od.length)return"Not behind on anything! 🎉";
+    return od.length+' overdue:\n'+od.slice(0,6).map(function(t){return'• '+t.text+' (due '+t.date+')';}).join('\n');
+  }
+  if(query.includes('rank')||query.includes('urgent')||query.includes('important')){
+    if(!pen.length)return'No pending tasks!';
+    var ranked=pen.slice().sort(function(a,b){return urgScore(b)-urgScore(a);});
+    return'Ranked by urgency:\n'+ranked.slice(0,8).map(function(t,i){return(i+1)+'. '+t.text+' — '+urgScore(t)+'/100';}).join('\n');
+  }
+  if(query.includes('course')||query.includes('group')||query.includes('categor')){
+    var groups={};
+    pen.forEach(function(t){var k=t.course||'Uncategorized';if(!groups[k])groups[k]=[];groups[k].push(t);});
+    if(!Object.keys(groups).length)return'No pending tasks to group.';
+    return Object.keys(groups).map(function(k){return k+' ('+groups[k].length+' tasks):\n'+groups[k].map(function(t){return'  • '+t.text;}).join('\n');}).join('\n\n');
+  }
+  if(query.includes('completion')||query.includes('rate')){
+    return'Completion: '+rate+'% ('+tasks.filter(function(t){return t.done;}).length+'/'+tasks.length+'). '+(rate>=70?'Great work! 🔥':rate>=40?'Keep pushing! 💪':'Time to start! 📚');
+  }
+  if(query.includes('7 days')||query.includes('next week')||query.includes('this week')){
+    var nw=pen.filter(function(t){var dl=Math.ceil((new Date(t.date)-TODAY)/86400000);return dl>=0&&dl<=7;}).sort(function(a,b){return new Date(a.date)-new Date(b.date);});
+    if(!nw.length)return'Nothing due in the next 7 days.';
+    return nw.length+' due in 7 days:\n'+nw.map(function(t){var dl=Math.ceil((new Date(t.date)-TODAY)/86400000);return'• '+t.text+' — '+(dl===0?'today':dl+'d');}).join('\n');
+  }
+  return'You have '+pen.length+' pending tasks, '+od.length+' overdue. Rate: '+rate+'%.\nTry asking: "schedule my tasks this week" or "what should I focus on today?"';
 }
 function addMsg(txt,type){var msgs=document.getElementById('aiMsgs'),el=document.createElement('div');el.className='ai-msg '+type;el.style.whiteSpace='pre-wrap';el.textContent=txt;msgs.appendChild(el);msgs.scrollTop=msgs.scrollHeight;return el;}
 
@@ -1109,14 +1247,9 @@ function save(){localStorage.setItem('tmp_tasks',JSON.stringify(tasks));}
 function esc(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML;}
 
 /* ════════════════ INIT ════════════════ */
-// Check if user has seen the landing before
-if(localStorage.getItem('tmp_seen')==='1'){
-  document.getElementById('landing').style.display='none';
-  document.getElementById('app').style.display='block';
-  renderDash();renderAISugs();
-} else {
-  localStorage.setItem('tmp_seen','1');
-}
+// Always show landing page on load
+document.getElementById('landing').style.display='flex';
+document.getElementById('app').style.display='none';
 </script>
 </body>
 </html>
