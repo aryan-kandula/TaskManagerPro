@@ -3,7 +3,7 @@
 A modern, student-focused task management application built with vanilla JavaScript and powered by Claude AI.  
 Featuring a full iOS 26-style liquid glassmorphic design, intelligent AI assistance, auto-refreshing calendar sources, and an immersive task detail experience.
 
-![Version](https://img.shields.io/badge/version-3.1-blue.svg)
+![Version](https://img.shields.io/badge/version-3.1.2-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Design](https://img.shields.io/badge/design-iOS%2026%20Glass-blueviolet.svg)
 ![AI](https://img.shields.io/badge/AI-Claude%20Powered-orange.svg)
@@ -24,13 +24,14 @@ Featuring a full iOS 26-style liquid glassmorphic design, intelligent AI assista
 - Dark and light mode with smooth animated toggle — both fully redesigned
 - Pill-shaped floating sticky header and pill navigation throughout
 - Animated background mesh with drifting color orbs on every page
+- Dynamic canvas favicon — rainbow gradient rounded-square with checkmark, generated at runtime
 
 ### 🛬 Landing Page & Onboarding
 - Full onboarding landing page that explains every feature before you start
 - Step-by-step visual guide walking through each part of the app
 - Smooth fade and scale transition into the dashboard on entry
 - Remembers returning users and skips the guide automatically
-- A Guide button in the app header brings the landing page back at any time
+- A **← Guide** button in the app header brings the landing page back at any time
 
 ### 📋 Task Management
 - Create tasks with description, due date, priority, course/category, and notes
@@ -39,18 +40,25 @@ Featuring a full iOS 26-style liquid glassmorphic design, intelligent AI assista
 - Visual urgency bar on every task card, color-coded from green to red
 - Countdown label showing days remaining or days overdue on every card
 
+### 🧠 Smart Auto-Priority Detection
+- Task names are scanned automatically to infer priority on every import
+- **High**: exam, final, midterm, test, quiz, capstone, sprint
+- **Medium**: lab, assessment, assignment, homework, module lab, hands-on
+- **Low**: exercise, guided, attendance, survey, podcast, discussion, EC, career
+- Manually added tasks still use the dropdown — auto-detection only applies to imports
+
 ### 👁️ Task Detail Panel
 - Click any task to open an immersive full-screen detail view
 - iOS 26 deep blue glassmorphic panel with animated floating orbs inside
 - Shows urgency score with animated fill bar, full due date, status, source, and course
-- Built-in 25-minute focus timer inside the detail panel
+- Built-in focus timer inside the detail panel with custom duration input (up to 600 min)
 - Mark done or delete directly from the detail view
 
 ### 🤖 AI Assistant — Powered by Claude
-The AI assistant is connected to the Claude API and has full awareness of all your tasks, deadlines, priorities, and courses. Clicking a Quick Question fires it instantly — no typing required.
+The AI assistant connects to the Claude API (`claude-sonnet-4-20250514`) and has full awareness of all your tasks, deadlines, priorities, and courses. Clicking a Quick Question fires it instantly — no typing required.
 
 **What you can ask:**
-- `Schedule my tasks across this week by importance` — generates a full day-by-day plan, balancing workload across available days
+- `Schedule my tasks across this week by importance` — generates a full day-by-day plan, max 4–6 tasks per day, skipping weekends unless overdue
 - `Give me a day-by-day study plan for this week` — assigns specific tasks to specific days based on urgency and due dates
 - `What should I work on today?` — surfaces the most critical tasks for right now
 - `Am I falling behind on anything?` — checks overdue and near-due tasks
@@ -75,20 +83,28 @@ The AI assistant is connected to the Claude API and has full awareness of all yo
 - Sources managed and removable in the Settings tab
 
 ### 📅 Week View
-- Full 7-day calendar grid for the current week
-- Tasks plotted per day with clickable chips that open the detail panel
-- Today highlighted in primary blue, overdue days in red
+- Full 7-day calendar grid with left/right arrow navigation between weeks
+- Week range title updates as you navigate (e.g. "Mar 16 – Mar 22, 2026")
+- Click any day tile to filter tasks for that specific day below the grid; click again to deselect
+- Today highlighted in blue, selected day highlighted in purple
+- Task count badge per tile (gold when tasks exist), two-task preview chips per day
+- Interactive day-detail section below the grid replaces the old static list
 
 ### ⏱ Study Timer
 - Pomodoro-style timer with animated SVG gradient ring
 - 25-minute, 50-minute, and 5-minute break presets
+- Custom duration input — type any number of minutes up to 240 in the Study Timer tab
+- Same custom input inside every task detail panel (up to 600 min)
+- Reset always restores the last-set duration, not the default 25:00
 - Task selection sorted by urgency score
 - Toast notification on session completion
 
 ### 📊 Dashboard
-- Animated stat counters for total, pending, done, and overdue
+- Animated stat counters for total, pending, done, and overdue — all clickable
+- Total → All Tasks tab; Pending → All Tasks filtered to Pending; Done → All Tasks filtered to Done; Overdue → scrolls to Past Due section
 - Upcoming tasks auto-sorted by urgency score
-- Past due section hidden by default with toggle
+- Past Due section hidden by default with toggle
+- Bulk actions bar above Past Due: Mark All Done or Mark Range Done with a date picker
 
 ### 🔍 All Tasks View
 - Filter simultaneously by priority, status, and free-text search
@@ -106,7 +122,7 @@ The AI assistant is connected to the Claude API and has full awareness of all yo
 No installation. No dependencies. No build process.
 
 1. Download or clone the repository
-2. Open `TaskManagerPro.html` in any modern web browser
+2. Open `index.html` in any modern web browser
 3. Follow the onboarding guide, then start adding tasks
 
 ---
@@ -120,13 +136,15 @@ Click **+ Add Task**, fill in the description, due date, priority, course, and n
 Click any task card to open the full detail panel with urgency breakdown, notes, and a built-in focus timer.
 
 ### Importing from Calendars
-Click **Import**, paste your Canvas or Google iCal URL, then click **Import & Watch**. Tasks are imported and the source is watched for auto-refresh going forward.
+Click **Import**, then either:
+- Paste your Canvas Calendar Feed URL or Google iCal URL and click **Import & Watch** — tasks import and the source auto-refreshes every 5 minutes going forward
+- Upload a `.ics` file directly from disk using the file picker and click **Import File**
 
 ### AI Assistant
 Open the **AI Assistant** tab. Click any Quick Question button — it fires immediately. Or type your own question in the input box and press Enter or Send.
 
 ### Study Timer
-Open **Study Timer**, select a task from the right panel, pick a duration, and click Start.
+Open **Study Timer**, select a task from the right panel, pick a duration (preset or custom), and click Start.
 
 ### Theme Toggle
 Click the pill toggle in the top-right of the header to switch dark/light mode.
@@ -150,7 +168,7 @@ Click the pill toggle in the top-right of the header to switch dark/light mode.
 
 ## 🔧 Technical Details
 
-**Technologies:** HTML5 · CSS3 · Vanilla JavaScript · Claude API · LocalStorage API · Fetch API
+**Technologies:** HTML5 · CSS3 · Vanilla JavaScript · Claude API (`claude-sonnet-4-20250514`) · LocalStorage API · Fetch API
 
 **Browser Compatibility:** Chrome / Edge (recommended) · Firefox · Safari · Opera
 
@@ -160,10 +178,10 @@ Click the pill toggle in the top-right of the header to switch dark/light mode.
 
 ```
 TaskManagerPro/
-├── TaskManagerPro.html   # Complete single-file application
-├── README.md             # Project documentation
-├── CHANGELOG.md          # Version history
-└── LICENSE               # MIT License
+├── index.html      # Complete single-file application
+├── README.md       # Project documentation
+├── CHANGELOG.md    # Version history
+└── LICENSE         # MIT License
 ```
 
 ---
@@ -215,4 +233,4 @@ MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
-Made with ❤️ by Aryan Kandula
+Made by Aryan Kandula
