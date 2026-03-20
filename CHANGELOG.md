@@ -4,6 +4,36 @@ All notable changes to Task Manager Pro are documented here.
 
 ---
 
+## [3.1.2] - 2026-03-19
+
+A polish and compatibility commit — renamed entry point for GitHub Pages, tightened the custom timer input range, added a dynamic canvas favicon, and formally documented the ICS file upload feature that was present but missing from the changelog.
+
+### Added
+
+**Dynamic Canvas Favicon**
+- Browser tab icon is now generated at runtime via an inline `<canvas>` script
+- Draws a rounded-square with a conic rainbow gradient (matching the app logo colors) and a white checkmark stroke
+- Falls back to a linear gradient on browsers that do not support `createConicGradient`
+- No external favicon file needed — fully self-contained in `index.html`
+
+**ICS File Upload (formally documented)**
+- Import modal includes a `📄 Upload .ics File` section — select any `.ics` file directly from disk
+- Parsed through the same `parseICS()` pipeline as URL imports (unfolding, backslash-escape cleanup, auto-priority, duplicate guard)
+- Tasks are tagged with source `ics-file` and shown with the 📄 ICS label in the detail panel
+
+### Changed
+
+**Entry point renamed to `index.html`**
+- File was previously `TaskManagerPro.html`; renamed to `index.html` for GitHub Pages compatibility (serves automatically at the root URL without a filename in the address bar)
+- No functional changes — all logic, styles, and structure are identical
+
+**Custom Timer Input Cap (Study Timer tab)**
+- Main Study Timer custom input now has `max="240"` in the HTML (previously displayed `max` was uncapped / set to 240 but JS validated up to 600)
+- JS validation threshold unchanged at 600 — values between 241 and 600 are still accepted if typed manually
+- Detail panel focus timer input retains `max="600"` (unchanged)
+
+---
+
 ## [3.1.1] - 2026-03-19
 
 A focused improvement commit addressing overdue task management, dashboard navigation, week view usability, AI scheduling quality, priority auto-detection, and timer bugs.
