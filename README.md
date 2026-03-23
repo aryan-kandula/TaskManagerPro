@@ -1,9 +1,9 @@
 # Task Manager Pro
 
 A modern, student-focused task management application built with vanilla JavaScript and powered by Claude AI.  
-Featuring a full iOS 26-style liquid glassmorphic design, intelligent AI assistance, auto-refreshing calendar sources, and an immersive task detail experience.
+Featuring a full iOS 26-style liquid glassmorphic design, intelligent AI assistance, smart tagging, time-aware scheduling, and an immersive task detail experience.
 
-![Version](https://img.shields.io/badge/version-3.1.2-blue.svg)
+![Version](https://img.shields.io/badge/version-3.2.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Design](https://img.shields.io/badge/design-iOS%2026%20Glass-blueviolet.svg)
 ![AI](https://img.shields.io/badge/AI-Claude%20Powered-orange.svg)
@@ -16,7 +16,61 @@ Featuring a full iOS 26-style liquid glassmorphic design, intelligent AI assista
 
 ---
 
-## 🌟 Features
+## ✨ Version 3.2 Features
+
+### ⏰ Time-Based Scheduling
+
+Tasks now support an optional **time field** (HH:MM, 24-hour format):
+
+- If a time is provided, it displays alongside the date on every card and in the detail panel
+- If no time is set, the task is treated as an **all-day item** (defaults to end-of-day for urgency)
+- **Urgency scoring is now fully time-aware** — a task due in 3 hours scores dramatically higher than one due in 8 hours, even on the same date
+- Within-day ordering: earlier time = higher urgency, so morning classes rank above afternoon ones
+
+### 🏷️ Smart Tagging System
+
+Every task can have multiple tags — both user-defined and auto-detected:
+
+- **User tags**: Add any tags while creating a task. Press `Enter`, `,`, or `Space` to commit a tag. Backspace removes the last one. Tags are displayed as colored pill badges throughout the app
+- **Auto tags**: On creation and import, task names are scanned for keywords. Matching tasks get tags automatically — these never override tags you set yourself
+- **Tag types with distinct colors**:
+  - `exam` — red/pink
+  - `assignment` — gold
+  - `class` — purple
+  - `holiday` — green
+  - `event` — orange
+  - custom tags — neutral glass
+- Tags are searchable in the **All Tasks** search bar
+
+### 🗂️ Task Type Classification
+
+Each task now has a **type** field:
+
+| Type | Description |
+|---|---|
+| `task` | General to-do (default) |
+| `assignment` | Coursework with a submission deadline |
+| `class` | Lecture, lab, or scheduled session |
+| `exam` | Test, quiz, midterm, or final |
+| `event` | Meeting, club, or workshop |
+| `holiday` | Break or no-class day |
+
+- Type is shown as a color-coded badge on every card
+- Filter by type in the **All Tasks** tab using the new Type dropdown
+- Auto-detected from task name on creation and import — manual override always available
+
+### 🤖 AI-Assisted Categorization (Development Mode)
+
+When creating or importing tasks, the AI categorization engine scans task names and:
+- Infers the most likely **type** (exam, assignment, class, etc.)
+- Applies **auto tags** matching the content
+- Uses **priority inference** (unchanged from v3.1)
+
+> ⚠️ **AI features are in development mode.** A visible disclaimer appears in the AI Assistant tab. Results may not always be accurate — always double-check important tasks.
+
+---
+
+## 🌟 Full Feature List
 
 ### 🎨 iOS 26 Liquid Glass Design
 - Full liquid glassmorphic UI inspired by Apple's iOS 26 design language
@@ -28,92 +82,55 @@ Featuring a full iOS 26-style liquid glassmorphic design, intelligent AI assista
 
 ### 🛬 Landing Page & Onboarding
 - Full onboarding landing page that explains every feature before you start
-- Step-by-step visual guide walking through each part of the app
 - Smooth fade and scale transition into the dashboard on entry
 - Remembers returning users and skips the guide automatically
 - A **← Guide** button in the app header brings the landing page back at any time
 
 ### 📋 Task Management
-- Create tasks with description, due date, priority, course/category, and notes
-- High, Medium, and Low priority system with color-coded urgency scoring
-- Urgency score (0–100) auto-calculated from deadline proximity and priority level
+- Create tasks with description, due date, **time**, priority, type, **tags**, course/category, and notes
+- High, Medium, and Low priority with color-coded urgency scoring
+- Urgency score (0–100) auto-calculated from deadline proximity, **time of day**, and priority level
 - Visual urgency bar on every task card, color-coded from green to red
-- Countdown label showing days remaining or days overdue on every card
 
 ### 🧠 Smart Auto-Priority Detection
 - Task names are scanned automatically to infer priority on every import
 - **High**: exam, final, midterm, test, quiz, capstone, sprint
 - **Medium**: lab, assessment, assignment, homework, module lab, hands-on
 - **Low**: exercise, guided, attendance, survey, podcast, discussion, EC, career
-- Manually added tasks still use the dropdown — auto-detection only applies to imports
 
 ### 👁️ Task Detail Panel
 - Click any task to open an immersive full-screen detail view
-- iOS 26 deep blue glassmorphic panel with animated floating orbs inside
-- Shows urgency score with animated fill bar, full due date, status, source, and course
-- Built-in focus timer inside the detail panel with custom duration input (up to 600 min)
+- Shows urgency score (time-aware), full due date and time, status, type, tags, source, and course
+- Built-in focus timer with custom duration input (up to 600 min)
 - Mark done or delete directly from the detail view
 
 ### 🤖 AI Assistant — Powered by Claude
-The AI assistant connects to the Claude API (`claude-sonnet-4-20250514`) and has full awareness of all your tasks, deadlines, priorities, and courses. Clicking a Quick Question fires it instantly — no typing required.
-
-**What you can ask:**
-- `Schedule my tasks across this week by importance` — generates a full day-by-day plan, max 4–6 tasks per day, skipping weekends unless overdue
-- `Give me a day-by-day study plan for this week` — assigns specific tasks to specific days based on urgency and due dates
-- `What should I work on today?` — surfaces the most critical tasks for right now
-- `Am I falling behind on anything?` — checks overdue and near-due tasks
-- `Rank all my pending tasks by urgency` — full urgency-scored ranked list
-- `Group my tasks by course or category` — organizes everything by the course field
-- `Which course has the most pending work?` — workload breakdown by course
-- `What tasks are due this week vs next week?` — deadline window comparison
-- `What is the single most important thing I should do right now?` — concise top priority
-- `Which tasks can I safely leave until later?` — identifies low-urgency items
-- And any free-form question in natural language
-
-**Quick Question groups** (all clickable, fire instantly):
-- 📅 Planning — scheduling and study plans
-- 📊 Status — completion rate, overdue checks, deadline countdowns
-- 🎯 Priority — urgency ranking and focus advice
-- 📚 By Course — grouped views and course-level workload
+Connects to the Claude API and has full awareness of all your tasks, deadlines, priorities, and courses.
+> ⚠️ AI features are in development mode. Results may not always be accurate. Please double-check important tasks.
 
 ### 🔄 Auto-Refresh Calendar Sources
-- Paste a Canvas or Google Calendar URL once — tasks sync every 5 minutes automatically
-- Live badge on the header pill when new tasks are detected
-- Manual refresh available at any time
-- Sources managed and removable in the Settings tab
+- Paste a Canvas or Google Calendar URL once — tasks sync every 5 minutes
+- Imported tasks get auto-priority, auto-type, and auto-tags applied on arrival
 
 ### 📅 Week View
 - Full 7-day calendar grid with left/right arrow navigation between weeks
-- Week range title updates as you navigate (e.g. "Mar 16 – Mar 22, 2026")
-- Click any day tile to filter tasks for that specific day below the grid; click again to deselect
-- Today highlighted in blue, selected day highlighted in purple
-- Task count badge per tile (gold when tasks exist), two-task preview chips per day
-- Interactive day-detail section below the grid replaces the old static list
+- Click any day tile to filter tasks for that specific day
 
 ### ⏱ Study Timer
 - Pomodoro-style timer with animated SVG gradient ring
-- 25-minute, 50-minute, and 5-minute break presets
-- Custom duration input — type any number of minutes up to 240 in the Study Timer tab
-- Same custom input inside every task detail panel (up to 600 min)
-- Reset always restores the last-set duration, not the default 25:00
-- Task selection sorted by urgency score
-- Toast notification on session completion
+- 25-min, 50-min, and 5-min break presets plus custom duration input
 
 ### 📊 Dashboard
-- Animated stat counters for total, pending, done, and overdue — all clickable
-- Total → All Tasks tab; Pending → All Tasks filtered to Pending; Done → All Tasks filtered to Done; Overdue → scrolls to Past Due section
-- Upcoming tasks auto-sorted by urgency score
-- Past Due section hidden by default with toggle
-- Bulk actions bar above Past Due: Mark All Done or Mark Range Done with a date picker
+- Animated stat counters — all clickable to navigate to filtered views
+- Past Due section with bulk Mark All Done / Mark Range Done actions
 
 ### 🔍 All Tasks View
-- Filter simultaneously by priority, status, and free-text search
+- Filter by priority, status, **type**, and free-text search (searches task name, notes, course, tags)
 - Results always sorted by urgency score
 
 ### 💾 Data & Privacy
-- All data stored locally in your browser — nothing leaves your device
-- Export as JSON or CSV from the Settings tab
-- No accounts, no tracking, no servers
+- All data stored locally — nothing leaves your device
+- Export as JSON or CSV (CSV now includes time, type, and tags columns)
 
 ---
 
@@ -130,24 +147,16 @@ No installation. No dependencies. No build process.
 ## 💡 Usage
 
 ### Adding Tasks
-Click **+ Add Task**, fill in the description, due date, priority, course, and notes, then click **Add Task**.
+Click **+ Add Task**, fill in the description, due date, optional time, priority, type, tags, course, and notes, then click **Add Task**. Type is auto-detected from the task name if left as default.
 
-### Viewing a Task
-Click any task card to open the full detail panel with urgency breakdown, notes, and a built-in focus timer.
+### Tagging Tasks
+In the tag input, type a tag and press `Enter` or `,` to add it. Press `Backspace` to remove the last tag. Tags show as colored pills throughout the app.
 
 ### Importing from Calendars
-Click **Import**, then either:
-- Paste your Canvas Calendar Feed URL or Google iCal URL and click **Import & Watch** — tasks import and the source auto-refreshes every 5 minutes going forward
-- Upload a `.ics` file directly from disk using the file picker and click **Import File**
+Click **Import**, paste a Canvas or Google iCal URL and click **Import & Watch**, or upload a `.ics` file. Imported tasks receive auto-priority, auto-type, and auto-tags.
 
-### AI Assistant
-Open the **AI Assistant** tab. Click any Quick Question button — it fires immediately. Or type your own question in the input box and press Enter or Send.
-
-### Study Timer
-Open **Study Timer**, select a task from the right panel, pick a duration (preset or custom), and click Start.
-
-### Theme Toggle
-Click the pill toggle in the top-right of the header to switch dark/light mode.
+### Filtering by Type
+In the **All Tasks** tab, use the **Type** dropdown alongside priority and status filters.
 
 ---
 
@@ -188,9 +197,7 @@ TaskManagerPro/
 
 ## 🔐 Privacy & Security
 
-- No tracking or analytics
-- No accounts or logins
-- No servers or backend
+- No tracking or analytics · No accounts or logins · No servers or backend
 - All task data in localStorage only
 - Export regularly — clearing browser data removes tasks
 
@@ -204,19 +211,16 @@ TaskManagerPro/
 4. Push — `git push origin feature/YourFeature`
 5. Open a Pull Request
 
-**Ideas:** task categories, recurring tasks, drag-and-drop reordering, browser push notifications, mobile-first layout, theme builder, multi-language support.
-
 ---
 
 ## 🗺️ Roadmap
 
-- [ ] Task categories and labels
 - [ ] Recurring tasks
 - [ ] Drag-and-drop task ordering
 - [ ] Browser push notifications for deadlines
 - [ ] Mobile-first UI overhaul
 - [ ] Theme customization panel
-- [ ] Task sharing
+- [ ] AI categorization accuracy improvements
 
 ---
 

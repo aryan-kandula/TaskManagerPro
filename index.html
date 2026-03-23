@@ -96,7 +96,7 @@ button,input,select,textarea{font-family:inherit;}
 .nav::-webkit-scrollbar{display:none;}
 .nbtn{padding:8px 16px;border-radius:var(--r-pill);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;border:1px solid transparent;background:transparent;color:var(--tx2);transition:all .25s var(--ease-s);}
 .nbtn:hover{color:var(--tx);background:var(--glass-2);}
-.nbtn.on{background:var(--glass-strong);color:var(--pri);border-color:var(--bd2);box-shadow:0 4px 20px var(--pri-glow);}
+.nbtn.on{background:var(--glass-strong);color:var(--pri);border-color:var(--bd2);box-shadow:0 4px 20px var(--pri-glow),0 0 0 1px var(--bd2);border-radius:var(--r-pill);overflow:visible;}
 
 /* TABS */
 .tab{display:none;animation:tabFadeIn .4s var(--ease-s);}
@@ -237,7 +237,7 @@ button,input,select,textarea{font-family:inherit;}
 .dp-close{position:absolute;top:22px;right:22px;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s;z-index:2;backdrop-filter:blur(10px);}
 [data-theme="light"] .dp-close{color:rgba(10,20,60,.7);background:rgba(255,255,255,.5);border-color:rgba(255,255,255,.7);}
 .dp-close:hover{background:rgba(255,91,141,.25);border-color:rgba(255,91,141,.4);color:#fff;}
-.dp-pill{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:var(--r-pill);font-size:10px;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:18px;border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(10px);}
+.dp-pill{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:var(--r-pill);font-size:10px;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.1em;border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(10px);}
 .dp-title{font-size:clamp(18px,3vw,26px);font-weight:700;color:#fff;line-height:1.3;margin-bottom:22px;}
 [data-theme="light"] .dp-title{color:#061030;}
 .dp-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:22px;}
@@ -313,6 +313,28 @@ textarea.finput{resize:vertical;min-height:88px;}
 .src-info{flex:1;min-width:0;}
 .src-name{font-size:13px;font-weight:600;}
 .src-url{font-size:10px;font-family:var(--mono);color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* TAGS */
+.tag-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:var(--r-pill);font-size:10px;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.05em;border:1px solid;cursor:default;}
+.tag-task{background:rgba(90,171,255,.13);color:var(--pri);border-color:rgba(90,171,255,.3);}
+.tag-assignment{background:rgba(255,204,79,.13);color:var(--gld);border-color:rgba(255,204,79,.3);}
+.tag-class{background:rgba(184,127,255,.13);color:var(--purp);border-color:rgba(184,127,255,.3);}
+.tag-exam{background:rgba(255,91,141,.15);color:var(--acc);border-color:rgba(255,91,141,.3);}
+.tag-holiday{background:rgba(61,255,192,.13);color:var(--grn);border-color:rgba(61,255,192,.3);}
+.tag-event{background:rgba(255,140,60,.13);color:#ff8c3c;border-color:rgba(255,140,60,.3);}
+.tag-custom{background:rgba(255,255,255,.10);color:var(--tx2);border-color:var(--bd2);}
+.tag-remove{font-size:11px;line-height:1;opacity:.6;cursor:pointer;transition:opacity .2s;}
+.tag-remove:hover{opacity:1;}
+.tags-input-wrap{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px 12px;background:var(--glass-2);border:1px solid var(--bd);border-radius:var(--r-sm);min-height:40px;cursor:text;transition:border-color .3s;}
+.tags-input-wrap:focus-within{border-color:var(--pri);box-shadow:0 0 0 3px var(--pri-dim);}
+.tags-input-wrap input{flex:1;min-width:80px;background:none;border:none;outline:none;color:var(--tx);font-family:var(--font);font-size:13px;}
+.tags-input-wrap input::placeholder{color:var(--tx3);}
+
+/* TYPE BADGE */
+.type-badge{font-size:9px;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:2px 8px;border-radius:var(--r-pill);border:1px solid;}
+
+/* AI DISCLAIMER */
+.ai-disclaimer{display:flex;align-items:flex-start;gap:8px;padding:10px 14px;border-radius:var(--r-sm);background:rgba(255,204,79,.08);border:1px solid rgba(255,204,79,.2);font-size:11px;color:var(--gld);font-family:var(--mono);line-height:1.5;margin-bottom:14px;}
 
 /* TOAST */
 .tcontainer{position:fixed;bottom:26px;right:26px;z-index:99990;display:flex;flex-direction:column;gap:10px;}
@@ -426,7 +448,8 @@ textarea.finput{resize:vertical;min-height:88px;}
     <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
       <select class="finput" style="width:auto;flex-shrink:0;" onchange="renderAll()" id="fPri"><option value="">All Priorities</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select>
       <select class="finput" style="width:auto;flex-shrink:0;" onchange="renderAll()" id="fStat"><option value="">All Status</option><option value="pending">Pending</option><option value="done">Done</option></select>
-      <input class="finput" style="flex:1;min-width:160px;" placeholder="🔍 Search tasks..." oninput="renderAll()" id="fSearch"/>
+      <select class="finput" style="width:auto;flex-shrink:0;" onchange="renderAll()" id="fType"><option value="">All Types</option><option value="task">Task</option><option value="assignment">Assignment</option><option value="class">Class</option><option value="exam">Exam</option><option value="event">Event</option><option value="holiday">Holiday</option></select>
+      <input class="finput" style="flex:1;min-width:160px;" placeholder="🔍 Search tasks, tags, courses..." oninput="renderAll()" id="fSearch"/>
     </div>
     <div class="tgrid" id="allGrid"></div>
   </div>
@@ -447,6 +470,7 @@ textarea.finput{resize:vertical;min-height:88px;}
     <div class="ai-wrap">
       <div class="g ai-chat">
         <div class="ai-hdr"><div class="ai-glow"></div><div><div class="ai-title">AI Assistant</div><div class="ai-subtitle">Powered by Claude · knows your full schedule</div></div></div>
+        <div class="ai-disclaimer">⚠️ AI features are in development mode. Results may not always be accurate. Please double-check important tasks.</div>
         <div class="ai-msgs" id="aiMsgs"><div class="ai-msg bot">Hey! I'm your AI study assistant. I have full access to your tasks and can help you prioritize, plan, and stay on track. Ask anything — like <em>"schedule my tasks this week"</em> or <em>"what should I focus on today?"</em></div></div>
         <div class="ai-irow"><input class="finput" id="aiIn" placeholder="Ask anything about your tasks..." onkeydown="if(event.key==='Enter')sendAI()"/><button class="btn pri" onclick="sendAI()">Send</button></div>
       </div>
@@ -516,11 +540,16 @@ textarea.finput{resize:vertical;min-height:88px;}
   <div class="g mbox">
     <div class="mtitle">✚ New Task</div>
     <div class="fg"><label class="flbl">Description</label><input class="finput" id="tText" placeholder="What needs to be done?"/></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
       <div class="fg"><label class="flbl">Due Date</label><input class="finput" type="date" id="tDate"/></div>
+      <div class="fg"><label class="flbl">Time (optional)</label><input class="finput" type="time" id="tTime" placeholder="HH:MM"/></div>
       <div class="fg"><label class="flbl">Priority</label><select class="finput" id="tPri"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select></div>
     </div>
-    <div class="fg"><label class="flbl">Course / Category</label><input class="finput" id="tCourse" placeholder="e.g. CSC289, Math, Personal..."/></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div class="fg"><label class="flbl">Course / Category</label><input class="finput" id="tCourse" placeholder="e.g. CSC289, Math, Personal..."/></div>
+      <div class="fg"><label class="flbl">Type</label><select class="finput" id="tType"><option value="task">Task</option><option value="assignment">Assignment</option><option value="class">Class</option><option value="exam">Exam</option><option value="event">Event</option><option value="holiday">Holiday</option></select></div>
+    </div>
+    <div class="fg"><label class="flbl">Tags <span style="font-size:9px;color:var(--tx3);font-weight:400;text-transform:none;letter-spacing:0;">(press Enter or comma to add)</span></label><div class="tags-input-wrap" id="tagsWrap" onclick="document.getElementById('tagInput').focus()"><input id="tagInput" placeholder="Add a tag..." onkeydown="handleTagInput(event)" oninput="tagInputHint(event)"/></div></div>
     <div class="fg"><label class="flbl">Notes</label><textarea class="finput" id="tNotes" placeholder="Any extra details..."></textarea></div>
     <div class="macts"><button class="btn" onclick="closeM('addModal')">Cancel</button><button class="btn pri" onclick="addTask()">Add Task</button></div>
   </div>
@@ -554,6 +583,7 @@ var dtSec=25*60, dtTotal=25*60, dtRunning=false, dtIv=null;
 var newFromRefresh=0;
 var weekOffset=0;
 var selectedWeekDay=null; // ALWAYS stored as "YYYY-MM-DD" string
+var pendingTags=[]; // tags being built in the modal
 
 /* ══ TODAY — local midnight, no UTC offset ══ */
 var TODAY=(function(){var d=new Date();d.setHours(0,0,0,0);return d;})();
@@ -584,6 +614,81 @@ function inferPriority(text){
   if(/\b(lab|assessment|assignment|homework|hw|module lab|hands-on)\b/.test(t)) return 'medium';
   if(/\b(exercise|guided|attendance|survey|podcast|discussion|extra credit|ec|start.stop|career|peeling)\b/.test(t)) return 'low';
   return 'medium';
+}
+
+/* ══ AUTO CATEGORIZATION — keyword → type ══ */
+function inferType(text){
+  var t=text.toLowerCase();
+  if(/\b(exam|midterm|final|quiz|test)\b/.test(t)) return 'exam';
+  if(/\b(assignment|hw|homework|submit|submission|due)\b/.test(t)) return 'assignment';
+  if(/\b(class|lecture|lab|seminar|tutorial|section)\b/.test(t)) return 'class';
+  if(/\b(holiday|break|no class|recess|vacation)\b/.test(t)) return 'holiday';
+  if(/\b(event|meeting|club|session|workshop)\b/.test(t)) return 'event';
+  return 'task';
+}
+
+/* ══ AUTO TAGS from keywords (does NOT override user tags) ══ */
+function inferAutoTags(text, existingTags){
+  var t=text.toLowerCase();
+  var auto=[];
+  var type=inferType(text);
+  if(type!=='task') auto.push(type);
+  if(/\b(exam|midterm|final|capstone)\b/.test(t)&&!auto.includes('exam')) auto.push('exam');
+  if(/\b(hw|homework|assignment)\b/.test(t)&&!auto.includes('assignment')) auto.push('assignment');
+  if(/\b(lab)\b/.test(t)&&!auto.includes('class')) auto.push('class');
+  // Merge: user tags take priority; auto tags added only if not already present
+  var merged=(existingTags||[]).slice();
+  auto.forEach(function(a){if(!merged.includes(a))merged.push(a);});
+  return merged;
+}
+
+/* ══ TAG UI HELPERS ══ */
+var TYPE_COLORS={task:'tag-task',assignment:'tag-assignment',class:'tag-class',exam:'tag-exam',holiday:'tag-holiday',event:'tag-event'};
+function tagClass(tag){return TYPE_COLORS[tag]||'tag-custom';}
+
+function renderTagsWrap(){
+  var wrap=document.getElementById('tagsWrap');
+  if(!wrap)return;
+  var inp=document.getElementById('tagInput');
+  // Remove existing pill spans, keep the input
+  Array.from(wrap.querySelectorAll('.tag-pill')).forEach(function(p){p.remove();});
+  pendingTags.forEach(function(tag,i){
+    var span=document.createElement('span');
+    span.className='tag-pill '+tagClass(tag);
+    span.innerHTML=esc(tag)+'<span class="tag-remove" onclick="removeTag('+i+')">✕</span>';
+    wrap.insertBefore(span,inp);
+  });
+}
+function removeTag(i){pendingTags.splice(i,1);renderTagsWrap();}
+function handleTagInput(e){
+  if(e.key==='Enter'||e.key===','||e.key===' '){
+    e.preventDefault();
+    var val=document.getElementById('tagInput').value.trim().replace(/,$/,'').toLowerCase();
+    if(val&&!pendingTags.includes(val)){pendingTags.push(val);renderTagsWrap();}
+    document.getElementById('tagInput').value='';
+  } else if(e.key==='Backspace'&&!document.getElementById('tagInput').value&&pendingTags.length){
+    pendingTags.pop();renderTagsWrap();
+  }
+}
+function tagInputHint(e){
+  // Live preview: if comma typed, commit
+  var val=e.target.value;
+  if(val.endsWith(',')){ var clean=val.slice(0,-1).trim().toLowerCase(); if(clean&&!pendingTags.includes(clean)){pendingTags.push(clean);renderTagsWrap();} e.target.value=''; }
+}
+
+/* ══ RENDER TAGS INLINE ══ */
+function renderTagBadges(tags){
+  if(!tags||!tags.length)return'';
+  return tags.slice(0,4).map(function(t){return'<span class="tag-pill '+tagClass(t)+'">'+esc(t)+'</span>';}).join('');
+}
+
+/* ══ TYPE BADGE ══ */
+var TYPE_BADGE_COLORS={task:'rgba(90,171,255,.15)',assignment:'rgba(255,204,79,.15)',class:'rgba(184,127,255,.15)',exam:'rgba(255,91,141,.2)',holiday:'rgba(61,255,192,.15)',event:'rgba(255,140,60,.15)'};
+var TYPE_TEXT_COLORS={task:'var(--pri)',assignment:'var(--gld)',class:'var(--purp)',exam:'var(--acc)',holiday:'var(--grn)',event:'#ff8c3c'};
+function typeBadgeHTML(type){
+  if(!type||type==='task')return'';
+  var bg=TYPE_BADGE_COLORS[type]||'rgba(255,255,255,.1)',col=TYPE_TEXT_COLORS[type]||'var(--tx2)';
+  return'<span style="font-size:9px;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:2px 8px;border-radius:var(--r-pill);background:'+bg+';color:'+col+';border:1px solid '+col+'33;">'+esc(type)+'</span>';
 }
 
 /* ══ LANDING ══ */
@@ -634,13 +739,42 @@ function renderTab(t){
   else if(t==='settings')renderSettings();
 }
 
-/* ══ URGENCY ══ */
+/* ══ URGENCY (v3.2: time-aware) ══
+ * If task has a time field (HH:MM), build a full datetime for scoring.
+ * Same-day tasks: earlier time = higher urgency.
+ * Tasks without time: default to 23:59 (end of day) — treated as lowest urgency on that day.
+ */
 function urgScore(t){
   if(t.done)return 0;
-  var due=parseLocalDate(t.date),diff=Math.ceil((due-TODAY)/86400000),s=0;
-  if(diff<0)s=100;else if(diff===0)s=95;else if(diff<=1)s=85;else if(diff<=3)s=70;else if(diff<=7)s=50;else if(diff<=14)s=30;else s=15;
-  if(t.priority==='high')s=Math.min(100,s+15);
-  if(t.priority==='low')s=Math.max(5,s-15);
+  // Build due moment
+  var due=parseLocalDate(t.date);
+  var nowMs=Date.now();
+  var todayStart=new Date(TODAY);
+
+  if(t.time){
+    // Parse HH:MM and apply to due date
+    var parts=t.time.split(':');
+    due.setHours(parseInt(parts[0],10),parseInt(parts[1],10),0,0);
+  } else {
+    // No time — treat as 23:59 for within-day ordering
+    due.setHours(23,59,0,0);
+  }
+
+  var diffMs=due-nowMs;
+  var diffDays=diffMs/(1000*60*60*24);
+  var s=0;
+  if(diffMs<0) s=100; // overdue
+  else if(diffDays<0.25) s=97; // due within 6 hours
+  else if(diffDays<0.5) s=93; // due within 12 hours
+  else if(diffDays<1) s=88; // same day
+  else if(diffDays<=1) s=85;
+  else if(diffDays<=3) s=70;
+  else if(diffDays<=7) s=50;
+  else if(diffDays<=14) s=30;
+  else s=15;
+
+  if(t.priority==='high') s=Math.min(100,s+15);
+  if(t.priority==='low') s=Math.max(5,s-15);
   return s;
 }
 function urgColor(s){if(s>=90)return'#ff5b8d';if(s>=70)return'#ffcc4f';if(s>=50)return'#5aabff';return'#3dffc0';}
@@ -650,16 +784,19 @@ function mkCard(t,delay){
   delay=delay||0;
   var due=parseLocalDate(t.date),isOD=!t.done&&due<TODAY;
   var ds=due.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  var timeStr=t.time?' <span style="font-size:10px;font-family:var(--mono);color:var(--tx2);">⏰ '+esc(t.time)+'</span>':'';
   var sc=urgScore(t),col=urgColor(sc);
   var dl=Math.ceil((due-TODAY)/86400000);
   var dlbl=isOD?Math.abs(dl)+'d overdue':dl===0?'Due today':dl+'d left';
   return'<div class="g tc '+(t.done?'done-card':'')+' '+(isOD?'od-card':'')+'" style="animation-delay:'+delay+'ms" onclick="openDetail('+t.id+')">'
     +'<div onclick="event.stopPropagation()"><input type="checkbox" class="chk" '+(t.done?'checked':'')+' onchange="toggleTask('+t.id+')"/></div>'
     +'<div class="tc-body"><div class="tc-title">'+esc(t.text)+'</div>'
-    +'<div class="tc-meta"><span class="tc-date '+(isOD?'od':'')+'">📅 '+ds+'</span>'
+    +'<div class="tc-meta"><span class="tc-date '+(isOD?'od':'')+'">📅 '+ds+timeStr+'</span>'
     +'<span class="badge b'+t.priority.charAt(0)+'">'+t.priority+'</span>'
+    +(t.type&&t.type!=='task'?typeBadgeHTML(t.type):'')
     +(t.course?'<span class="badge bc">'+esc(t.course)+'</span>':'')
     +'<span style="font-size:10px;font-family:var(--mono);color:'+col+';">'+dlbl+'</span></div>'
+    +(t.tags&&t.tags.filter(function(tg){return tg!==(t.type||'task');}).length?'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;">'+renderTagBadges(t.tags.filter(function(tg){return tg!==(t.type||'task');}))+'</div>':'')
     +'<div class="ubar"><div class="ufill" style="width:'+sc+'%;background:'+col+';"></div></div>'
     +'<div class="tc-foot" onclick="event.stopPropagation()"><button class="tc-btn" onclick="openDetail('+t.id+')">👁 View</button><button class="tc-btn del" onclick="delTask('+t.id+')">🗑</button></div>'
     +'</div></div>';
@@ -720,12 +857,13 @@ function markRangeDone(){
 
 /* ══ ALL TASKS ══ */
 function renderAll(){
-  var fp=document.getElementById('fPri'),fs=document.getElementById('fStat'),sq=document.getElementById('fSearch');
+  var fp=document.getElementById('fPri'),fs=document.getElementById('fStat'),sq=document.getElementById('fSearch'),ft=document.getElementById('fType');
   var f=tasks.slice();
   if(fp&&fp.value)f=f.filter(function(t){return t.priority===fp.value;});
   if(fs&&fs.value==='pending')f=f.filter(function(t){return!t.done;});
   if(fs&&fs.value==='done')f=f.filter(function(t){return t.done;});
-  if(sq&&sq.value.trim()){var q=sq.value.toLowerCase();f=f.filter(function(t){return t.text.toLowerCase().includes(q)||(t.notes||'').toLowerCase().includes(q)||(t.course||'').toLowerCase().includes(q);});}
+  if(ft&&ft.value)f=f.filter(function(t){return(t.type||'task')===ft.value;});
+  if(sq&&sq.value.trim()){var q=sq.value.toLowerCase();f=f.filter(function(t){return t.text.toLowerCase().includes(q)||(t.notes||'').toLowerCase().includes(q)||(t.course||'').toLowerCase().includes(q)||(t.type||'').toLowerCase().includes(q)||((t.tags||[]).join(' ')).toLowerCase().includes(q);});}
   f.sort(function(a,b){if(a.done!==b.done)return a.done?1:-1;return urgScore(b)-urgScore(a);});
   document.getElementById('allGrid').innerHTML=f.length?f.map(function(t,i){return mkCard(t,i*30);}).join(''):'<div class="empty-state">No tasks match your filters</div>';
 }
@@ -975,17 +1113,22 @@ function openDetail(id){
   var dlbl=isOD?Math.abs(dl)+' days overdue':dl===0?'Due today':dl+' days left';
   var sc=urgScore(t),col=urgColor(sc);
   var pColors={high:'#ff5b8d',medium:'#5aabff',low:'#3dffc0'},pc=pColors[t.priority]||'#5aabff';
+  var dateLabel=due.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+(t.time?' at '+t.time:'');
   document.getElementById('dpInner').innerHTML=
-    '<div class="dp-pill" style="background:'+pc+'1a;color:'+pc+';border-color:'+pc+'33;">'+t.priority.toUpperCase()+' PRIORITY'+(isOD?' · <span style="color:#ff5b8d;">OVERDUE</span>':'')+'</div>'
+    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap;row-gap:8px;">'
+    +'<div class="dp-pill" style="background:'+pc+'1a;color:'+pc+';border-color:'+pc+'33;">'+t.priority.toUpperCase()+' PRIORITY'+(isOD?' · <span style="color:#ff5b8d;">OVERDUE</span>':'')+'</div>'
+    +(t.type&&t.type!=='task'?'<span style="padding:5px 14px;border-radius:var(--r-pill);font-size:10px;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.1em;background:'+(TYPE_BADGE_COLORS[t.type]||'rgba(255,255,255,.1)')+';color:'+(TYPE_TEXT_COLORS[t.type]||'var(--tx2)')+';border:1px solid '+(TYPE_TEXT_COLORS[t.type]||'var(--tx2)')+'33;">'+esc(t.type)+'</span>':'')
+    +(t.tags&&t.tags.filter(function(tg){return tg!==(t.type||'task');}).length?t.tags.filter(function(tg){return tg!==(t.type||'task');}).map(function(tg){return'<span class="tag-pill '+tagClass(tg)+'">'+esc(tg)+'</span>';}).join(''):'')
+    +'</div>'
     +'<div class="dp-title">'+esc(t.text)+'</div>'
     +'<div class="dp-grid">'
-    +'<div class="dp-card"><div class="dp-card-lbl">Due Date</div><div class="dp-card-val">'+due.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+'</div></div>'
+    +'<div class="dp-card"><div class="dp-card-lbl">Due Date'+(t.time?' &amp; Time':'')+'</div><div class="dp-card-val" style="font-size:13px;">'+dateLabel+'</div></div>'
     +'<div class="dp-card"><div class="dp-card-lbl">Time Left</div><div class="dp-card-val" style="color:'+col+';">'+dlbl+'</div></div>'
     +'<div class="dp-card"><div class="dp-card-lbl">Status</div><div class="dp-card-val" style="color:'+(t.done?'var(--grn)':'var(--tx)')+';">'+(t.done?'✓ Completed':'Pending')+'</div></div>'
     +'<div class="dp-card"><div class="dp-card-lbl">Source</div><div class="dp-card-val" style="font-size:13px;">'+(t.source==='manual'?'✏️ Manual':t.source==='canvas'?'🎓 Canvas':t.source==='google'?'🔗 Google':'📄 ICS')+'</div></div>'
     +(t.course?'<div class="dp-card" style="grid-column:1/-1;"><div class="dp-card-lbl">Course</div><div class="dp-card-val">'+esc(t.course)+'</div></div>':'')
     +'</div>'
-    +'<div class="dp-urg"><div class="dp-urg-lbl"><span>Urgency Score</span><span style="color:'+col+';">'+sc+'/100</span></div><div class="dp-urg-track"><div class="dp-urg-fill" id="dpUrgFill" style="width:0%;background:'+col+';"></div></div></div>'
+    +'<div class="dp-urg"><div class="dp-urg-lbl"><span>Urgency Score (time-aware)</span><span style="color:'+col+';">'+sc+'/100</span></div><div class="dp-urg-track"><div class="dp-urg-fill" id="dpUrgFill" style="width:0%;background:'+col+';"></div></div></div>'
     +(t.notes?'<div class="dp-notes"><div class="dp-notes-lbl">Notes</div><div class="dp-notes-txt">'+esc(t.notes)+'</div></div>':'')
     +'<div class="dp-timer"><div class="dp-timer-lbl">⏱ Focus Timer</div><div class="dp-timer-disp" id="dpTimerDisp">25:00</div>'
     +'<div class="dp-timer-btns"><button class="dp-tbtn start" onclick="startDT('+id+')">▶ Start</button><button class="dp-tbtn" onclick="pauseDT()">⏸ Pause</button><button class="dp-tbtn" onclick="resetDT()">↺ Reset</button></div>'
@@ -1010,8 +1153,18 @@ function updDT(){var m=Math.floor(dtSec/60).toString().padStart(2,'0'),s=(dtSec%
 function addTask(){
   var text=document.getElementById('tText').value.trim(),date=document.getElementById('tDate').value;
   var priority=document.getElementById('tPri').value,notes=document.getElementById('tNotes').value.trim(),course=document.getElementById('tCourse').value.trim();
+  var time=document.getElementById('tTime').value.trim()||null;
+  var type=document.getElementById('tType').value||'task';
+  // Commit any partial tag text
+  var inp=document.getElementById('tagInput');
+  if(inp&&inp.value.trim()){var v=inp.value.trim().toLowerCase();if(!pendingTags.includes(v))pendingTags.push(v);inp.value='';}
+  var userTags=pendingTags.slice();
   if(!text||!date){toast('Please fill in task and date','warn');return;}
-  tasks.push({id:Date.now()+Math.random(),text:text,date:date,priority:priority,notes:notes,course:course,done:false,source:'manual',added:Date.now()});
+  // Auto-infer type if user left it as 'task'
+  if(type==='task') type=inferType(text);
+  // Auto tags: merge user tags with inferred (user tags are never overridden)
+  var finalTags=inferAutoTags(text,userTags);
+  tasks.push({id:Date.now()+Math.random(),text:text,date:date,time:time,priority:priority,type:type,tags:finalTags,notes:notes,course:course,done:false,source:'manual',added:Date.now()});
   save();closeM('addModal');renderTab(curTab);toast('Task added!','ok');
 }
 function toggleTask(id){var t=tasks.find(function(t){return t.id===id;});if(t){t.done=!t.done;save();renderTab(curTab);}}
@@ -1052,6 +1205,10 @@ function parseICS(text, source){
     else if(line==='END:VEVENT'&&ev&&ev.text&&ev.date){
       // Auto priority from task name
       ev.priority=inferPriority(ev.text);
+      // Auto type from task name
+      if(!ev.type) ev.type=inferType(ev.text);
+      // Auto tags (no user tags on imports)
+      ev.tags=inferAutoTags(ev.text,[]);
 
       // Prevent duplicates (case-insensitive text + same date + same source)
       if(!tasks.some(function(t){
@@ -1118,13 +1275,29 @@ function rmSrc(i){sources.splice(i,1);localStorage.setItem('tmp_sources',JSON.st
 function togglePD(){pdVisible=!pdVisible;document.getElementById('pdSection').classList.toggle('show',pdVisible);document.getElementById('pdTxt').textContent=pdVisible?'Hide Past Due':'Show Past Due';}
 
 /* ══ MODALS ══ */
-function openAdd(){document.getElementById('addModal').classList.add('open');document.getElementById('tText').focus();}
+function openAdd(){pendingTags=[];renderTagsWrap();document.getElementById('addModal').classList.add('open');document.getElementById('tText').focus();}
 function openImport(){document.getElementById('importModal').classList.add('open');}
-function closeM(id){document.getElementById(id).classList.remove('open');if(id==='addModal'){['tText','tNotes','tCourse'].forEach(function(i){document.getElementById(i).value='';});}}
+function closeM(id){document.getElementById(id).classList.remove('open');if(id==='addModal'){['tText','tNotes','tCourse'].forEach(function(i){document.getElementById(i).value='';});var ttime=document.getElementById('tTime');if(ttime)ttime.value='';var ttype=document.getElementById('tType');if(ttype)ttype.value='task';pendingTags=[];renderTagsWrap();}}
 document.addEventListener('click',function(e){if(e.target.id==='addModal')closeM('addModal');if(e.target.id==='importModal')closeM('importModal');});
 
 /* ══ EXPORT / CLEAR ══ */
-function exportData(fmt){var data;if(fmt==='csv'){data='Task,Date,Priority,Status,Course,Notes\n';tasks.forEach(function(t){data+='"'+t.text+'","'+t.date+'","'+t.priority+'","'+(t.done?'Done':'Pending')+'","'+(t.course||'')+'","'+(t.notes||'')+'"\n';});}else{data=JSON.stringify(tasks,null,2);}var blob=new Blob([data],{type:fmt==='csv'?'text/csv':'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='tasks.'+fmt;a.click();toast('Exported!','ok');}
+function exportData(fmt){
+  var data;
+  if(fmt==='csv'){
+    data='Task,Date,Time,Type,Tags,Priority,Status,Course,Notes\n';
+    tasks.forEach(function(t){
+      var timeVal=t.time||'';
+      var typeVal=t.type||'';
+      var tagsVal=t.tags&&t.tags.length?t.tags.join(';'):'';
+      data+='"'+t.text+'","'+t.date+'","'+timeVal+'","'+typeVal+'","'+tagsVal+'","'+t.priority+'","'+(t.done?'Done':'Pending')+'","'+(t.course||'')+'","'+(t.notes||'')+'"\n';
+    });
+  } else {
+    data=JSON.stringify(tasks,null,2);
+  }
+  var blob=new Blob([data],{type:fmt==='csv'?'text/csv':'application/json'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='tasks.'+fmt;a.click();
+  toast('Exported!','ok');
+}
 function clearAll(){if(confirm('Delete all tasks? Cannot be undone.')){tasks=[];save();renderTab(curTab);toast('All tasks cleared','warn');}}
 
 /* ══ PERSIST ══ */
