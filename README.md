@@ -203,6 +203,26 @@ TaskManagerPro/
 
 ---
 
+## 🧪 Rapid Prototyping Process
+
+This project was developed using an AI-assisted rapid prototyping workflow.
+
+### Approach
+- Created a Product Requirements Document (PRD) to define the MVP scope
+- Used Claude AI as the primary tool to generate and iterate on the application
+- Compared outputs with other AI tools for refinement
+- Repeatedly tested and improved features through structured iterations
+
+### Key Takeaways
+- AI tools accelerate development but require careful testing and debugging
+- Iteration is essential for refining both functionality and user experience
+- Clear documentation improves both development speed and final quality
+
+### Supporting Documentation
+- `PRD.md` — Product requirements and scope definition  
+- `PROTOTYPE_TESTING.md` — Comparison of AI-generated prototypes  
+- `ITERATION_LOG.md` — Step-by-step development and refinement process  
+
 ## 🤝 Contributing
 
 1. Fork the repository
