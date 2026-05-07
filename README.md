@@ -1,9 +1,9 @@
 # Task Manager Pro
 
-A modern, student-focused task management application built with vanilla JavaScript and powered by Claude AI.  
-Featuring a full iOS 26-style liquid glassmorphic design, intelligent AI assistance, smart tagging, time-aware scheduling, and an immersive task detail experience.
+A modern, student-focused task management application built with vanilla JavaScript and powered by Claude AI.
+Featuring a full iOS 26-style liquid glassmorphic design, intelligent scheduling, smart tagging, time-aware prioritization, enhanced Google iCal integration, and Smart Course Detection for deeply organized academic workflows.
 
-![Version](https://img.shields.io/badge/version-3.2.0-blue.svg)
+![Version](https://img.shields.io/badge/version-3.3.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Design](https://img.shields.io/badge/design-iOS%2026%20Glass-blueviolet.svg)
 ![AI](https://img.shields.io/badge/AI-Claude%20Powered-orange.svg)
@@ -12,61 +12,72 @@ Featuring a full iOS 26-style liquid glassmorphic design, intelligent AI assista
 
 ## 🔗 Live Demo
 
-👉 [https://aryan-kandula.github.io/TaskManagerPro](https://aryan-kandula.github.io/TaskManagerPro)
+👉 https://aryan-kandula.github.io/TaskManagerPro
 
 ---
 
-## ✨ Version 3.2 Features
+## ✨ Version 3.3 Features
 
-### ⏰ Time-Based Scheduling
+### 🧠 Smart Course Detection
 
-Tasks now support an optional **time field** (HH:MM, 24-hour format):
+Task Manager Pro now intelligently analyzes tasks and imported calendar events to detect and organize course-related content automatically.
 
-- If a time is provided, it displays alongside the date on every card and in the detail panel
-- If no time is set, the task is treated as an **all-day item** (defaults to end-of-day for urgency)
-- **Urgency scoring is now fully time-aware** — a task due in 3 hours scores dramatically higher than one due in 8 hours, even on the same date
-- Within-day ordering: earlier time = higher urgency, so morning classes rank above afternoon ones
+#### Features
+- Automatic course detection from:
+  - task titles
+  - assignments
+  - imported Google Calendar events
+  - Canvas iCal feeds
+  - uploaded `.ics` files
+- Smarter academic vs personal event separation
+- Better grouping across dashboard insights and task views
+- Improved detection of common course formats:
+  - `CSC-151`
+  - `ENG 111`
+  - `BIO-168`
+  - `MAT 171`
+- Manual course override always supported
 
-### 🏷️ Smart Tagging System
+#### Benefits
+- Cleaner organization
+- Better academic workload visibility
+- More accurate insights and filtering
+- Faster recognition of imported schedules
 
-Every task can have multiple tags — both user-defined and auto-detected:
+---
 
-- **User tags**: Add any tags while creating a task. Press `Enter`, `,`, or `Space` to commit a tag. Backspace removes the last one. Tags are displayed as colored pill badges throughout the app
-- **Auto tags**: On creation and import, task names are scanned for keywords. Matching tasks get tags automatically — these never override tags you set yourself
-- **Tag types with distinct colors**:
-  - `exam` — red/pink
-  - `assignment` — gold
-  - `class` — purple
-  - `holiday` — green
-  - `event` — orange
-  - custom tags — neutral glass
-- Tags are searchable in the **All Tasks** search bar
+### 🔗 Enhanced Google iCal Integration
 
-### 🗂️ Task Type Classification
+The calendar import engine has been heavily upgraded with smarter parsing and improved event understanding.
 
-Each task now has a **type** field:
+#### Improvements
+- Better compatibility with Google Calendar exports and feeds
+- Improved handling of inconsistent `.ics` formatting
+- Smarter extraction of:
+  - titles
+  - descriptions
+  - dates
+  - times
+  - course identifiers
+  - assignment keywords
+- More reliable recurring event parsing
+- Improved duplicate prevention during sync refreshes
+- Better consistency across Canvas, Google Calendar, and uploaded `.ics` files
 
-| Type | Description |
-|---|---|
-| `task` | General to-do (default) |
-| `assignment` | Coursework with a submission deadline |
-| `class` | Lecture, lab, or scheduled session |
-| `exam` | Test, quiz, midterm, or final |
-| `event` | Meeting, club, or workshop |
-| `holiday` | Break or no-class day |
+---
 
-- Type is shown as a color-coded badge on every card
-- Filter by type in the **All Tasks** tab using the new Type dropdown
-- Auto-detected from task name on creation and import — manual override always available
+### 🤖 Improved AI-Assisted Categorization
 
-### 🤖 AI-Assisted Categorization (Development Mode)
+The local rule-based intelligence engine has been upgraded.
 
-When creating or importing tasks, the AI categorization engine scans task names and:
-- Infers the most likely **type** (exam, assignment, class, etc.)
-- Applies **auto tags** matching the content
-- Uses **priority inference** (unchanged from v3.1)
+#### Enhancements
+- Smarter task type detection
+- Better auto-tagging accuracy
+- Improved academic keyword recognition
+- More reliable classification of assignments, exams, classes, and events
+- Smarter categorization during imports and manual task creation
 
-> ⚠️ **AI features are in development mode.** A visible disclaimer appears in the AI Assistant tab. Results may not always be accurate — always double-check important tasks.
+> ⚠️ AI-assisted features are privacy-safe and rule-based. No external AI processing is required for task categorization or imports.
 
 ---
 
@@ -74,63 +85,122 @@ When creating or importing tasks, the AI categorization engine scans task names 
 
 ### 🎨 iOS 26 Liquid Glass Design
 - Full liquid glassmorphic UI inspired by Apple's iOS 26 design language
-- Deep navy layered glass on detail panels with triple animated floating orbs
-- Dark and light mode with smooth animated toggle — both fully redesigned
-- Pill-shaped floating sticky header and pill navigation throughout
-- Animated background mesh with drifting color orbs on every page
-- Dynamic canvas favicon — rainbow gradient rounded-square with checkmark, generated at runtime
-
-### 🛬 Landing Page & Onboarding
-- Full onboarding landing page that explains every feature before you start
-- Smooth fade and scale transition into the dashboard on entry
-- Remembers returning users and skips the guide automatically
-- A **← Guide** button in the app header brings the landing page back at any time
+- Deep layered glass panels with animated floating orb backgrounds
+- Dark and light mode with smooth animated transitions
+- Floating pill navigation and sticky glass headers
+- Dynamic animated background mesh effects
+- Runtime-generated canvas favicon with gradient styling
 
 ### 📋 Task Management
-- Create tasks with description, due date, **time**, priority, type, **tags**, course/category, and notes
-- High, Medium, and Low priority with color-coded urgency scoring
-- Urgency score (0–100) auto-calculated from deadline proximity, **time of day**, and priority level
-- Visual urgency bar on every task card, color-coded from green to red
+- Create tasks with:
+  - title
+  - description
+  - due date
+  - optional time
+  - priority
+  - type
+  - tags
+  - course/category
+  - notes
+- High, Medium, and Low priority scoring
+- Intelligent urgency calculation with time awareness
+- Visual urgency bars on every task card
 
-### 🧠 Smart Auto-Priority Detection
-- Task names are scanned automatically to infer priority on every import
-- **High**: exam, final, midterm, test, quiz, capstone, sprint
-- **Medium**: lab, assessment, assignment, homework, module lab, hands-on
-- **Low**: exercise, guided, attendance, survey, podcast, discussion, EC, career
+### ⏰ Time-Aware Scheduling
+- Optional time field for every task
+- Same-day tasks prioritize earlier times automatically
+- All-day tasks sort toward end-of-day ordering
+- Sub-day urgency tiers:
+  - `<6h` → 97 urgency
+  - `<12h` → 93 urgency
+  - `<24h` → 88 urgency
 
-### 👁️ Task Detail Panel
-- Click any task to open an immersive full-screen detail view
-- Shows urgency score (time-aware), full due date and time, status, type, tags, source, and course
-- Built-in focus timer with custom duration input (up to 600 min)
-- Mark done or delete directly from the detail view
+### 🏷️ Smart Tagging System
+- Multiple tags per task
+- Pill-style tag input with keyboard shortcuts
+- Auto-tagging during creation and imports
+- Colored tag badges throughout the app
+- Searchable tags in All Tasks search
 
-### 🤖 AI Assistant — Powered by Claude
-Connects to the Claude API and has full awareness of all your tasks, deadlines, priorities, and courses.
-> ⚠️ AI features are in development mode. Results may not always be accurate. Please double-check important tasks.
+### 🗂️ Task Type Classification
 
-### 🔄 Auto-Refresh Calendar Sources
-- Paste a Canvas or Google Calendar URL once — tasks sync every 5 minutes
-- Imported tasks get auto-priority, auto-type, and auto-tags applied on arrival
+| Type | Description |
+|---|---|
+| `task` | General to-do |
+| `assignment` | Coursework and submissions |
+| `class` | Lectures and labs |
+| `exam` | Tests, quizzes, finals |
+| `event` | Meetings and activities |
+| `holiday` | Breaks and no-class days |
+
+- Automatic type inference
+- Manual override support
+- Type filtering in All Tasks
+- Color-coded badges on task cards
+
+### 👁️ Immersive Task Detail Panel
+- Full-screen detail experience
+- Displays:
+  - urgency score
+  - due date/time
+  - task type
+  - tags
+  - source
+  - course
+  - notes
+- Built-in focus timer with custom duration support
+- Mark complete or delete directly from the panel
 
 ### 📅 Week View
-- Full 7-day calendar grid with left/right arrow navigation between weeks
-- Click any day tile to filter tasks for that specific day
+- Interactive 7-day calendar layout
+- Week navigation controls
+- Click-to-filter day tiles
+- Task count indicators
+- Improved chip layout and spacing
 
-### ⏱ Study Timer
-- Pomodoro-style timer with animated SVG gradient ring
-- 25-min, 50-min, and 5-min break presets plus custom duration input
+### 📊 Dashboard & Insights
+- Animated statistic counters
+- Clickable stat navigation
+- Improved course-aware organization insights
+- Past Due management section
+- Bulk completion actions
 
-### 📊 Dashboard
-- Animated stat counters — all clickable to navigate to filtered views
-- Past Due section with bulk Mark All Done / Mark Range Done actions
+### 🔍 Advanced Filtering & Search
+- Filter by:
+  - priority
+  - status
+  - type
+  - course
+- Free-text search across:
+  - titles
+  - notes
+  - tags
+  - courses
 
-### 🔍 All Tasks View
-- Filter by priority, status, **type**, and free-text search (searches task name, notes, course, tags)
-- Results always sorted by urgency score
+### 🔄 Auto-Refresh Calendar Sources
+- Import from:
+  - Canvas iCal links
+  - Google Calendar feeds
+  - uploaded `.ics` files
+- Automatic sync every 5 minutes
+- Intelligent import categorization
+- Auto-priority, auto-tags, and auto-type assignment
+
+### ⏱️ Study Timer
+- Pomodoro-style timer
+- Animated SVG progress ring
+- Presets:
+  - 25 min
+  - 50 min
+  - 5 min break
+- Custom duration support
 
 ### 💾 Data & Privacy
-- All data stored locally — nothing leaves your device
-- Export as JSON or CSV (CSV now includes time, type, and tags columns)
+- Fully local-first architecture
+- No accounts required
+- No servers or backend
+- Data stored locally in browser localStorage
+- Export as JSON or CSV
 
 ---
 
@@ -138,123 +208,40 @@ Connects to the Claude API and has full awareness of all your tasks, deadlines, 
 
 No installation. No dependencies. No build process.
 
-1. Download or clone the repository
-2. Open `index.html` in any modern web browser
-3. Follow the onboarding guide, then start adding tasks
-
----
-
-## 💡 Usage
-
-### Adding Tasks
-Click **+ Add Task**, fill in the description, due date, optional time, priority, type, tags, course, and notes, then click **Add Task**. Type is auto-detected from the task name if left as default.
-
-### Tagging Tasks
-In the tag input, type a tag and press `Enter` or `,` to add it. Press `Backspace` to remove the last tag. Tags show as colored pills throughout the app.
-
-### Importing from Calendars
-Click **Import**, paste a Canvas or Google iCal URL and click **Import & Watch**, or upload a `.ics` file. Imported tasks receive auto-priority, auto-type, and auto-tags.
-
-### Filtering by Type
-In the **All Tasks** tab, use the **Type** dropdown alongside priority and status filters.
-
----
-
-## 🎨 Design System
-
-| Token | Purpose |
-|---|---|
-| `--glass` / `--glass-2` / `--glass-3` | Layered surface depths |
-| `--glass-strong` | Toasts and high-contrast overlays |
-| `--blur` | `blur(40px) saturate(1.8)` — main glass effect |
-| `--pri` | Primary blue accent |
-| `--acc` | Red/pink danger accent |
-| `--grn` | Green success accent |
-| `--gld` | Gold/warning accent |
-| `--purp` | Purple gradient accent |
-
----
-
-## 🔧 Technical Details
-
-**Technologies:** HTML5 · CSS3 · Vanilla JavaScript · Claude API (`claude-sonnet-4-20250514`) · LocalStorage API · Fetch API
-
-**Browser Compatibility:** Chrome / Edge (recommended) · Firefox · Safari · Opera
+1. Clone or download the repository
+2. Open `index.html` in any modern browser
+3. Complete onboarding
+4. Start managing tasks instantly
 
 ---
 
 ## 📁 File Structure
 
 ```
-TaskManagerPro/
-├── index.html      # Complete single-file application
-├── README.md       # Project documentation
-├── CHANGELOG.md    # Version history
-└── LICENSE         # MIT License
-```
+Taskmanagerpro/
+    ├── README.md
+    ├── CHANGELOG.md
+    ├── CONTRIBUTING.md
+    ├── ITERATION_LOG.md
+    ├── LICENSE
+    ├── PRD.md
+    ├── PROTOTYPE_TESTING.md
+    └── .github/
+        └── workflows/
+            └── static.yml
 
----
+```
 
 ## 🔐 Privacy & Security
 
-- No tracking or analytics · No accounts or logins · No servers or backend
-- All task data in localStorage only
-- Export regularly — clearing browser data removes tasks
-
----
-
-## 🧪 Rapid Prototyping Process
-
-This project was developed using an AI-assisted rapid prototyping workflow.
-
-### Approach
-- Created a Product Requirements Document (PRD) to define the MVP scope
-- Used Claude AI as the primary tool to generate and iterate on the application
-- Compared outputs with other AI tools for refinement
-- Repeatedly tested and improved features through structured iterations
-
-### Key Takeaways
-- AI tools accelerate development but require careful testing and debugging
-- Iteration is essential for refining both functionality and user experience
-- Clear documentation improves both development speed and final quality
-
-### Supporting Documentation
-- `PRD.md` — Product requirements and scope definition  
-- `PROTOTYPE_TESTING.md` — Comparison of AI-generated prototypes  
-- `ITERATION_LOG.md` — Step-by-step development and refinement process  
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a branch — `git checkout -b feature/YourFeature`
-3. Commit — `git commit -m "Add YourFeature"`
-4. Push — `git push origin feature/YourFeature`
-5. Open a Pull Request
-
----
-
-## 🗺️ Roadmap
-
-- [ ] Recurring tasks
-- [ ] Drag-and-drop task ordering
-- [ ] Browser push notifications for deadlines
-- [ ] Mobile-first UI overhaul
-- [ ] Theme customization panel
-- [ ] AI categorization accuracy improvements
-
----
-
-## 📄 License
-
-MIT License. See [LICENSE](LICENSE) for details.
-
----
+No analytics or tracking
+No user accounts
+No backend infrastructure
+All data remains local to the browser
+Clearing browser storage removes saved tasks
 
 ## 👤 Author
 
-**Aryan Kandula**  
-[github.com/aryan-kandula](https://github.com/aryan-kandula)
+### Aryan Kandula
 
----
-
-Made by Aryan Kandula
+GitHub: https://github.com/aryan-kandula
