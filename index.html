@@ -96,14 +96,14 @@ button,input,select,textarea{font-family:inherit;}
 .nav::-webkit-scrollbar{display:none;}
 .nbtn{padding:8px 16px;border-radius:var(--r-pill);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;border:1px solid transparent;background:transparent;color:var(--tx2);transition:all .25s var(--ease-s);}
 .nbtn:hover{color:var(--tx);background:var(--glass-2);}
-.nbtn.on{background:var(--glass-strong);color:var(--pri);border-color:var(--bd2);box-shadow:0 4px 20px var(--pri-glow),0 0 0 1px var(--bd2);border-radius:var(--r-pill);overflow:visible;}
+.nbtn.on{background:var(--glass-strong);color:var(--pri);border-color:var(--bd2);box-shadow:0 4px 20px var(--pri-glow),0 0 0 1px var(--bd2);}
 
 /* TABS */
 .tab{display:none;animation:tabFadeIn .4s var(--ease-s);}
 .tab.on{display:block;}
 @keyframes tabFadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 
-/* STATS — clickable */
+/* STATS */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
 .stat{padding:22px 24px;transition:all .3s var(--ease-s);cursor:pointer;}
 .stat:hover{transform:translateY(-5px) scale(1.02);border-color:var(--bd2);box-shadow:var(--sh),var(--inset),0 0 0 1px var(--pri-dim);}
@@ -184,6 +184,34 @@ button,input,select,textarea{font-family:inherit;}
 .week-day-detail{padding:18px 20px;margin-bottom:16px;animation:tabFadeIn .3s var(--ease-s);}
 .week-day-detail-title{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
 
+/* ══ COURSES TAB ══ */
+.courses-hero{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:24px;}
+.course-card{padding:22px 24px;cursor:pointer;transition:all .3s var(--ease-s);position:relative;overflow:hidden;}
+.course-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0;}
+.course-card:hover{transform:translateY(-4px);border-color:var(--bd2);}
+.course-card-code{font-size:11px;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--tx2);margin-bottom:6px;}
+.course-card-name{font-size:18px;font-weight:700;margin-bottom:14px;line-height:1.3;}
+.course-card-stats{display:flex;gap:16px;}
+.course-stat{text-align:center;}
+.course-stat-val{font-size:22px;font-weight:700;font-family:var(--mono);line-height:1;}
+.course-stat-lbl{font-size:9px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--tx2);margin-top:3px;}
+.course-prog{height:3px;border-radius:var(--r-pill);background:var(--bd);overflow:hidden;margin-top:14px;}
+.course-prog-fill{height:100%;border-radius:var(--r-pill);transition:width 1s var(--ease-s);}
+.course-filter-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
+.course-pill{padding:7px 16px;border-radius:var(--r-pill);font-size:11px;font-family:var(--mono);font-weight:700;cursor:pointer;border:1px solid var(--bd);background:var(--glass-2);color:var(--tx2);transition:all .25s;white-space:nowrap;}
+.course-pill:hover{border-color:var(--bd2);color:var(--tx);}
+.course-pill.active{color:#fff;border-color:transparent;}
+.course-detail-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap;}
+.course-detail-badge{padding:8px 18px;border-radius:var(--r-pill);font-size:12px;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.1em;}
+.course-assign-count{font-size:13px;color:var(--tx2);}
+
+/* COURSE COLOR PALETTE — 10 distinct hues */
+.cc-0{--cc:#5aabff;}.cc-1{--cc:#ff5b8d;}.cc-2{--cc:#3dffc0;}.cc-3{--cc:#ffcc4f;}.cc-4{--cc:#b87fff;}.cc-5{--cc:#ff8c3c;}.cc-6{--cc:#2edfdf;}.cc-7{--cc:#ff6b6b;}.cc-8{--cc:#a8ff78;}.cc-9{--cc:#ffa3d7;}
+.course-card::before,.course-prog-fill,.course-pill.active{background:var(--cc)!important;}
+.course-card-code,.course-stat-val{color:var(--cc)!important;}
+.course-pill.active{background:var(--cc)!important;}
+.course-detail-badge{background:color-mix(in srgb,var(--cc) 15%,transparent);color:var(--cc);border:1px solid color-mix(in srgb,var(--cc) 35%,transparent);}
+
 /* AI */
 .ai-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 .ai-chat{padding:24px;}
@@ -253,12 +281,6 @@ button,input,select,textarea{font-family:inherit;}
 .dp-urg-track{height:7px;border-radius:var(--r-pill);background:rgba(255,255,255,.1);overflow:hidden;}
 [data-theme="light"] .dp-urg-track{background:rgba(0,0,0,.08);}
 .dp-urg-fill{height:100%;border-radius:var(--r-pill);transition:width 1.4s var(--ease-s);}
-.dp-notes{padding:18px 20px;border-radius:22px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);margin-bottom:22px;}
-[data-theme="light"] .dp-notes{background:rgba(255,255,255,.45);border-color:rgba(255,255,255,.7);}
-.dp-notes-lbl{font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.4);margin-bottom:10px;}
-[data-theme="light"] .dp-notes-lbl{color:rgba(6,16,48,.4);}
-.dp-notes-txt{font-size:14px;line-height:1.75;color:rgba(255,255,255,.82);white-space:pre-wrap;}
-[data-theme="light"] .dp-notes-txt{color:rgba(6,16,48,.82);}
 .dp-timer{padding:20px;border-radius:22px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);text-align:center;margin-bottom:22px;}
 [data-theme="light"] .dp-timer{background:rgba(255,255,255,.45);border-color:rgba(255,255,255,.7);}
 .dp-timer-lbl{font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.4);margin-bottom:12px;}
@@ -330,9 +352,6 @@ textarea.finput{resize:vertical;min-height:88px;}
 .tags-input-wrap input{flex:1;min-width:80px;background:none;border:none;outline:none;color:var(--tx);font-family:var(--font);font-size:13px;}
 .tags-input-wrap input::placeholder{color:var(--tx3);}
 
-/* TYPE BADGE */
-.type-badge{font-size:9px;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:2px 8px;border-radius:var(--r-pill);border:1px solid;}
-
 /* AI DISCLAIMER */
 .ai-disclaimer{display:flex;align-items:flex-start;gap:8px;padding:10px 14px;border-radius:var(--r-sm);background:rgba(255,204,79,.08);border:1px solid rgba(255,204,79,.2);font-size:11px;color:var(--gld);font-family:var(--mono);line-height:1.5;margin-bottom:14px;}
 
@@ -345,8 +364,33 @@ textarea.finput{resize:vertical;min-height:88px;}
 @keyframes toastSlide{from{opacity:0;transform:translateX(22px);}to{opacity:1;transform:translateX(0);}}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
-@media(max-width:768px){.stats{grid-template-columns:1fr 1fr;}.wgrid{grid-template-columns:repeat(4,1fr);}.ai-wrap{grid-template-columns:1fr;}.sgrid{grid-template-columns:1fr;}.dp-grid{grid-template-columns:1fr;}.features-grid{grid-template-columns:1fr;}}
-@media(max-width:480px){.wgrid{display:none;}.dp-content{padding:24px 20px 20px;}.hdr-name{display:none;}.land-title{font-size:2rem;}}
+
+/* MOBILE */
+@media(max-width:768px){
+  .stats{grid-template-columns:1fr 1fr;}
+  .wgrid{grid-template-columns:repeat(4,1fr);}
+  .ai-wrap{grid-template-columns:1fr;}
+  .sgrid{grid-template-columns:1fr;}
+  .dp-grid{grid-template-columns:1fr;}
+  .features-grid{grid-template-columns:1fr;}
+  .courses-hero{grid-template-columns:1fr;}
+  .course-filter-bar{gap:6px;}
+  .course-pill{font-size:10px;padding:5px 12px;}
+  .hdr{margin:8px 12px 0;padding:10px 14px;}
+  .hdr-right{gap:6px;}
+  .btn{padding:7px 12px;font-size:11px;}
+  .app-page{padding:0 12px 80px;}
+}
+@media(max-width:480px){
+  .wgrid{display:none;}
+  .dp-content{padding:24px 20px 20px;}
+  .hdr-name,.hdr-sub{display:none;}
+  .land-title{font-size:2rem;}
+  .stats{grid-template-columns:1fr 1fr;gap:10px;}
+  .stat-val{font-size:26px;}
+  .tgrid{grid-template-columns:1fr;}
+  .course-card-stats{gap:10px;}
+}
 </style>
 </head>
 <body>
@@ -371,22 +415,21 @@ textarea.finput{resize:vertical;min-height:88px;}
       <div class="features-title">Everything You Need</div>
       <div class="features-grid">
         <div class="g feat-card"><span class="feat-icon">🤖</span><div class="feat-name">AI Study Assistant</div><div class="feat-desc">Powered by Claude AI — schedules your week by importance, tells you what to focus on, and gives real advice based on your actual deadlines.</div></div>
-        <div class="g feat-card"><span class="feat-icon">🔄</span><div class="feat-name">Auto-Refresh Sources</div><div class="feat-desc">Paste your Canvas or Google Calendar URL once. Tasks sync every 5 minutes — new assignments appear automatically.</div></div>
+        <div class="g feat-card"><span class="feat-icon">🏫</span><div class="feat-name">Smart Course Detection</div><div class="feat-desc">Automatically extracts course codes like NOS-120-0001 or [CSC-251] from imported tasks and groups everything by course with progress tracking.</div></div>
         <div class="g feat-card"><span class="feat-icon">📋</span><div class="feat-name">Task Detail View</div><div class="feat-desc">Click any task for a full immersive detail panel with urgency scoring, countdown, notes, and a custom focus timer.</div></div>
         <div class="g feat-card"><span class="feat-icon">📅</span><div class="feat-name">Week Calendar View</div><div class="feat-desc">Navigate weeks with arrows, click any day to see just that day's tasks. Spot busy days before they sneak up on you.</div></div>
         <div class="g feat-card"><span class="feat-icon">⏱️</span><div class="feat-name">Custom Study Timer</div><div class="feat-desc">Set any duration — not just presets. Pomodoro-style animated ring timer with task association per session.</div></div>
-        <div class="g feat-card"><span class="feat-icon">✅</span><div class="feat-name">Bulk Task Actions</div><div class="feat-desc">Mark all overdue tasks done at once, or select a date range to bulk-complete. Stop tapping one by one.</div></div>
+        <div class="g feat-card"><span class="feat-icon">✅</span><div class="feat-name">Clean CSV Export</div><div class="feat-desc">Export a clean, clutter-free spreadsheet — only the columns that matter. No description dumps, no noise.</div></div>
       </div>
     </div>
     <div class="land-steps">
       <div class="steps-title">How to Use It</div>
       <div class="steps-list">
-        <div class="g step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Add Tasks Manually</div><div class="step-desc">Hit <strong>+ Add Task</strong>. Fill in description, due date, priority, and course. Priority is also auto-detected from the task name — quizzes and exams rank higher than labs, exercises, and attendance.</div></div></div>
-        <div class="g step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Import from Canvas or Google Calendar</div><div class="step-desc">Click <strong>Import</strong>, paste your Canvas Calendar Feed URL or Google iCal link. Tasks import and auto-refresh every 5 minutes going forward. Priority is auto-assigned intelligently.</div></div></div>
-        <div class="g step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Bulk-Complete Overdue Tasks</div><div class="step-desc">In the Past Due section, use <strong>Mark All Done</strong> or pick a date range to bulk-complete tasks you've already finished. No more tapping one by one.</div></div></div>
-        <div class="g step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Ask the AI Assistant</div><div class="step-desc">Click any Quick Question — it fires instantly. Ask things like <em>"schedule my tasks this week"</em> and get a real day-by-day plan with actual task names spread sensibly across the week.</div></div></div>
-        <div class="g step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Navigate the Week View</div><div class="step-desc">Use the ← → arrows to move between weeks. Click any day tile to see just that day's tasks below. Today is highlighted in blue.</div></div></div>
-        <div class="g step"><div class="step-num">6</div><div class="step-body"><div class="step-title">Set a Custom Timer</div><div class="step-desc">In the Study Timer tab or inside any task detail panel, type any number of minutes into the custom input. Not limited to 25/50/5 presets.</div></div></div>
+        <div class="g step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Add Tasks Manually</div><div class="step-desc">Hit <strong>+ Add Task</strong>. Fill in description, due date, priority, and course. Priority is also auto-detected from the task name.</div></div></div>
+        <div class="g step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Import from Canvas or Google Calendar</div><div class="step-desc">Click <strong>Import</strong>, paste your Canvas Calendar Feed URL or Google iCal link. Course codes like NOS-120 or [CSC-251] are detected and assigned automatically.</div></div></div>
+        <div class="g step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Browse by Course</div><div class="step-desc">The <strong>Courses</strong> tab groups all tasks by detected course code. Each course card shows pending/done counts and a completion bar.</div></div></div>
+        <div class="g step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Ask the AI Assistant</div><div class="step-desc">Click any Quick Question — it fires instantly. Ask things like <em>"schedule my tasks this week"</em> and get a real day-by-day plan.</div></div></div>
+        <div class="g step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Export Clean Data</div><div class="step-desc">Settings → Export CSV gives you a tidy spreadsheet: Task, Date, Time, Type, Priority, Status, Course. No cluttered description columns.</div></div></div>
       </div>
     </div>
     <div class="land-bottom">
@@ -416,6 +459,7 @@ textarea.finput{resize:vertical;min-height:88px;}
     <button class="nbtn on" onclick="sw('dashboard',this)">📊 Dashboard</button>
     <button class="nbtn" onclick="sw('tasks',this)">📋 All Tasks</button>
     <button class="nbtn" onclick="sw('week',this)">📅 Week View</button>
+    <button class="nbtn" onclick="sw('courses',this)">🏫 Courses</button>
     <button class="nbtn" onclick="sw('ai',this)">🤖 AI Assistant</button>
     <button class="nbtn" onclick="sw('timer',this)">⏱ Study Timer</button>
     <button class="nbtn" onclick="sw('settings',this)">⚙ Settings</button>
@@ -449,6 +493,7 @@ textarea.finput{resize:vertical;min-height:88px;}
       <select class="finput" style="width:auto;flex-shrink:0;" onchange="renderAll()" id="fPri"><option value="">All Priorities</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select>
       <select class="finput" style="width:auto;flex-shrink:0;" onchange="renderAll()" id="fStat"><option value="">All Status</option><option value="pending">Pending</option><option value="done">Done</option></select>
       <select class="finput" style="width:auto;flex-shrink:0;" onchange="renderAll()" id="fType"><option value="">All Types</option><option value="task">Task</option><option value="assignment">Assignment</option><option value="class">Class</option><option value="exam">Exam</option><option value="event">Event</option><option value="holiday">Holiday</option></select>
+      <select class="finput" style="width:auto;flex-shrink:0;" onchange="renderAll()" id="fCourse"><option value="">All Courses</option></select>
       <input class="finput" style="flex:1;min-width:160px;" placeholder="🔍 Search tasks, tags, courses..." oninput="renderAll()" id="fSearch"/>
     </div>
     <div class="tgrid" id="allGrid"></div>
@@ -463,6 +508,12 @@ textarea.finput{resize:vertical;min-height:88px;}
     </div>
     <div class="wgrid" id="weekGrid"></div>
     <div id="weekDayDetail"></div>
+  </div>
+
+  <!-- COURSES -->
+  <div id="tab-courses" class="tab">
+    <div id="courseFilterBar" class="course-filter-bar"></div>
+    <div id="coursesContent"></div>
   </div>
 
   <!-- AI -->
@@ -527,7 +578,7 @@ textarea.finput{resize:vertical;min-height:88px;}
         <div class="srow"><span>Completed</span><span id="sDone" style="font-family:var(--mono);color:var(--grn);">0</span></div>
         <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;">
           <button class="btn" onclick="exportData('json')" style="justify-content:center;">⬆ Export JSON</button>
-          <button class="btn" onclick="exportData('csv')" style="justify-content:center;">⬆ Export CSV</button>
+          <button class="btn" onclick="exportData('csv')" style="justify-content:center;">⬆ Export CSV (clean)</button>
           <button class="btn acc" onclick="clearAll()" style="justify-content:center;">🗑 Clear All Tasks</button>
         </div>
       </div>
@@ -546,7 +597,7 @@ textarea.finput{resize:vertical;min-height:88px;}
       <div class="fg"><label class="flbl">Priority</label><select class="finput" id="tPri"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select></div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-      <div class="fg"><label class="flbl">Course / Category</label><input class="finput" id="tCourse" placeholder="e.g. CSC289, Math, Personal..."/></div>
+      <div class="fg"><label class="flbl">Course / Category</label><input class="finput" id="tCourse" placeholder="e.g. CSC251, NOS-120, Math..."/></div>
       <div class="fg"><label class="flbl">Type</label><select class="finput" id="tType"><option value="task">Task</option><option value="assignment">Assignment</option><option value="class">Class</option><option value="exam">Exam</option><option value="event">Event</option><option value="holiday">Holiday</option></select></div>
     </div>
     <div class="fg"><label class="flbl">Tags <span style="font-size:9px;color:var(--tx3);font-weight:400;text-transform:none;letter-spacing:0;">(press Enter or comma to add)</span></label><div class="tags-input-wrap" id="tagsWrap" onclick="document.getElementById('tagInput').focus()"><input id="tagInput" placeholder="Add a tag..." onkeydown="handleTagInput(event)" oninput="tagInputHint(event)"/></div></div>
@@ -557,7 +608,7 @@ textarea.finput{resize:vertical;min-height:88px;}
 <div class="modal" id="importModal">
   <div class="g mbox">
     <div class="mtitle">⬇ Import &amp; Auto-Refresh</div>
-    <p style="font-size:12px;color:var(--tx2);margin-bottom:20px;font-family:var(--mono);">Paste a URL once — tasks auto-refresh every 5 minutes from that point on.</p>
+    <p style="font-size:12px;color:var(--tx2);margin-bottom:20px;font-family:var(--mono);">Paste a URL once — tasks auto-refresh every 5 minutes. Course codes are extracted automatically.</p>
     <div class="fg"><label class="flbl">🔗 Google Calendar iCal URL</label><input class="finput" id="gUrl" placeholder="https://calendar.google.com/...ical..."/><button class="btn" onclick="importUrl('google')" style="margin-top:8px;width:100%;justify-content:center;">Import &amp; Watch</button></div>
     <div class="fg"><label class="flbl">🎓 Canvas Calendar Feed URL</label><input class="finput" id="cUrl" placeholder="https://canvas.instructure.com/feeds/..."/><button class="btn" onclick="importUrl('canvas')" style="margin-top:8px;width:100%;justify-content:center;">Import &amp; Watch</button></div>
     <div class="fg"><label class="flbl">📄 Upload .ics File</label><input class="finput" type="file" id="icsFile" accept=".ics"/><button class="btn" onclick="importICS()" style="margin-top:8px;width:100%;justify-content:center;">Import File</button></div>
@@ -582,105 +633,147 @@ var timerSec=25*60, timerTotal=25*60, timerRunning=false, timerIv=null, timerTid
 var dtSec=25*60, dtTotal=25*60, dtRunning=false, dtIv=null;
 var newFromRefresh=0;
 var weekOffset=0;
-var selectedWeekDay=null; // ALWAYS stored as "YYYY-MM-DD" string
-var pendingTags=[]; // tags being built in the modal
+var selectedWeekDay=null;
+var pendingTags=[];
+var activeCourseFilter='all'; // for Courses tab
 
-/* ══ TODAY — local midnight, no UTC offset ══ */
+/* ══ TODAY ══ */
 var TODAY=(function(){var d=new Date();d.setHours(0,0,0,0);return d;})();
 
-/* ══ DATE HELPERS ══
- * parseLocalDate: ONLY accepts "YYYY-MM-DD" → returns local midnight Date (no UTC shift)
- * toYMD: Date → "YYYY-MM-DD" string (local, no UTC shift)
- * All date comparisons MUST go through these two functions.
- * Never pass a task.date string directly to `new Date(string)` — that would be UTC midnight.
- */
-function parseLocalDate(ymd){
-  // ymd must be "YYYY-MM-DD"
-  var p=ymd.split('-');
-  return new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10));
-}
-function toYMD(d){
-  // Returns local YYYY-MM-DD from a Date object
-  var y=d.getFullYear();
-  var m=String(d.getMonth()+1).padStart(2,'0');
-  var day=String(d.getDate()).padStart(2,'0');
-  return y+'-'+m+'-'+day;
+/* ══ DATE HELPERS ══ */
+function parseLocalDate(ymd){var p=ymd.split('-');return new Date(parseInt(p[0],10),parseInt(p[1],10)-1,parseInt(p[2],10));}
+function toYMD(d){var y=d.getFullYear();var m=String(d.getMonth()+1).padStart(2,'0');var day=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+day;}
+
+/* ══════════════════════════════════════════
+   COURSE CODE DETECTION ENGINE
+   Handles:
+   - [NOS-120-0001] or [CSC-251] — bracketed codes
+   - NOS-120-0001 at start/end of string
+   - Standard formats: ABC-123, ABC123, ABC 123
+   - Canvas-style: "Course Name [CODE-123-456]"
+   - Strips detected code from display title
+   ══════════════════════════════════════════ */
+var COURSE_CODE_PATTERNS=[
+  // Bracketed: [NOS-120-0001], [CSC-251], [MATH 101]
+  /\[([A-Z]{2,6}[\s\-]?\d{2,4}(?:[\-]\d{3,6})?)\]/i,
+  // Hyphenated with optional section: NOS-120-0001, CSC-251-001
+  /\b([A-Z]{2,6}-\d{2,4}(?:-\d{3,6})?)\b/,
+  // Compact no-delimiter: CSC251, MATH101
+  /\b([A-Z]{2,5}\d{2,4})\b/,
+  // Space-separated: CSC 251
+  /\b([A-Z]{2,6}\s\d{3,4})\b/
+];
+
+function extractCourseCode(text){
+  // Priority 1: bracketed code (most explicit)
+  var m=text.match(/\[([A-Z]{2,6}[\s\-]?\d{2,4}(?:[\-]\d{3,6})?)\]/i);
+  if(m)return{code:normCode(m[1]),clean:text.replace(m[0],'').trim().replace(/\s{2,}/g,' ').trim()};
+
+  // Priority 2: hyphenated with section number NOS-120-0001
+  m=text.match(/\b([A-Z]{2,6}-\d{2,4}-\d{3,6})\b/i);
+  if(m)return{code:normCode(m[1]),clean:text.replace(m[0],'').trim().replace(/\s{2,}/g,' ').trim()};
+
+  // Priority 3: simple hyphenated CSC-251
+  m=text.match(/\b([A-Z]{2,6}-\d{2,4})\b/i);
+  if(m)return{code:normCode(m[1]),clean:text.replace(m[0],'').trim().replace(/\s{2,}/g,' ').trim()};
+
+  // Priority 4: compact CSC251
+  m=text.match(/\b([A-Z]{2,5}\d{3,4})\b/i);
+  if(m)return{code:normCode(m[1]),clean:text.replace(m[0],'').trim().replace(/\s{2,}/g,' ').trim()};
+
+  // Priority 5: space-separated CSC 251
+  m=text.match(/\b([A-Z]{2,6}\s\d{3,4})\b/i);
+  if(m)return{code:normCode(m[1]),clean:text.replace(m[0],'').trim().replace(/\s{2,}/g,' ').trim()};
+
+  return null;
 }
 
-/* ══ SMART PRIORITY from task name ══ */
+function normCode(raw){
+  // Normalize: uppercase, keep hyphens, collapse spaces to hyphen, trim trailing section numbers beyond -NNN
+  var c=raw.toUpperCase().trim();
+  c=c.replace(/\s+/g,'-');
+  return c;
+}
+
+// Shorten code for display: NOS-120-0001 → NOS-120
+function shortCode(code){
+  var parts=code.split('-');
+  // If 3+ parts and last is 4+ digits (section), drop it
+  if(parts.length>=3&&/^\d{4,}$/.test(parts[parts.length-1])){parts.pop();}
+  return parts.join('-');
+}
+
+// Get all unique course codes from tasks
+function getAllCourses(){
+  var codes={};
+  tasks.forEach(function(t){
+    var c=t.course||'Uncategorized';
+    if(!codes[c])codes[c]={total:0,done:0,pending:0,overdue:0};
+    codes[c].total++;
+    if(t.done)codes[c].done++;
+    else{codes[c].pending++;if(parseLocalDate(t.date)<TODAY)codes[c].overdue++;}
+  });
+  return codes;
+}
+
+// Assign a stable color index to a course code
+var _courseColorCache={};
+var _courseColorIdx=0;
+function courseColorIdx(code){
+  if(_courseColorCache[code]===undefined){_courseColorCache[code]=_courseColorIdx%10;_courseColorIdx++;}
+  return _courseColorCache[code];
+}
+
+/* ══ SMART PRIORITY ══ */
 function inferPriority(text){
   var t=text.toLowerCase();
-  if(/\b(exam|final|midterm|test|quiz|capstone|project sprint|sprint)\b/.test(t)) return 'high';
-  if(/\b(lab|assessment|assignment|homework|hw|module lab|hands-on)\b/.test(t)) return 'medium';
-  if(/\b(exercise|guided|attendance|survey|podcast|discussion|extra credit|ec|start.stop|career|peeling)\b/.test(t)) return 'low';
-  return 'medium';
+  if(/\b(exam|final|midterm|test|quiz|capstone|project sprint|sprint)\b/.test(t))return'high';
+  if(/\b(lab|assessment|assignment|homework|hw|module lab|hands-on)\b/.test(t))return'medium';
+  if(/\b(exercise|guided|attendance|survey|podcast|discussion|extra credit|ec|start.stop|career|peeling)\b/.test(t))return'low';
+  return'medium';
 }
 
-/* ══ AUTO CATEGORIZATION — keyword → type ══ */
+/* ══ AUTO TYPE ══ */
 function inferType(text){
   var t=text.toLowerCase();
-  if(/\b(exam|midterm|final|quiz|test)\b/.test(t)) return 'exam';
-  if(/\b(assignment|hw|homework|submit|submission|due)\b/.test(t)) return 'assignment';
-  if(/\b(class|lecture|lab|seminar|tutorial|section)\b/.test(t)) return 'class';
-  if(/\b(holiday|break|no class|recess|vacation)\b/.test(t)) return 'holiday';
-  if(/\b(event|meeting|club|session|workshop)\b/.test(t)) return 'event';
-  return 'task';
+  if(/\b(exam|midterm|final|quiz|test)\b/.test(t))return'exam';
+  if(/\b(assignment|hw|homework|submit|submission|due)\b/.test(t))return'assignment';
+  if(/\b(class|lecture|lab|seminar|tutorial|section)\b/.test(t))return'class';
+  if(/\b(holiday|break|no class|recess|vacation)\b/.test(t))return'holiday';
+  if(/\b(event|meeting|club|session|workshop)\b/.test(t))return'event';
+  return'task';
 }
 
-/* ══ AUTO TAGS from keywords (does NOT override user tags) ══ */
-function inferAutoTags(text, existingTags){
+/* ══ AUTO TAGS ══ */
+function inferAutoTags(text,existingTags){
   var t=text.toLowerCase();
   var auto=[];
   var type=inferType(text);
-  if(type!=='task') auto.push(type);
-  if(/\b(exam|midterm|final|capstone)\b/.test(t)&&!auto.includes('exam')) auto.push('exam');
-  if(/\b(hw|homework|assignment)\b/.test(t)&&!auto.includes('assignment')) auto.push('assignment');
-  if(/\b(lab)\b/.test(t)&&!auto.includes('class')) auto.push('class');
-  // Merge: user tags take priority; auto tags added only if not already present
+  if(type!=='task')auto.push(type);
+  if(/\b(exam|midterm|final|capstone)\b/.test(t)&&!auto.includes('exam'))auto.push('exam');
+  if(/\b(hw|homework|assignment)\b/.test(t)&&!auto.includes('assignment'))auto.push('assignment');
+  if(/\b(lab)\b/.test(t)&&!auto.includes('class'))auto.push('class');
   var merged=(existingTags||[]).slice();
   auto.forEach(function(a){if(!merged.includes(a))merged.push(a);});
   return merged;
 }
 
-/* ══ TAG UI HELPERS ══ */
+/* ══ TAG UI ══ */
 var TYPE_COLORS={task:'tag-task',assignment:'tag-assignment',class:'tag-class',exam:'tag-exam',holiday:'tag-holiday',event:'tag-event'};
 function tagClass(tag){return TYPE_COLORS[tag]||'tag-custom';}
-
 function renderTagsWrap(){
-  var wrap=document.getElementById('tagsWrap');
-  if(!wrap)return;
+  var wrap=document.getElementById('tagsWrap');if(!wrap)return;
   var inp=document.getElementById('tagInput');
-  // Remove existing pill spans, keep the input
   Array.from(wrap.querySelectorAll('.tag-pill')).forEach(function(p){p.remove();});
-  pendingTags.forEach(function(tag,i){
-    var span=document.createElement('span');
-    span.className='tag-pill '+tagClass(tag);
-    span.innerHTML=esc(tag)+'<span class="tag-remove" onclick="removeTag('+i+')">✕</span>';
-    wrap.insertBefore(span,inp);
-  });
+  pendingTags.forEach(function(tag,i){var span=document.createElement('span');span.className='tag-pill '+tagClass(tag);span.innerHTML=esc(tag)+'<span class="tag-remove" onclick="removeTag('+i+')">✕</span>';wrap.insertBefore(span,inp);});
 }
 function removeTag(i){pendingTags.splice(i,1);renderTagsWrap();}
 function handleTagInput(e){
-  if(e.key==='Enter'||e.key===','||e.key===' '){
-    e.preventDefault();
-    var val=document.getElementById('tagInput').value.trim().replace(/,$/,'').toLowerCase();
-    if(val&&!pendingTags.includes(val)){pendingTags.push(val);renderTagsWrap();}
-    document.getElementById('tagInput').value='';
-  } else if(e.key==='Backspace'&&!document.getElementById('tagInput').value&&pendingTags.length){
-    pendingTags.pop();renderTagsWrap();
-  }
+  if(e.key==='Enter'||e.key===','||e.key===' '){e.preventDefault();var val=document.getElementById('tagInput').value.trim().replace(/,$/,'').toLowerCase();if(val&&!pendingTags.includes(val)){pendingTags.push(val);renderTagsWrap();}document.getElementById('tagInput').value='';}
+  else if(e.key==='Backspace'&&!document.getElementById('tagInput').value&&pendingTags.length){pendingTags.pop();renderTagsWrap();}
 }
-function tagInputHint(e){
-  // Live preview: if comma typed, commit
-  var val=e.target.value;
-  if(val.endsWith(',')){ var clean=val.slice(0,-1).trim().toLowerCase(); if(clean&&!pendingTags.includes(clean)){pendingTags.push(clean);renderTagsWrap();} e.target.value=''; }
-}
-
-/* ══ RENDER TAGS INLINE ══ */
-function renderTagBadges(tags){
-  if(!tags||!tags.length)return'';
-  return tags.slice(0,4).map(function(t){return'<span class="tag-pill '+tagClass(t)+'">'+esc(t)+'</span>';}).join('');
-}
+function tagInputHint(e){var val=e.target.value;if(val.endsWith(',')){var clean=val.slice(0,-1).trim().toLowerCase();if(clean&&!pendingTags.includes(clean)){pendingTags.push(clean);renderTagsWrap();}e.target.value='';}}
+function renderTagBadges(tags){if(!tags||!tags.length)return'';return tags.slice(0,4).map(function(t){return'<span class="tag-pill '+tagClass(t)+'">'+esc(t)+'</span>';}).join('');}
 
 /* ══ TYPE BADGE ══ */
 var TYPE_BADGE_COLORS={task:'rgba(90,171,255,.15)',assignment:'rgba(255,204,79,.15)',class:'rgba(184,127,255,.15)',exam:'rgba(255,91,141,.2)',holiday:'rgba(61,255,192,.15)',event:'rgba(255,140,60,.15)'};
@@ -693,34 +786,19 @@ function typeBadgeHTML(type){
 
 /* ══ LANDING ══ */
 function enterApp(){
-  var l=document.getElementById('landing');
-  l.style.transition='opacity .6s, transform .6s';l.style.opacity='0';l.style.transform='scale(.97)';
-  setTimeout(function(){
-    l.style.display='none';
-    var a=document.getElementById('app');a.style.display='block';a.style.opacity='0';a.style.transition='opacity .5s';
-    setTimeout(function(){a.style.opacity='1';},20);
-    renderDash();renderAISugs();
-  },500);
+  var l=document.getElementById('landing');l.style.transition='opacity .6s, transform .6s';l.style.opacity='0';l.style.transform='scale(.97)';
+  setTimeout(function(){l.style.display='none';var a=document.getElementById('app');a.style.display='block';a.style.opacity='0';a.style.transition='opacity .5s';setTimeout(function(){a.style.opacity='1';},20);renderDash();renderAISugs();populateCourseFilter();},500);
 }
 function goBack(){
   var a=document.getElementById('app');a.style.transition='opacity .4s';a.style.opacity='0';
-  setTimeout(function(){
-    a.style.display='none';
-    var l=document.getElementById('landing');l.style.display='flex';l.style.opacity='0';l.style.transform='scale(.97)';l.style.transition='opacity .5s, transform .5s';
-    setTimeout(function(){l.style.opacity='1';l.style.transform='scale(1)';},20);
-  },400);
+  setTimeout(function(){a.style.display='none';var l=document.getElementById('landing');l.style.display='flex';l.style.opacity='0';l.style.transform='scale(.97)';l.style.transition='opacity .5s, transform .5s';setTimeout(function(){l.style.opacity='1';l.style.transform='scale(1)';},20);},400);
 }
 
 /* ══ THEME ══ */
 function toggleTheme(){var t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('tmp_theme',t);}
 
 /* ══ TOAST ══ */
-function toast(msg,type,dur){
-  type=type||'inf';dur=dur||3500;
-  var el=document.createElement('div');el.className='toast '+type;el.textContent=msg;
-  document.getElementById('tcontainer').appendChild(el);
-  setTimeout(function(){el.style.opacity='0';el.style.transform='translateX(22px)';el.style.transition='all .4s';setTimeout(function(){el.remove();},400);},dur);
-}
+function toast(msg,type,dur){type=type||'inf';dur=dur||3500;var el=document.createElement('div');el.className='toast '+type;el.textContent=msg;document.getElementById('tcontainer').appendChild(el);setTimeout(function(){el.style.opacity='0';el.style.transform='translateX(22px)';el.style.transition='all .4s';setTimeout(function(){el.remove();},400);},dur);}
 
 /* ══ TABS ══ */
 function sw(tab,btn){
@@ -732,49 +810,24 @@ function sw(tab,btn){
 }
 function renderTab(t){
   if(t==='dashboard')renderDash();
-  else if(t==='tasks')renderAll();
+  else if(t==='tasks'){populateCourseFilter();renderAll();}
   else if(t==='week')renderWeek();
+  else if(t==='courses')renderCourses();
   else if(t==='ai')renderAISugs();
   else if(t==='timer')renderTimerTab();
   else if(t==='settings')renderSettings();
 }
 
-/* ══ URGENCY (v3.2: time-aware) ══
- * If task has a time field (HH:MM), build a full datetime for scoring.
- * Same-day tasks: earlier time = higher urgency.
- * Tasks without time: default to 23:59 (end of day) — treated as lowest urgency on that day.
- */
+/* ══ URGENCY ══ */
 function urgScore(t){
   if(t.done)return 0;
-  // Build due moment
-  var due=parseLocalDate(t.date);
-  var nowMs=Date.now();
-  var todayStart=new Date(TODAY);
-
-  if(t.time){
-    // Parse HH:MM and apply to due date
-    var parts=t.time.split(':');
-    due.setHours(parseInt(parts[0],10),parseInt(parts[1],10),0,0);
-  } else {
-    // No time — treat as 23:59 for within-day ordering
-    due.setHours(23,59,0,0);
-  }
-
-  var diffMs=due-nowMs;
-  var diffDays=diffMs/(1000*60*60*24);
+  var due=parseLocalDate(t.date);var nowMs=Date.now();
+  if(t.time){var parts=t.time.split(':');due.setHours(parseInt(parts[0],10),parseInt(parts[1],10),0,0);}else{due.setHours(23,59,0,0);}
+  var diffMs=due-nowMs;var diffDays=diffMs/(1000*60*60*24);
   var s=0;
-  if(diffMs<0) s=100; // overdue
-  else if(diffDays<0.25) s=97; // due within 6 hours
-  else if(diffDays<0.5) s=93; // due within 12 hours
-  else if(diffDays<1) s=88; // same day
-  else if(diffDays<=1) s=85;
-  else if(diffDays<=3) s=70;
-  else if(diffDays<=7) s=50;
-  else if(diffDays<=14) s=30;
-  else s=15;
-
-  if(t.priority==='high') s=Math.min(100,s+15);
-  if(t.priority==='low') s=Math.max(5,s-15);
+  if(diffMs<0)s=100;else if(diffDays<0.25)s=97;else if(diffDays<0.5)s=93;else if(diffDays<1)s=88;else if(diffDays<=1)s=85;else if(diffDays<=3)s=70;else if(diffDays<=7)s=50;else if(diffDays<=14)s=30;else s=15;
+  if(t.priority==='high')s=Math.min(100,s+15);
+  if(t.priority==='low')s=Math.max(5,s-15);
   return s;
 }
 function urgColor(s){if(s>=90)return'#ff5b8d';if(s>=70)return'#ffcc4f';if(s>=50)return'#5aabff';return'#3dffc0';}
@@ -788,13 +841,15 @@ function mkCard(t,delay){
   var sc=urgScore(t),col=urgColor(sc);
   var dl=Math.ceil((due-TODAY)/86400000);
   var dlbl=isOD?Math.abs(dl)+'d overdue':dl===0?'Due today':dl+'d left';
+  // Show short course code if available
+  var courseDisplay=t.course?shortCode(t.course):null;
   return'<div class="g tc '+(t.done?'done-card':'')+' '+(isOD?'od-card':'')+'" style="animation-delay:'+delay+'ms" onclick="openDetail('+t.id+')">'
     +'<div onclick="event.stopPropagation()"><input type="checkbox" class="chk" '+(t.done?'checked':'')+' onchange="toggleTask('+t.id+')"/></div>'
     +'<div class="tc-body"><div class="tc-title">'+esc(t.text)+'</div>'
     +'<div class="tc-meta"><span class="tc-date '+(isOD?'od':'')+'">📅 '+ds+timeStr+'</span>'
     +'<span class="badge b'+t.priority.charAt(0)+'">'+t.priority+'</span>'
     +(t.type&&t.type!=='task'?typeBadgeHTML(t.type):'')
-    +(t.course?'<span class="badge bc">'+esc(t.course)+'</span>':'')
+    +(courseDisplay?'<span class="badge bc" title="'+esc(t.course)+'">'+esc(courseDisplay)+'</span>':'')
     +'<span style="font-size:10px;font-family:var(--mono);color:'+col+';">'+dlbl+'</span></div>'
     +(t.tags&&t.tags.filter(function(tg){return tg!==(t.type||'task');}).length?'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;">'+renderTagBadges(t.tags.filter(function(tg){return tg!==(t.type||'task');}))+'</div>':'')
     +'<div class="ubar"><div class="ufill" style="width:'+sc+'%;background:'+col+';"></div></div>'
@@ -819,85 +874,140 @@ function renderDash(){
   document.getElementById('pastdueGrid').innerHTML=odS.length?odS.map(function(t,i){return mkCard(t,i*40);}).join(''):'<div class="empty-state">No past due tasks</div>';
 }
 
-function goToPending(){
-  sw('tasks',document.querySelectorAll('.nbtn')[1]);
-  setTimeout(function(){var el=document.getElementById('fStat');if(el){el.value='pending';renderAll();}},50);
-}
-function goToDone(){
-  sw('tasks',document.querySelectorAll('.nbtn')[1]);
-  setTimeout(function(){var el=document.getElementById('fStat');if(el){el.value='done';renderAll();}},50);
-}
-function goToOverdue(){
-  sw('dashboard',document.querySelectorAll('.nbtn')[0]);
-  if(!pdVisible){togglePD();}
-  setTimeout(function(){var el=document.getElementById('pdSection');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},100);
-}
-
+function goToPending(){sw('tasks',document.querySelectorAll('.nbtn')[1]);setTimeout(function(){var el=document.getElementById('fStat');if(el){el.value='pending';renderAll();}},50);}
+function goToDone(){sw('tasks',document.querySelectorAll('.nbtn')[1]);setTimeout(function(){var el=document.getElementById('fStat');if(el){el.value='done';renderAll();}},50);}
+function goToOverdue(){sw('dashboard',document.querySelectorAll('.nbtn')[0]);if(!pdVisible){togglePD();}setTimeout(function(){var el=document.getElementById('pdSection');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},100);}
 function animCnt(id,target){var el=document.getElementById(id);if(!el)return;var cur=0,step=Math.ceil(target/20)||1,iv=setInterval(function(){cur=Math.min(cur+step,target);el.textContent=cur;if(cur>=target)clearInterval(iv);},28);}
 
 /* ══ BULK ACTIONS ══ */
-function markAllOverdueDone(){
-  var od=tasks.filter(function(t){return!t.done&&parseLocalDate(t.date)<TODAY;});
-  if(!od.length){toast('No overdue tasks to mark done','inf');return;}
-  od.forEach(function(t){t.done=true;});
-  save();renderDash();toast(od.length+' overdue tasks marked done ✓','ok');
-}
-function markRangeDone(){
-  var fromVal=document.getElementById('bulkFrom').value;
-  var toVal=document.getElementById('bulkTo').value;
-  if(!fromVal||!toVal){toast('Please set both from and to dates','warn');return;}
-  // Use parseLocalDate for both to avoid UTC shift on the range boundaries too
-  var from=parseLocalDate(fromVal),to=parseLocalDate(toVal);
-  to.setHours(23,59,59);
-  var matched=tasks.filter(function(t){var d=parseLocalDate(t.date);return!t.done&&d>=from&&d<=to;});
-  if(!matched.length){toast('No tasks found in that range','inf');return;}
-  matched.forEach(function(t){t.done=true;});
-  save();renderDash();toast(matched.length+' tasks marked done ✓','ok');
+function markAllOverdueDone(){var od=tasks.filter(function(t){return!t.done&&parseLocalDate(t.date)<TODAY;});if(!od.length){toast('No overdue tasks to mark done','inf');return;}od.forEach(function(t){t.done=true;});save();renderDash();toast(od.length+' overdue tasks marked done ✓','ok');}
+function markRangeDone(){var fromVal=document.getElementById('bulkFrom').value;var toVal=document.getElementById('bulkTo').value;if(!fromVal||!toVal){toast('Please set both from and to dates','warn');return;}var from=parseLocalDate(fromVal),to=parseLocalDate(toVal);to.setHours(23,59,59);var matched=tasks.filter(function(t){var d=parseLocalDate(t.date);return!t.done&&d>=from&&d<=to;});if(!matched.length){toast('No tasks found in that range','inf');return;}matched.forEach(function(t){t.done=true;});save();renderDash();toast(matched.length+' tasks marked done ✓','ok');}
+
+/* ══ POPULATE COURSE FILTER in All Tasks ══ */
+function populateCourseFilter(){
+  var sel=document.getElementById('fCourse');if(!sel)return;
+  var courses=getAllCourses();
+  var codes=Object.keys(courses).filter(function(c){return c!=='Uncategorized';}).sort();
+  var cur=sel.value;
+  sel.innerHTML='<option value="">All Courses</option>'
+    +codes.map(function(c){return'<option value="'+esc(c)+'"'+(c===cur?' selected':'')+'>'+esc(shortCode(c))+'</option>';}).join('')
+    +(courses['Uncategorized']?'<option value="Uncategorized"'+(cur==='Uncategorized'?' selected':'')+'>Uncategorized</option>':'');
 }
 
 /* ══ ALL TASKS ══ */
 function renderAll(){
-  var fp=document.getElementById('fPri'),fs=document.getElementById('fStat'),sq=document.getElementById('fSearch'),ft=document.getElementById('fType');
+  var fp=document.getElementById('fPri'),fs=document.getElementById('fStat'),sq=document.getElementById('fSearch'),ft=document.getElementById('fType'),fc=document.getElementById('fCourse');
   var f=tasks.slice();
   if(fp&&fp.value)f=f.filter(function(t){return t.priority===fp.value;});
   if(fs&&fs.value==='pending')f=f.filter(function(t){return!t.done;});
   if(fs&&fs.value==='done')f=f.filter(function(t){return t.done;});
   if(ft&&ft.value)f=f.filter(function(t){return(t.type||'task')===ft.value;});
+  if(fc&&fc.value){var fcv=fc.value;f=f.filter(function(t){return(t.course||'Uncategorized')===fcv;});}
   if(sq&&sq.value.trim()){var q=sq.value.toLowerCase();f=f.filter(function(t){return t.text.toLowerCase().includes(q)||(t.notes||'').toLowerCase().includes(q)||(t.course||'').toLowerCase().includes(q)||(t.type||'').toLowerCase().includes(q)||((t.tags||[]).join(' ')).toLowerCase().includes(q);});}
   f.sort(function(a,b){if(a.done!==b.done)return a.done?1:-1;return urgScore(b)-urgScore(a);});
   document.getElementById('allGrid').innerHTML=f.length?f.map(function(t,i){return mkCard(t,i*30);}).join(''):'<div class="empty-state">No tasks match your filters</div>';
 }
 
-/* ══ WEEK VIEW ══
- * FIX: selectedWeekDay is always "YYYY-MM-DD". Never use .toDateString() for storage.
- * FIX: Day tiles call selectWeekDay with toYMD(d) — always a clean YYYY-MM-DD string.
- * FIX: Comparisons use toYMD(d) === task.date (both are YYYY-MM-DD).
- */
-function getWeekStart(offset){
-  var d=new Date(TODAY);
-  d.setDate(TODAY.getDate()-TODAY.getDay()+(offset*7));
-  d.setHours(0,0,0,0);
-  return d;
-}
-function shiftWeek(dir){weekOffset+=dir;selectedWeekDay=null;renderWeek();}
+/* ══════════════════════════════════════════
+   COURSES TAB — full course browser
+   ══════════════════════════════════════════ */
+function renderCourses(){
+  var courses=getAllCourses();
+  var codes=Object.keys(courses).sort(function(a,b){
+    // Sort by pending count desc, then alphabetically
+    if(courses[b].pending!==courses[a].pending)return courses[b].pending-courses[a].pending;
+    return a.localeCompare(b);
+  });
 
+  // Filter bar
+  var barHTML='<button class="course-pill '+(activeCourseFilter==='all'?'active cc-0':'')+'" onclick="setCourseFilter(\'all\')" style="'+(activeCourseFilter==='all'?'--cc:#5aabff;':'')+'">All Courses ('+codes.length+')</button>';
+  codes.forEach(function(code,i){
+    var ci=courseColorIdx(code);
+    var isActive=activeCourseFilter===code;
+    barHTML+='<button class="course-pill '+(isActive?'active cc-'+ci:'')+'" style="'+(isActive?'--cc:'+getCourseColor(ci)+';':'')+'" onclick="setCourseFilter(\''+esc(code)+'\')">'
+      +esc(shortCode(code))
+      +(courses[code].pending?'<span style="margin-left:5px;background:rgba(0,0,0,.2);border-radius:20px;padding:1px 6px;font-size:9px;">'+courses[code].pending+'</span>':'')
+      +'</button>';
+  });
+  document.getElementById('courseFilterBar').innerHTML=barHTML;
+
+  // Content
+  var displayCodes=activeCourseFilter==='all'?codes:[activeCourseFilter];
+  var contentHTML='';
+
+  if(activeCourseFilter==='all'){
+    // Grid of course cards
+    contentHTML='<div class="courses-hero">';
+    codes.forEach(function(code){
+      var ci=courseColorIdx(code);
+      var cd=courses[code];
+      var pct=cd.total?Math.round(cd.done/cd.total*100):0;
+      contentHTML+='<div class="g course-card cc-'+ci+'" style="--cc:'+getCourseColor(ci)+'" onclick="setCourseFilter(\''+esc(code)+'\')">'
+        +'<div class="course-card-code">'+esc(shortCode(code))+'</div>'
+        +'<div class="course-card-name">'+esc(code)+'</div>'
+        +'<div class="course-card-stats">'
+        +'<div class="course-stat"><div class="course-stat-val">'+cd.total+'</div><div class="course-stat-lbl">Total</div></div>'
+        +'<div class="course-stat"><div class="course-stat-val" style="color:var(--grn);">'+cd.done+'</div><div class="course-stat-lbl">Done</div></div>'
+        +'<div class="course-stat"><div class="course-stat-val" style="color:'+(cd.overdue>0?'var(--acc)':'var(--tx)')+';">'+cd.pending+'</div><div class="course-stat-lbl">Pending</div></div>'
+        +(cd.overdue?'<div class="course-stat"><div class="course-stat-val" style="color:var(--acc);">'+cd.overdue+'</div><div class="course-stat-lbl">Overdue</div></div>':'')
+        +'</div>'
+        +'<div class="course-prog"><div class="course-prog-fill" style="width:'+pct+'%;"></div></div>'
+        +'<div style="font-size:10px;font-family:var(--mono);color:var(--tx2);margin-top:6px;">'+pct+'% complete</div>'
+        +'</div>';
+    });
+    contentHTML+='</div>';
+    if(!codes.length){contentHTML='<div class="empty-state" style="padding:60px 0;">No courses found yet.<br><span style="font-size:11px;color:var(--tx3);">Import tasks from Canvas or add tasks with course codes like NOS-120 or CSC-251.</span></div>';}
+  } else {
+    // Single course detail view
+    var code=activeCourseFilter;
+    var ci=courseColorIdx(code);
+    var cd=courses[code]||{total:0,done:0,pending:0,overdue:0};
+    var pct=cd.total?Math.round(cd.done/cd.total*100):0;
+    var courseTasks=tasks.filter(function(t){return(t.course||'Uncategorized')===code;});
+    courseTasks.sort(function(a,b){if(a.done!==b.done)return a.done?1:-1;return urgScore(b)-urgScore(a);});
+
+    contentHTML='<div class="g" style="padding:22px 24px;margin-bottom:20px;">'
+      +'<div class="course-detail-header">'
+      +'<div class="course-detail-badge cc-'+ci+'" style="--cc:'+getCourseColor(ci)+';">'+esc(shortCode(code))+'</div>'
+      +'<div><div style="font-size:18px;font-weight:700;">'+esc(code)+'</div>'
+      +'<div style="font-size:12px;color:var(--tx2);font-family:var(--mono);margin-top:2px;">'+cd.total+' task'+(cd.total!==1?'s':'')+' · '+pct+'% complete'+(cd.overdue?' · <span style="color:var(--acc);">'+cd.overdue+' overdue</span>':'')+'</div>'
+      +'</div>'
+      +'</div>'
+      +'<div style="height:6px;border-radius:var(--r-pill);background:var(--bd);overflow:hidden;">'
+      +'<div style="height:100%;border-radius:var(--r-pill);background:'+getCourseColor(ci)+';width:'+pct+'%;transition:width 1s var(--ease-s);"></div>'
+      +'</div>'
+      +'</div>';
+
+    // Pending tasks
+    var pending=courseTasks.filter(function(t){return!t.done;});
+    var done=courseTasks.filter(function(t){return t.done;});
+    if(pending.length){contentHTML+='<div class="sh">📌 Pending</div><div class="tgrid">'+pending.map(function(t,i){return mkCard(t,i*30);}).join('')+'</div>';}
+    if(done.length){contentHTML+='<div class="sh">✅ Completed</div><div class="tgrid">'+done.map(function(t,i){return mkCard(t,i*30);}).join('')+'</div>';}
+    if(!courseTasks.length){contentHTML+='<div class="empty-state">No tasks in this course</div>';}
+  }
+
+  document.getElementById('coursesContent').innerHTML=contentHTML;
+}
+
+function setCourseFilter(code){activeCourseFilter=code;renderCourses();}
+
+var COURSE_COLORS=['#5aabff','#ff5b8d','#3dffc0','#ffcc4f','#b87fff','#ff8c3c','#2edfdf','#ff6b6b','#a8ff78','#ffa3d7'];
+function getCourseColor(idx){return COURSE_COLORS[idx%10];}
+
+/* ══ WEEK VIEW ══ */
+function getWeekStart(offset){var d=new Date(TODAY);d.setDate(TODAY.getDate()-TODAY.getDay()+(offset*7));d.setHours(0,0,0,0);return d;}
+function shiftWeek(dir){weekOffset+=dir;selectedWeekDay=null;renderWeek();}
 function renderWeek(){
   var sow=getWeekStart(weekOffset);
   var eow=new Date(sow);eow.setDate(sow.getDate()+6);
   var title=sow.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' – '+eow.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
   document.getElementById('weekNavTitle').textContent=title;
   var days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  var wHTML='';
-  var todayYMD=toYMD(TODAY);
+  var wHTML='';var todayYMD=toYMD(TODAY);
   for(var i=0;i<7;i++){
     var d=new Date(sow);d.setDate(sow.getDate()+i);d.setHours(0,0,0,0);
-    var dYMD=toYMD(d); // "YYYY-MM-DD" — canonical key
-    var isT=(dYMD===todayYMD);
-    var isSel=(selectedWeekDay===dYMD);
-    var isOD=d<TODAY&&!isT;
-    // Match tasks by comparing task.date (YYYY-MM-DD) directly with dYMD
+    var dYMD=toYMD(d);var isT=(dYMD===todayYMD);var isSel=(selectedWeekDay===dYMD);var isOD=d<TODAY&&!isT;
     var dt=tasks.filter(function(t){return t.date===dYMD&&!t.done;});
-    // Pass dYMD as a JSON string so the onclick gets a proper string arg
     wHTML+='<div class="g wday '+(isT?'today':'')+' '+(isSel?'selected':'')+'" onclick="selectWeekDay(\''+dYMD+'\')">'
       +'<div class="wday-name">'+days[i]+'</div>'
       +'<div class="wday-num">'+d.getDate()+'</div>'
@@ -909,29 +1019,15 @@ function renderWeek(){
   document.getElementById('weekGrid').innerHTML=wHTML;
   renderWeekDayDetail();
 }
-
-function selectWeekDay(dYMD){
-  // Toggle selection; dYMD is always "YYYY-MM-DD"
-  selectedWeekDay=(selectedWeekDay===dYMD)?null:dYMD;
-  renderWeek();
-}
-
+function selectWeekDay(dYMD){selectedWeekDay=(selectedWeekDay===dYMD)?null:dYMD;renderWeek();}
 function renderWeekDayDetail(){
   var container=document.getElementById('weekDayDetail');
   if(!selectedWeekDay){
-    // Show all tasks for the week
-    var sow=getWeekStart(weekOffset);
-    var wTasks=[];
-    for(var i=0;i<7;i++){
-      var d=new Date(sow);d.setDate(sow.getDate()+i);d.setHours(0,0,0,0);
-      var dYMD=toYMD(d);
-      wTasks=wTasks.concat(tasks.filter(function(t){return t.date===dYMD&&!t.done;}));
-    }
+    var sow=getWeekStart(weekOffset);var wTasks=[];
+    for(var i=0;i<7;i++){var d=new Date(sow);d.setDate(sow.getDate()+i);d.setHours(0,0,0,0);var dYMD=toYMD(d);wTasks=wTasks.concat(tasks.filter(function(t){return t.date===dYMD&&!t.done;}));}
     wTasks.sort(function(a,b){return parseLocalDate(a.date)-parseLocalDate(b.date);});
     container.innerHTML='<div class="sh" style="margin-top:8px;">All Tasks This Week</div><div class="tgrid">'+(wTasks.length?wTasks.map(function(t,i){return mkCard(t,i*30);}).join(''):'<div class="empty-state">No pending tasks this week</div>')+'</div>';
   } else {
-    // Show tasks for the selected day
-    // selectedWeekDay is "YYYY-MM-DD" — match task.date directly
     var selDate=parseLocalDate(selectedWeekDay);
     var dayTasks=tasks.filter(function(t){return t.date===selectedWeekDay;});
     dayTasks.sort(function(a,b){return urgScore(b)-urgScore(a);});
@@ -947,21 +1043,13 @@ var sugGroups=[
   {label:'📅 Planning',items:['Schedule my tasks across this week by importance','Give me a day-by-day study plan for this week','What should I work on today?','Build me a study schedule for the next 3 days']},
   {label:'📊 Status',items:['Am I falling behind on anything?',"How's my completion rate looking?",'Which tasks are overdue?','How many days until my next deadline?']},
   {label:'🎯 Priority',items:['What are my highest priority tasks?','What is the single most important thing I should do right now?','Rank all my pending tasks by urgency','Which tasks can I safely leave until later?']},
-  {label:'📚 By Course',items:['Group my tasks by course or category','Which course has the most pending work?','Show me everything due in the next 7 days','What tasks are due this week vs next week?']}
+  {label:'🏫 By Course',items:['Group my tasks by course or category','Which course has the most pending work?','Show me everything due in the next 7 days','What tasks are due this week vs next week?']}
 ];
-
 function renderAISugs(){
   var html='';
-  sugGroups.forEach(function(g){
-    html+='<div style="margin-bottom:14px;"><div style="font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--tx3);margin-bottom:7px;padding-left:2px;">'+esc(g.label)+'</div>';
-    g.items.forEach(function(s){html+='<button class="sug ai-sug-btn" data-q="'+esc(s)+'">'+esc(s)+'</button>';});
-    html+='</div>';
-  });
-  var container=document.getElementById('sugList');
-  container.innerHTML=html;
-  container.querySelectorAll('.ai-sug-btn').forEach(function(btn){
-    btn.addEventListener('click',function(){askAI(btn.getAttribute('data-q'));});
-  });
+  sugGroups.forEach(function(g){html+='<div style="margin-bottom:14px;"><div style="font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--tx3);margin-bottom:7px;padding-left:2px;">'+esc(g.label)+'</div>';g.items.forEach(function(s){html+='<button class="sug ai-sug-btn" data-q="'+esc(s)+'">'+esc(s)+'</button>';});html+='</div>';});
+  var container=document.getElementById('sugList');container.innerHTML=html;
+  container.querySelectorAll('.ai-sug-btn').forEach(function(btn){btn.addEventListener('click',function(){askAI(btn.getAttribute('data-q'));});});
   var pen=tasks.filter(function(t){return!t.done;}),od=pen.filter(function(t){return parseLocalDate(t.date)<TODAY;});
   var hi=pen.filter(function(t){return t.priority==='high';}),rate=tasks.length?Math.round(tasks.filter(function(t){return t.done;}).length/tasks.length*100):0;
   var nd=pen.slice().sort(function(a,b){return parseLocalDate(a.date)-parseLocalDate(b.date);})[0];
@@ -971,124 +1059,38 @@ function renderAISugs(){
     +'<div class="ai-snap-row"><span>High priority</span><span style="color:var(--gld);">'+hi.length+'</span></div>'
     +'<div class="ai-snap-row"><span>Next deadline</span><span>'+(nd?parseLocalDate(nd.date).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'None')+'</span></div>';
 }
-
 function askAI(msg){addMsg(msg,'user');_runAI(msg);}
 async function sendAI(){var inp=document.getElementById('aiIn'),q=inp.value.trim();if(!q)return;inp.value='';addMsg(q,'user');_runAI(q);}
-
 async function _runAI(q){
   var thk=addMsg('Thinking...','think');
   var pen=tasks.filter(function(t){return!t.done;}),od=pen.filter(function(t){return parseLocalDate(t.date)<TODAY;}),dn=tasks.filter(function(t){return t.done;});
   var rate=tasks.length?Math.round(dn.length/tasks.length*100):0;
-
-  var seen={};
-  var uniqueTasks=[];
-  tasks.forEach(function(t){
-    var key=t.text.substring(0,40)+'|'+t.date;
-    if(!seen[key]){seen[key]=true;uniqueTasks.push(t);}
-  });
-
+  var seen={};var uniqueTasks=[];
+  tasks.forEach(function(t){var key=t.text.substring(0,40)+'|'+t.date;if(!seen[key]){seen[key]=true;uniqueTasks.push(t);}});
   var ctx=uniqueTasks.slice(0,40).map(function(t){
     var due=parseLocalDate(t.date),dl=Math.ceil((due-TODAY)/86400000);
     var dayName=due.toLocaleDateString('en-US',{weekday:'short'});
     var name=t.text.length>60?t.text.substring(0,59)+'…':t.text;
     return'- "'+name+'" | '+t.date+' ('+dayName+') | '+(dl>0?dl+'d':dl===0?'TODAY':Math.abs(dl)+'d OD')+' | '+t.priority+(t.done?' | done':'')+(t.course?' | '+t.course:'');
   }).join('\n');
-
-  var weekCtx='';
-  var sow=new Date(TODAY);sow.setDate(TODAY.getDate()-TODAY.getDay());
+  var weekCtx='';var sow=new Date(TODAY);sow.setDate(TODAY.getDate()-TODAY.getDay());
   for(var i=0;i<7;i++){var d=new Date(sow);d.setDate(sow.getDate()+i);weekCtx+=d.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'})+'\n';}
-
-  var sys='You are a smart AI study assistant inside Task Manager Pro for a college student named Aryan.\n\n'
-    +'TODAY: '+TODAY.toDateString()+' ('+TODAY.toLocaleDateString('en-US',{weekday:'long'})+')\n'
-    +'THIS WEEK:\n'+weekCtx
-    +'STATS: '+tasks.length+' total | '+pen.length+' pending | '+od.length+' overdue | '+dn.length+' done | '+rate+'% completion\n\n'
-    +'PENDING TASKS (deduplicated, max 40):\n'+(ctx||'No tasks yet.')+'\n\n'
-    +'SCHEDULING RULES:\n'
-    +'- For weekly schedule: assign MAX 4-6 tasks per day, prioritize overdue first, then high priority, then by due date\n'
-    +'- Spread load across remaining days of the week — do NOT dump everything on one day\n'
-    +'- Skip Saturday/Sunday unless necessary for overdue tasks\n'
-    +'- Use format: DayName (Month Day):\\n  • Task name [priority, due date]\n'
-    +'- After the schedule add a 1-line summary tip\n\n'
-    +'GENERAL RULES:\n'
-    +'- Be concise and specific — always use actual task names\n'
-    +'- Under 300 words unless full schedule requested\n'
-    +'- Plain text, no markdown symbols\n'
-    +'- If no tasks, encourage adding some';
-
+  var sys='You are a smart AI study assistant inside Task Manager Pro for a college student named Aryan.\n\nTODAY: '+TODAY.toDateString()+' ('+TODAY.toLocaleDateString('en-US',{weekday:'long'})+')\nTHIS WEEK:\n'+weekCtx+'STATS: '+tasks.length+' total | '+pen.length+' pending | '+od.length+' overdue | '+dn.length+' done | '+rate+'% completion\n\nPENDING TASKS (deduplicated, max 40):\n'+(ctx||'No tasks yet.')+'\n\nSCHEDULING RULES:\n- For weekly schedule: assign MAX 4-6 tasks per day, prioritize overdue first, then high priority, then by due date\n- Spread load across remaining days of the week — do NOT dump everything on one day\n- Skip Saturday/Sunday unless necessary for overdue tasks\n- Use format: DayName (Month Day):\\n  • Task name [priority, due date]\n- After the schedule add a 1-line summary tip\n\nGENERAL RULES:\n- Be concise and specific — always use actual task names\n- Under 300 words unless full schedule requested\n- Plain text, no markdown symbols\n- If no tasks, encourage adding some';
   try{
-    var res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,system:sys,messages:[{role:'user',content:q}]})
-    });
-    var data=await res.json();
-    thk.remove();
+    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,system:sys,messages:[{role:'user',content:q}]})});
+    var data=await res.json();thk.remove();
     addMsg(data.content&&data.content[0]?data.content[0].text:"Sorry, couldn't get a response.",'bot');
   }catch(e){thk.remove();addMsg(aiFallback(q),'bot');}
 }
-
 function aiFallback(q){
-  var query=q.toLowerCase();
-  var pen=tasks.filter(function(t){return!t.done;});
-  var od=pen.filter(function(t){return parseLocalDate(t.date)<TODAY;});
-  var hi=pen.filter(function(t){return t.priority==='high';});
-  var rate=tasks.length?Math.round(tasks.filter(function(t){return t.done;}).length/tasks.length*100):0;
-
-  if(query.includes('schedule')||query.includes('plan')||query.includes('spread')){
-    if(!pen.length)return'No pending tasks to schedule! Add some first.';
-    var seen={};var sorted=[];
-    pen.forEach(function(t){var k=t.text.substring(0,40)+'|'+t.date;if(!seen[k]){seen[k]=true;sorted.push(t);}});
-    sorted.sort(function(a,b){return urgScore(b)-urgScore(a);});
-    var sow2=new Date(TODAY);sow2.setDate(TODAY.getDate()-TODAY.getDay());
-    var dayNames=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-    var remaining=[];
-    for(var i=TODAY.getDay();i<=5;i++)remaining.push(i);
-    if(!remaining.length)for(var j=1;j<=5;j++)remaining.push(j);
-    var plan={};var maxPerDay=Math.ceil(Math.min(sorted.length,25)/remaining.length);
-    var dayCounters={};
-    sorted.slice(0,25).forEach(function(t){
-      for(var k=0;k<remaining.length;k++){
-        var di=remaining[k];
-        if(!dayCounters[di])dayCounters[di]=0;
-        if(dayCounters[di]<Math.max(3,maxPerDay)){if(!plan[di])plan[di]=[];plan[di].push(t);dayCounters[di]++;break;}
-      }
-    });
-    var out='Suggested schedule (showing up to 25 tasks):\n\n';
-    remaining.forEach(function(di){
-      var dd=new Date(sow2);dd.setDate(sow2.getDate()+di);
-      var dt=plan[di]||[];
-      out+=dayNames[di]+' ('+dd.toLocaleDateString('en-US',{month:'short',day:'numeric'})+'):\n';
-      if(!dt.length)out+='  — Free\n';
-      else dt.forEach(function(t){var n=t.text.length>50?t.text.substring(0,49)+'…':t.text;out+='  • '+n+' ['+t.priority+']\n';});
-      out+='\n';
-    });
-    return out.trim();
-  }
-  if(query.includes('today')||query.includes('focus')){
-    var td=pen.filter(function(t){return parseLocalDate(t.date)<=TODAY;}).sort(function(a,b){return urgScore(b)-urgScore(a);});
-    if(!td.length)return"You're all clear for today! 🎉";
-    return'Focus on today:\n'+td.slice(0,5).map(function(t,i){return(i+1)+'. '+t.text.substring(0,60)+(t.text.length>60?'…':'')+' ('+t.priority+')';}).join('\n');
-  }
-  if(query.includes('overdue')||query.includes('behind')){
-    if(!od.length)return"Not behind on anything! 🎉";
-    return od.length+' overdue tasks:\n'+od.slice(0,8).map(function(t){return'• '+t.text.substring(0,55)+(t.text.length>55?'…':'');}).join('\n');
-  }
-  if(query.includes('rank')||query.includes('urgent')||query.includes('important')){
-    if(!pen.length)return'No pending tasks!';
-    var ranked=pen.slice().sort(function(a,b){return urgScore(b)-urgScore(a);});
-    return'Top tasks by urgency:\n'+ranked.slice(0,8).map(function(t,i){return(i+1)+'. '+t.text.substring(0,50)+(t.text.length>50?'…':'')+' — score '+urgScore(t)+'/100 ['+t.priority+']';}).join('\n');
-  }
-  if(query.includes('course')||query.includes('group')||query.includes('categor')){
-    var groups={};
-    pen.forEach(function(t){var k=t.course||'Uncategorized';if(!groups[k])groups[k]=[];groups[k].push(t);});
-    if(!Object.keys(groups).length)return'No pending tasks to group.';
-    return Object.keys(groups).map(function(k){return k+' ('+groups[k].length+' tasks):\n'+groups[k].slice(0,5).map(function(t){return'  • '+t.text.substring(0,50);}).join('\n')+(groups[k].length>5?'\n  … and '+(groups[k].length-5)+' more':'');}).join('\n\n');
-  }
+  var query=q.toLowerCase();var pen=tasks.filter(function(t){return!t.done;});var od=pen.filter(function(t){return parseLocalDate(t.date)<TODAY;});var hi=pen.filter(function(t){return t.priority==='high';});var rate=tasks.length?Math.round(tasks.filter(function(t){return t.done;}).length/tasks.length*100):0;
+  if(query.includes('schedule')||query.includes('plan')||query.includes('spread')){if(!pen.length)return'No pending tasks to schedule! Add some first.';var seen={};var sorted=[];pen.forEach(function(t){var k=t.text.substring(0,40)+'|'+t.date;if(!seen[k]){seen[k]=true;sorted.push(t);}});sorted.sort(function(a,b){return urgScore(b)-urgScore(a);});var sow2=new Date(TODAY);sow2.setDate(TODAY.getDate()-TODAY.getDay());var dayNames=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];var remaining=[];for(var i=TODAY.getDay();i<=5;i++)remaining.push(i);if(!remaining.length)for(var j=1;j<=5;j++)remaining.push(j);var plan={};var maxPerDay=Math.ceil(Math.min(sorted.length,25)/remaining.length);var dayCounters={};sorted.slice(0,25).forEach(function(t){for(var k=0;k<remaining.length;k++){var di=remaining[k];if(!dayCounters[di])dayCounters[di]=0;if(dayCounters[di]<Math.max(3,maxPerDay)){if(!plan[di])plan[di]=[];plan[di].push(t);dayCounters[di]++;break;}}});var out='Suggested schedule (showing up to 25 tasks):\n\n';remaining.forEach(function(di){var dd=new Date(sow2);dd.setDate(sow2.getDate()+di);var dt=plan[di]||[];out+=dayNames[di]+' ('+dd.toLocaleDateString('en-US',{month:'short',day:'numeric'})+'):\n';if(!dt.length)out+='  — Free\n';else dt.forEach(function(t){var n=t.text.length>50?t.text.substring(0,49)+'…':t.text;out+='  • '+n+' ['+t.priority+']\n';});out+='\n';});return out.trim();}
+  if(query.includes('today')||query.includes('focus')){var td=pen.filter(function(t){return parseLocalDate(t.date)<=TODAY;}).sort(function(a,b){return urgScore(b)-urgScore(a);});if(!td.length)return"You're all clear for today! 🎉";return'Focus on today:\n'+td.slice(0,5).map(function(t,i){return(i+1)+'. '+t.text.substring(0,60)+(t.text.length>60?'…':'')+' ('+t.priority+')';}).join('\n');}
+  if(query.includes('overdue')||query.includes('behind')){if(!od.length)return"Not behind on anything! 🎉";return od.length+' overdue tasks:\n'+od.slice(0,8).map(function(t){return'• '+t.text.substring(0,55)+(t.text.length>55?'…':'');}).join('\n');}
+  if(query.includes('rank')||query.includes('urgent')||query.includes('important')){if(!pen.length)return'No pending tasks!';var ranked=pen.slice().sort(function(a,b){return urgScore(b)-urgScore(a);});return'Top tasks by urgency:\n'+ranked.slice(0,8).map(function(t,i){return(i+1)+'. '+t.text.substring(0,50)+(t.text.length>50?'…':'')+' — score '+urgScore(t)+'/100 ['+t.priority+']';}).join('\n');}
+  if(query.includes('course')||query.includes('group')||query.includes('categor')){var groups={};pen.forEach(function(t){var k=t.course||'Uncategorized';if(!groups[k])groups[k]=[];groups[k].push(t);});if(!Object.keys(groups).length)return'No pending tasks to group.';return Object.keys(groups).map(function(k){return shortCode(k)+' ('+groups[k].length+' tasks):\n'+groups[k].slice(0,5).map(function(t){return'  • '+t.text.substring(0,50);}).join('\n')+(groups[k].length>5?'\n  … and '+(groups[k].length-5)+' more':'');}).join('\n\n');}
   if(query.includes('completion')||query.includes('rate')){return'Completion: '+rate+'% ('+tasks.filter(function(t){return t.done;}).length+'/'+tasks.length+'). '+(rate>=70?'Great work! 🔥':rate>=40?'Keep pushing! 💪':'Time to start! 📚');}
-  if(query.includes('7 days')||query.includes('next week')||query.includes('this week')){
-    var nw=pen.filter(function(t){var dl=Math.ceil((parseLocalDate(t.date)-TODAY)/86400000);return dl>=0&&dl<=7;}).sort(function(a,b){return parseLocalDate(a.date)-parseLocalDate(b.date);});
-    if(!nw.length)return'Nothing due in the next 7 days.';
-    return nw.length+' tasks in 7 days:\n'+nw.slice(0,10).map(function(t){var dl=Math.ceil((parseLocalDate(t.date)-TODAY)/86400000);return'• '+t.text.substring(0,50)+(t.text.length>50?'…':'')+' — '+(dl===0?'today':dl+'d');}).join('\n');
-  }
+  if(query.includes('7 days')||query.includes('next week')||query.includes('this week')){var nw=pen.filter(function(t){var dl=Math.ceil((parseLocalDate(t.date)-TODAY)/86400000);return dl>=0&&dl<=7;}).sort(function(a,b){return parseLocalDate(a.date)-parseLocalDate(b.date);});if(!nw.length)return'Nothing due in the next 7 days.';return nw.length+' tasks in 7 days:\n'+nw.slice(0,10).map(function(t){var dl=Math.ceil((parseLocalDate(t.date)-TODAY)/86400000);return'• '+t.text.substring(0,50)+(t.text.length>50?'…':'')+' — '+(dl===0?'today':dl+'d');}).join('\n');}
   return'You have '+pen.length+' pending tasks, '+od.length+' overdue. Rate: '+rate+'%.\nTry: "schedule my tasks this week" or "what should I focus on today?"';
 }
 function addMsg(txt,type){var msgs=document.getElementById('aiMsgs'),el=document.createElement('div');el.className='ai-msg '+type;el.style.whiteSpace='pre-wrap';el.textContent=txt;msgs.appendChild(el);msgs.scrollTop=msgs.scrollHeight;return el;}
@@ -1114,6 +1116,7 @@ function openDetail(id){
   var sc=urgScore(t),col=urgColor(sc);
   var pColors={high:'#ff5b8d',medium:'#5aabff',low:'#3dffc0'},pc=pColors[t.priority]||'#5aabff';
   var dateLabel=due.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+(t.time?' at '+t.time:'');
+  var courseDisplay=t.course?t.course:'None';
   document.getElementById('dpInner').innerHTML=
     '<div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap;row-gap:8px;">'
     +'<div class="dp-pill" style="background:'+pc+'1a;color:'+pc+';border-color:'+pc+'33;">'+t.priority.toUpperCase()+' PRIORITY'+(isOD?' · <span style="color:#ff5b8d;">OVERDUE</span>':'')+'</div>'
@@ -1126,10 +1129,9 @@ function openDetail(id){
     +'<div class="dp-card"><div class="dp-card-lbl">Time Left</div><div class="dp-card-val" style="color:'+col+';">'+dlbl+'</div></div>'
     +'<div class="dp-card"><div class="dp-card-lbl">Status</div><div class="dp-card-val" style="color:'+(t.done?'var(--grn)':'var(--tx)')+';">'+(t.done?'✓ Completed':'Pending')+'</div></div>'
     +'<div class="dp-card"><div class="dp-card-lbl">Source</div><div class="dp-card-val" style="font-size:13px;">'+(t.source==='manual'?'✏️ Manual':t.source==='canvas'?'🎓 Canvas':t.source==='google'?'🔗 Google':'📄 ICS')+'</div></div>'
-    +(t.course?'<div class="dp-card" style="grid-column:1/-1;"><div class="dp-card-lbl">Course</div><div class="dp-card-val">'+esc(t.course)+'</div></div>':'')
+    +(t.course?'<div class="dp-card" style="grid-column:1/-1;"><div class="dp-card-lbl">Course</div><div class="dp-card-val">'+esc(courseDisplay)+'</div></div>':'')
     +'</div>'
     +'<div class="dp-urg"><div class="dp-urg-lbl"><span>Urgency Score (time-aware)</span><span style="color:'+col+';">'+sc+'/100</span></div><div class="dp-urg-track"><div class="dp-urg-fill" id="dpUrgFill" style="width:0%;background:'+col+';"></div></div></div>'
-    +(t.notes?'<div class="dp-notes"><div class="dp-notes-lbl">Notes</div><div class="dp-notes-txt">'+esc(t.notes)+'</div></div>':'')
     +'<div class="dp-timer"><div class="dp-timer-lbl">⏱ Focus Timer</div><div class="dp-timer-disp" id="dpTimerDisp">25:00</div>'
     +'<div class="dp-timer-btns"><button class="dp-tbtn start" onclick="startDT('+id+')">▶ Start</button><button class="dp-tbtn" onclick="pauseDT()">⏸ Pause</button><button class="dp-tbtn" onclick="resetDT()">↺ Reset</button></div>'
     +'<div class="dp-custom-timer"><input type="number" id="dpCustomMins" placeholder="min" min="1" max="600"/><label>min</label><button class="dp-tbtn" onclick="setDTCustom()" style="padding:5px 12px;font-size:11px;">Set</button></div>'
@@ -1152,29 +1154,30 @@ function updDT(){var m=Math.floor(dtSec/60).toString().padStart(2,'0'),s=(dtSec%
 /* ══ TASK CRUD ══ */
 function addTask(){
   var text=document.getElementById('tText').value.trim(),date=document.getElementById('tDate').value;
-  var priority=document.getElementById('tPri').value,notes=document.getElementById('tNotes').value.trim(),course=document.getElementById('tCourse').value.trim();
+  var priority=document.getElementById('tPri').value,notes=document.getElementById('tNotes').value.trim(),courseInput=document.getElementById('tCourse').value.trim();
   var time=document.getElementById('tTime').value.trim()||null;
   var type=document.getElementById('tType').value||'task';
-  // Commit any partial tag text
   var inp=document.getElementById('tagInput');
   if(inp&&inp.value.trim()){var v=inp.value.trim().toLowerCase();if(!pendingTags.includes(v))pendingTags.push(v);inp.value='';}
   var userTags=pendingTags.slice();
   if(!text||!date){toast('Please fill in task and date','warn');return;}
-  // Auto-infer type if user left it as 'task'
-  if(type==='task') type=inferType(text);
-  // Auto tags: merge user tags with inferred (user tags are never overridden)
+  if(type==='task')type=inferType(text);
   var finalTags=inferAutoTags(text,userTags);
-  tasks.push({id:Date.now()+Math.random(),text:text,date:date,time:time,priority:priority,type:type,tags:finalTags,notes:notes,course:course,done:false,source:'manual',added:Date.now()});
-  save();closeM('addModal');renderTab(curTab);toast('Task added!','ok');
+  // Try to detect course code from text if no course manually entered
+  var courseVal=courseInput;
+  if(!courseVal){var detected=extractCourseCode(text);if(detected)courseVal=detected.code;}
+  tasks.push({id:Date.now()+Math.random(),text:text,date:date,time:time,priority:priority,type:type,tags:finalTags,notes:notes,course:courseVal,done:false,source:'manual',added:Date.now()});
+  save();closeM('addModal');renderTab(curTab);populateCourseFilter();toast('Task added!','ok');
 }
 function toggleTask(id){var t=tasks.find(function(t){return t.id===id;});if(t){t.done=!t.done;save();renderTab(curTab);}}
 function delTask(id){if(confirm('Delete this task?')){tasks=tasks.filter(function(t){return t.id!==id;});save();renderTab(curTab);toast('Deleted','inf');}}
 
-/* ══ IMPORT ══
- * FIX: parseICS now uses toYMD() to build the date string from local components,
- * ensuring no UTC shift regardless of timezone. ICS DTSTART YYYYMMDD is always
- * treated as a local calendar date, never converted through UTC.
- */
+/* ══════════════════════════════════════════
+   IMPORT + COURSE EXTRACTION
+   After parsing each event's SUMMARY, run
+   extractCourseCode() to detect and clean
+   course codes before storing.
+   ══════════════════════════════════════════ */
 async function importUrl(type){
   var url=(type==='google'?document.getElementById('gUrl'):document.getElementById('cUrl')).value.trim();
   if(!url){toast('Please paste a URL','warn');return;}
@@ -1184,66 +1187,62 @@ async function importUrl(type){
     try{var r=await fetch(url);text=await r.text();}catch(e){var r2=await fetch('https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(url));text=await r2.text();}
     if(!text||!text.includes('VEVENT')){toast('No events found in that URL','warn');return;}
     if(!sources.find(function(s){return s.url===url;})){sources.push({url:url,type:type,lastChecked:Date.now(),enabled:true});localStorage.setItem('tmp_sources',JSON.stringify(sources));}
-    var cnt=parseICS(text,type);toast('Imported '+cnt+' task(s) from '+type+'!','ok');renderTab(curTab);
+    var cnt=parseICS(text,type);
+    populateCourseFilter();
+    toast('Imported '+cnt+' task(s) from '+type+'!','ok');renderTab(curTab);
   }catch(e){toast('Import failed: '+e.message,'warn');}
 }
-function importICS(){var f=document.getElementById('icsFile').files[0];if(!f){toast('Select a file','warn');return;}var rd=new FileReader();rd.onload=function(e){var cnt=parseICS(e.target.result,'ics-file');toast('Imported '+cnt+' task(s)','ok');renderTab(curTab);};rd.readAsText(f);}
+function importICS(){var f=document.getElementById('icsFile').files[0];if(!f){toast('Select a file','warn');return;}var rd=new FileReader();rd.onload=function(e){var cnt=parseICS(e.target.result,'ics-file');populateCourseFilter();toast('Imported '+cnt+' task(s)','ok');renderTab(curTab);};rd.readAsText(f);}
 
-function parseICS(text, source){
-  // Unfold ICS lines (lines continued with a leading space/tab)
+function parseICS(text,source){
   var unfolded=text.replace(/\r\n[ \t]/g,'').replace(/\n[ \t]/g,'');
   var lines=unfolded.split(/\r?\n/);
-  var cnt=0;
-  var ev=null;
-
+  var cnt=0;var ev=null;
   for(var i=0;i<lines.length;i++){
     var line=lines[i].trim();
-
-    if(line==='BEGIN:VEVENT'){
-      ev={id:Date.now()+Math.random(),text:'',date:'',notes:'',done:false,source:source,added:Date.now()};
-    }
+    if(line==='BEGIN:VEVENT'){ev={id:Date.now()+Math.random(),text:'',date:'',notes:'',done:false,source:source,added:Date.now()};}
     else if(line==='END:VEVENT'&&ev&&ev.text&&ev.date){
-      // Auto priority from task name
       ev.priority=inferPriority(ev.text);
-      // Auto type from task name
-      if(!ev.type) ev.type=inferType(ev.text);
-      // Auto tags (no user tags on imports)
-      ev.tags=inferAutoTags(ev.text,[]);
+      if(!ev.type)ev.type=inferType(ev.text);
 
-      // Prevent duplicates (case-insensitive text + same date + same source)
-      if(!tasks.some(function(t){
-        return t.text.toLowerCase()===ev.text.toLowerCase()&&t.date===ev.date&&t.source===source;
-      })){
-        tasks.push(ev);
-        cnt++;
+      // ── COURSE CODE EXTRACTION ──
+      // Run extraction on the raw summary text
+      if(!ev.course){
+        var detected=extractCourseCode(ev.text);
+        if(detected){
+          ev.course=detected.code;
+          // Clean the task title: remove the detected code pattern
+          ev.text=detected.clean||ev.text;
+        }
       }
+      // Also try from notes/description
+      if(!ev.course&&ev.notes){
+        var dn=extractCourseCode(ev.notes);
+        if(dn)ev.course=dn.code;
+      }
+      // ── END EXTRACTION ──
+
+      ev.tags=inferAutoTags(ev.text,[]);
+      if(!tasks.some(function(t){return t.text.toLowerCase()===ev.text.toLowerCase()&&t.date===ev.date&&t.source===source;})){tasks.push(ev);cnt++;}
       ev=null;
     }
     else if(ev){
-      if(line.startsWith('SUMMARY:')){
-        ev.text=line.substring(8).replace(/\\,/g,',').replace(/\\n/g,' ').replace(/\\;/g,';').trim();
-      }
+      if(line.startsWith('SUMMARY:')){ev.text=line.substring(8).replace(/\\,/g,',').replace(/\\n/g,' ').replace(/\\;/g,';').trim();}
       else if(line.startsWith('DTSTART')){
-        // Value is everything after the colon (handles DTSTART;TZID=... and plain DTSTART:)
-        var raw=line.split(':').slice(1).join(':').trim();
-        // Take only first 8 chars = YYYYMMDD, ignore time portion entirely
-        var d=raw.substring(0,8);
-        if(d.length===8&&/^\d{8}$/.test(d)){
-          // Build YYYY-MM-DD as LOCAL date components — no UTC conversion at all
-          var yr=d.substring(0,4);
-          var mo=d.substring(4,6);
-          var dy=d.substring(6,8);
-          ev.date=yr+'-'+mo+'-'+dy;
-        }
+        var raw=line.split(':').slice(1).join(':').trim();var d=raw.substring(0,8);
+        if(d.length===8&&/^\d{8}$/.test(d)){var yr=d.substring(0,4);var mo=d.substring(4,6);var dy=d.substring(6,8);ev.date=yr+'-'+mo+'-'+dy;}
       }
       else if(line.startsWith('DESCRIPTION:')){
-        ev.notes=line.substring(12).replace(/\\n/g,'\n').replace(/\\,/g,',').replace(/\\;/g,';').trim();
+        // Store notes WITHOUT the description (just for course extraction, don't save raw HTML descriptions)
+        var rawDesc=line.substring(12).replace(/\\n/g,'\n').replace(/\\,/g,',').replace(/\\;/g,';').trim();
+        // Strip HTML tags and URLs that Canvas often injects
+        rawDesc=rawDesc.replace(/<[^>]+>/g,' ').replace(/https?:\/\/\S+/g,'').replace(/\s{2,}/g,' ').trim();
+        // Only store if it's meaningful short text (not just URL soup)
+        if(rawDesc.length>0&&rawDesc.length<400)ev.notes=rawDesc;
       }
     }
   }
-
-  save();
-  return cnt;
+  save();return cnt;
 }
 
 /* ══ AUTO REFRESH ══ */
@@ -1255,7 +1254,7 @@ async function autoRefresh(){
       try{var r=await fetch(src.url);text=await r.text();}catch(e){var r2=await fetch('https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(src.url));text=await r2.text();}
       if(!text||!text.includes('VEVENT'))continue;
       var before=tasks.length;parseICS(text,src.type);var added=tasks.length-before;
-      if(added>0){newFromRefresh+=added;var badge=document.getElementById('rbadge');badge.textContent=newFromRefresh;badge.classList.add('show');toast(added+' new task(s) from '+src.type,'inf');renderTab(curTab);}
+      if(added>0){newFromRefresh+=added;var badge=document.getElementById('rbadge');badge.textContent=newFromRefresh;badge.classList.add('show');populateCourseFilter();toast(added+' new task(s) from '+src.type,'inf');renderTab(curTab);}
       src.lastChecked=Date.now();localStorage.setItem('tmp_sources',JSON.stringify(sources));
     }catch(e){}
   }
@@ -1280,23 +1279,37 @@ function openImport(){document.getElementById('importModal').classList.add('open
 function closeM(id){document.getElementById(id).classList.remove('open');if(id==='addModal'){['tText','tNotes','tCourse'].forEach(function(i){document.getElementById(i).value='';});var ttime=document.getElementById('tTime');if(ttime)ttime.value='';var ttype=document.getElementById('tType');if(ttype)ttype.value='task';pendingTags=[];renderTagsWrap();}}
 document.addEventListener('click',function(e){if(e.target.id==='addModal')closeM('addModal');if(e.target.id==='importModal')closeM('importModal');});
 
-/* ══ EXPORT / CLEAR ══ */
+/* ══════════════════════════════════════════
+   EXPORT — CLEAN CSV
+   Only essential columns: Task, Date, Time,
+   Type, Priority, Status, Course.
+   Notes/descriptions intentionally excluded.
+   ══════════════════════════════════════════ */
 function exportData(fmt){
   var data;
   if(fmt==='csv'){
-    data='Task,Date,Time,Type,Tags,Priority,Status,Course,Notes\n';
+    // Header — clean, no notes/description
+    var rows=['Task,Date,Time,Type,Priority,Status,Course'];
     tasks.forEach(function(t){
-      var timeVal=t.time||'';
-      var typeVal=t.type||'';
-      var tagsVal=t.tags&&t.tags.length?t.tags.join(';'):'';
-      data+='"'+t.text+'","'+t.date+'","'+timeVal+'","'+typeVal+'","'+tagsVal+'","'+t.priority+'","'+(t.done?'Done':'Pending')+'","'+(t.course||'')+'","'+(t.notes||'')+'"\n';
+      function q(v){return'"'+String(v||'').replace(/"/g,'""')+'"';}
+      rows.push([
+        q(t.text),
+        q(t.date),
+        q(t.time||''),
+        q(t.type||'task'),
+        q(t.priority),
+        q(t.done?'Done':'Pending'),
+        q(shortCode(t.course||''))
+      ].join(','));
     });
+    data=rows.join('\r\n');
   } else {
+    // JSON export preserves everything
     data=JSON.stringify(tasks,null,2);
   }
   var blob=new Blob([data],{type:fmt==='csv'?'text/csv':'application/json'});
   var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='tasks.'+fmt;a.click();
-  toast('Exported!','ok');
+  toast('Exported '+(fmt==='csv'?'clean CSV':'JSON')+'!','ok');
 }
 function clearAll(){if(confirm('Delete all tasks? Cannot be undone.')){tasks=[];save();renderTab(curTab);toast('All tasks cleared','warn');}}
 
