@@ -635,7 +635,7 @@ var newFromRefresh=0;
 var weekOffset=0;
 var selectedWeekDay=null;
 var pendingTags=[];
-var activeCourseFilter='all'; // for Courses tab
+var activeCourseFilter='all';
 
 /* ══ TODAY ══ */
 var TODAY=(function(){var d=new Date();d.setHours(0,0,0,0);return d;})();
@@ -646,42 +646,27 @@ function toYMD(d){var y=d.getFullYear();var m=String(d.getMonth()+1).padStart(2,
 
 /* ══════════════════════════════════════════
    COURSE CODE DETECTION ENGINE
-   Handles:
-   - [NOS-120-0001] or [CSC-251] — bracketed codes
-   - NOS-120-0001 at start/end of string
-   - Standard formats: ABC-123, ABC123, ABC 123
-   - Canvas-style: "Course Name [CODE-123-456]"
-   - Strips detected code from display title
    ══════════════════════════════════════════ */
 var COURSE_CODE_PATTERNS=[
-  // Bracketed: [NOS-120-0001], [CSC-251], [MATH 101]
   /\[([A-Z]{2,6}[\s\-]?\d{2,4}(?:[\-]\d{3,6})?)\]/i,
-  // Hyphenated with optional section: NOS-120-0001, CSC-251-001
   /\b([A-Z]{2,6}-\d{2,4}(?:-\d{3,6})?)\b/,
-  // Compact no-delimiter: CSC251, MATH101
   /\b([A-Z]{2,5}\d{2,4})\b/,
-  // Space-separated: CSC 251
   /\b([A-Z]{2,6}\s\d{3,4})\b/
 ];
 
 function extractCourseCode(text){
-  // Priority 1: bracketed code (most explicit)
   var m=text.match(/\[([A-Z]{2,6}[\s\-]?\d{2,4}(?:[\-]\d{3,6})?)\]/i);
   if(m)return{code:normCode(m[1]),clean:text.replace(m[0],'').trim().replace(/\s{2,}/g,' ').trim()};
 
-  // Priority 2: hyphenated with section number NOS-120-0001
   m=text.match(/\b([A-Z]{2,6}-\d{2,4}-\d{3,6})\b/i);
   if(m)return{code:normCode(m[1]),clean:text.replace(m[0],'').trim().replace(/\s{2,}/g,' ').trim()};
 
-  // Priority 3: simple hyphenated CSC-251
   m=text.match(/\b([A-Z]{2,6}-\d{2,4})\b/i);
   if(m)return{code:normCode(m[1]),clean:text.replace(m[0],'').trim().replace(/\s{2,}/g,' ').trim()};
 
-  // Priority 4: compact CSC251
   m=text.match(/\b([A-Z]{2,5}\d{3,4})\b/i);
   if(m)return{code:normCode(m[1]),clean:text.replace(m[0],'').trim().replace(/\s{2,}/g,' ').trim()};
 
-  // Priority 5: space-separated CSC 251
   m=text.match(/\b([A-Z]{2,6}\s\d{3,4})\b/i);
   if(m)return{code:normCode(m[1]),clean:text.replace(m[0],'').trim().replace(/\s{2,}/g,' ').trim()};
 
@@ -689,21 +674,17 @@ function extractCourseCode(text){
 }
 
 function normCode(raw){
-  // Normalize: uppercase, keep hyphens, collapse spaces to hyphen, trim trailing section numbers beyond -NNN
   var c=raw.toUpperCase().trim();
   c=c.replace(/\s+/g,'-');
   return c;
 }
 
-// Shorten code for display: NOS-120-0001 → NOS-120
 function shortCode(code){
   var parts=code.split('-');
-  // If 3+ parts and last is 4+ digits (section), drop it
   if(parts.length>=3&&/^\d{4,}$/.test(parts[parts.length-1])){parts.pop();}
   return parts.join('-');
 }
 
-// Get all unique course codes from tasks
 function getAllCourses(){
   var codes={};
   tasks.forEach(function(t){
@@ -716,7 +697,6 @@ function getAllCourses(){
   return codes;
 }
 
-// Assign a stable color index to a course code
 var _courseColorCache={};
 var _courseColorIdx=0;
 function courseColorIdx(code){
@@ -841,7 +821,6 @@ function mkCard(t,delay){
   var sc=urgScore(t),col=urgColor(sc);
   var dl=Math.ceil((due-TODAY)/86400000);
   var dlbl=isOD?Math.abs(dl)+'d overdue':dl===0?'Due today':dl+'d left';
-  // Show short course code if available
   var courseDisplay=t.course?shortCode(t.course):null;
   return'<div class="g tc '+(t.done?'done-card':'')+' '+(isOD?'od-card':'')+'" style="animation-delay:'+delay+'ms" onclick="openDetail('+t.id+')">'
     +'<div onclick="event.stopPropagation()"><input type="checkbox" class="chk" '+(t.done?'checked':'')+' onchange="toggleTask('+t.id+')"/></div>'
@@ -909,17 +888,15 @@ function renderAll(){
 }
 
 /* ══════════════════════════════════════════
-   COURSES TAB — full course browser
+   COURSES TAB
    ══════════════════════════════════════════ */
 function renderCourses(){
   var courses=getAllCourses();
   var codes=Object.keys(courses).sort(function(a,b){
-    // Sort by pending count desc, then alphabetically
     if(courses[b].pending!==courses[a].pending)return courses[b].pending-courses[a].pending;
     return a.localeCompare(b);
   });
 
-  // Filter bar
   var barHTML='<button class="course-pill '+(activeCourseFilter==='all'?'active cc-0':'')+'" onclick="setCourseFilter(\'all\')" style="'+(activeCourseFilter==='all'?'--cc:#5aabff;':'')+'">All Courses ('+codes.length+')</button>';
   codes.forEach(function(code,i){
     var ci=courseColorIdx(code);
@@ -931,12 +908,10 @@ function renderCourses(){
   });
   document.getElementById('courseFilterBar').innerHTML=barHTML;
 
-  // Content
   var displayCodes=activeCourseFilter==='all'?codes:[activeCourseFilter];
   var contentHTML='';
 
   if(activeCourseFilter==='all'){
-    // Grid of course cards
     contentHTML='<div class="courses-hero">';
     codes.forEach(function(code){
       var ci=courseColorIdx(code);
@@ -958,7 +933,6 @@ function renderCourses(){
     contentHTML+='</div>';
     if(!codes.length){contentHTML='<div class="empty-state" style="padding:60px 0;">No courses found yet.<br><span style="font-size:11px;color:var(--tx3);">Import tasks from Canvas or add tasks with course codes like NOS-120 or CSC-251.</span></div>';}
   } else {
-    // Single course detail view
     var code=activeCourseFilter;
     var ci=courseColorIdx(code);
     var cd=courses[code]||{total:0,done:0,pending:0,overdue:0};
@@ -978,7 +952,6 @@ function renderCourses(){
       +'</div>'
       +'</div>';
 
-    // Pending tasks
     var pending=courseTasks.filter(function(t){return!t.done;});
     var done=courseTasks.filter(function(t){return t.done;});
     if(pending.length){contentHTML+='<div class="sh">📌 Pending</div><div class="tgrid">'+pending.map(function(t,i){return mkCard(t,i*30);}).join('')+'</div>';}
@@ -1163,7 +1136,6 @@ function addTask(){
   if(!text||!date){toast('Please fill in task and date','warn');return;}
   if(type==='task')type=inferType(text);
   var finalTags=inferAutoTags(text,userTags);
-  // Try to detect course code from text if no course manually entered
   var courseVal=courseInput;
   if(!courseVal){var detected=extractCourseCode(text);if(detected)courseVal=detected.code;}
   tasks.push({id:Date.now()+Math.random(),text:text,date:date,time:time,priority:priority,type:type,tags:finalTags,notes:notes,course:courseVal,done:false,source:'manual',added:Date.now()});
@@ -1174,9 +1146,18 @@ function delTask(id){if(confirm('Delete this task?')){tasks=tasks.filter(functio
 
 /* ══════════════════════════════════════════
    IMPORT + COURSE EXTRACTION
-   After parsing each event's SUMMARY, run
-   extractCourseCode() to detect and clean
-   course codes before storing.
+
+   FIX 1 — DEDUPLICATION:
+   The dedup check now uses only (normalizedText + date) as the key,
+   ignoring source. This means re-importing or auto-refreshing the same
+   feed will never create duplicates regardless of the source name.
+
+   FIX 2 — TITLE PRESERVATION:
+   extractCourseCode() returns both a detected code AND a "clean" title
+   with the code stripped out. Previously the code assigned ev.text =
+   detected.clean, which permanently removed the course code text from
+   the task title. Now ev.text is left unchanged — the full original
+   title is preserved, and only ev.course gets the detected code.
    ══════════════════════════════════════════ */
 async function importUrl(type){
   var url=(type==='google'?document.getElementById('gUrl'):document.getElementById('cUrl')).value.trim();
@@ -1205,25 +1186,38 @@ function parseICS(text,source){
       ev.priority=inferPriority(ev.text);
       if(!ev.type)ev.type=inferType(ev.text);
 
-      // ── COURSE CODE EXTRACTION ──
-      // Run extraction on the raw summary text
+      // ── COURSE CODE EXTRACTION (FIX 2) ──────────────────────────────────
+      // Extract course code from summary text but DO NOT mutate ev.text.
+      // The original full title is preserved in ev.text so it displays
+      // correctly everywhere (cards, week view, timer list, detail panel).
+      // Only ev.course gets the detected code for grouping purposes.
       if(!ev.course){
         var detected=extractCourseCode(ev.text);
         if(detected){
           ev.course=detected.code;
-          // Clean the task title: remove the detected code pattern
-          ev.text=detected.clean||ev.text;
+          // ev.text intentionally NOT changed — full title preserved
         }
       }
-      // Also try from notes/description
+      // Also try extracting from description/notes if no course found yet
       if(!ev.course&&ev.notes){
         var dn=extractCourseCode(ev.notes);
         if(dn)ev.course=dn.code;
       }
-      // ── END EXTRACTION ──
+      // ────────────────────────────────────────────────────────────────────
 
       ev.tags=inferAutoTags(ev.text,[]);
-      if(!tasks.some(function(t){return t.text.toLowerCase()===ev.text.toLowerCase()&&t.date===ev.date&&t.source===source;})){tasks.push(ev);cnt++;}
+
+      // ── DEDUPLICATION (FIX 1) ────────────────────────────────────────────
+      // Key on (normalizedText + date) only — source is intentionally
+      // excluded so that refreshing the same feed never creates duplicates.
+      // Previously &&t.source===source caused every refresh to treat the
+      // same event as new if the source string differed in any way.
+      if(!tasks.some(function(t){return t.text.toLowerCase()===ev.text.toLowerCase()&&t.date===ev.date;})){
+        tasks.push(ev);
+        cnt++;
+      }
+      // ────────────────────────────────────────────────────────────────────
+
       ev=null;
     }
     else if(ev){
@@ -1233,11 +1227,8 @@ function parseICS(text,source){
         if(d.length===8&&/^\d{8}$/.test(d)){var yr=d.substring(0,4);var mo=d.substring(4,6);var dy=d.substring(6,8);ev.date=yr+'-'+mo+'-'+dy;}
       }
       else if(line.startsWith('DESCRIPTION:')){
-        // Store notes WITHOUT the description (just for course extraction, don't save raw HTML descriptions)
         var rawDesc=line.substring(12).replace(/\\n/g,'\n').replace(/\\,/g,',').replace(/\\;/g,';').trim();
-        // Strip HTML tags and URLs that Canvas often injects
         rawDesc=rawDesc.replace(/<[^>]+>/g,' ').replace(/https?:\/\/\S+/g,'').replace(/\s{2,}/g,' ').trim();
-        // Only store if it's meaningful short text (not just URL soup)
         if(rawDesc.length>0&&rawDesc.length<400)ev.notes=rawDesc;
       }
     }
@@ -1279,16 +1270,10 @@ function openImport(){document.getElementById('importModal').classList.add('open
 function closeM(id){document.getElementById(id).classList.remove('open');if(id==='addModal'){['tText','tNotes','tCourse'].forEach(function(i){document.getElementById(i).value='';});var ttime=document.getElementById('tTime');if(ttime)ttime.value='';var ttype=document.getElementById('tType');if(ttype)ttype.value='task';pendingTags=[];renderTagsWrap();}}
 document.addEventListener('click',function(e){if(e.target.id==='addModal')closeM('addModal');if(e.target.id==='importModal')closeM('importModal');});
 
-/* ══════════════════════════════════════════
-   EXPORT — CLEAN CSV
-   Only essential columns: Task, Date, Time,
-   Type, Priority, Status, Course.
-   Notes/descriptions intentionally excluded.
-   ══════════════════════════════════════════ */
+/* ══ EXPORT — CLEAN CSV ══ */
 function exportData(fmt){
   var data;
   if(fmt==='csv'){
-    // Header — clean, no notes/description
     var rows=['Task,Date,Time,Type,Priority,Status,Course'];
     tasks.forEach(function(t){
       function q(v){return'"'+String(v||'').replace(/"/g,'""')+'"';}
@@ -1304,7 +1289,6 @@ function exportData(fmt){
     });
     data=rows.join('\r\n');
   } else {
-    // JSON export preserves everything
     data=JSON.stringify(tasks,null,2);
   }
   var blob=new Blob([data],{type:fmt==='csv'?'text/csv':'application/json'});
