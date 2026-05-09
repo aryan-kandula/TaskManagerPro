@@ -1,9 +1,9 @@
 # Task Manager Pro
 
 A modern, student-focused task management application built with vanilla JavaScript and powered by Claude AI.
-Featuring a full iOS 26-style liquid glassmorphic design, intelligent scheduling, smart tagging, time-aware prioritization, enhanced Google iCal integration, and Smart Course Detection for deeply organized academic workflows.
+Featuring a full iOS 26-style liquid glassmorphic design, intelligent scheduling, smart tagging, time-aware prioritization, direct Canvas assignment links, per-course progress tracking, enhanced Google iCal integration, and Smart Course Detection for deeply organized academic workflows.
 
-![Version](https://img.shields.io/badge/version-3.3.0-blue.svg)
+![Version](https://img.shields.io/badge/version-4.0.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Design](https://img.shields.io/badge/design-iOS%2026%20Glass-blueviolet.svg)
 ![AI](https://img.shields.io/badge/AI-Claude%20Powered-orange.svg)
@@ -16,68 +16,102 @@ Featuring a full iOS 26-style liquid glassmorphic design, intelligent scheduling
 
 ---
 
-## ✨ Version 3.3 Features
+## 💡 The Idea
+
+This app started with a real student problem — mine.
+
+I didn't want five different tools to stay on top of my classes. I didn't want to open Canvas separately for each assignment, navigate through menus just to find what was due, or rely on calendar apps that only let me *view* tasks without doing anything about them.
+
+So I built one place to do it all: import your schedule, plan your week with strategy tools, and open assignments directly — all without leaving the app. Log into Canvas once in your browser, paste your calendar feed once, and everything is there. Every course, every deadline, every assignment link — one tab.
+
+> **No need to open Canvas for every assignment.**
+> Import once. Stay here. Get things done.
+
+Since this is a single-file app, Canvas completion status isn't read automatically — mark tasks done here after you finish them in Canvas, and the app does the rest. A future update will sync completion status automatically.
+
+---
+
+## ✨ Version 4.0 Features
+
+### 🔗 Direct Canvas Assignment Links
+
+The headline feature of v4.0. Every imported Canvas task now resolves a direct link to its assignment page — so you can open it with one click, right from the task card or detail panel.
+
+#### How it works
+- Import your Canvas Calendar Feed URL once via the **⬇ Import** panel
+- The app parses your iCal feed and resolves direct assignment, quiz, discussion, and New Quizzes URLs automatically
+- A **🔗 Open** button appears on every task card that has a confirmed direct link
+- The detail panel shows an **"Open in Canvas →"** action button for full assignment access
+- Already logged into Canvas in your browser? The background resolver silently upgrades any indirect links into direct ones after every import
+
+#### What gets resolved
+| Canvas Event Type | Direct URL Format |
+|---|---|
+| Assignment | `/courses/<id>/assignments/<id>` |
+| Classic Quiz | `/courses/<id>/quizzes/<id>` |
+| New Quizzes | `/courses/<id>/quizzes/<id>` |
+| Discussion Topic | `/courses/<id>/discussion_topics/<id>` |
+| Calendar Event | Calendar URL (fallback) |
+
+#### A note on completion
+Task Manager Pro is a single-file static app — it cannot read your Canvas submission status automatically. After completing an assignment in Canvas, mark it done here so the app can track your progress. **Automatic completion sync is coming in a future update.**
+
+---
+
+### 🏫 Courses Tab
+
+A dedicated **Courses** tab organizes everything by detected course code, giving you a per-course view of your entire semester at a glance.
+
+#### Features
+- Per-course cards showing:
+  - Course code and name
+  - Total, pending, and completed assignment counts
+  - Live completion progress bar
+- Color-coded course accent system — consistent colors across cards, pills, progress bars, and badges
+- Click any course card to filter the task list to that course only
+- Separate buckets for uncategorized tasks and Google Calendar personal events
+
+---
 
 ### 🧠 Smart Course Detection
 
-Task Manager Pro now intelligently analyzes tasks and imported calendar events to detect and organize course-related content automatically.
+Task Manager Pro automatically detects and groups course-related content from all imported and manually created tasks.
 
 #### Features
-- Automatic course detection from:
-  - task titles
-  - assignments
-  - imported Google Calendar events
-  - Canvas iCal feeds
-  - uploaded `.ics` files
-- Smarter academic vs personal event separation
-- Better grouping across dashboard insights and task views
-- Improved detection of common course formats:
-  - `CSC-151`
-  - `ENG 111`
-  - `BIO-168`
-  - `MAT 171`
+- Automatic course detection from task titles, assignments, iCal feeds, and uploaded `.ics` files
+- Recognizes common academic naming formats including bracketed variants:
+  - `CSC-151`, `[CSC-251]`, `ENG 111`, `BIO-168`, `MAT 171`, `NOS-120`
+- Smart false-positive filtering — common abbreviations (LAB, QUIZ, EXAM, API, timezone and state codes) are excluded
+- Smarter academic vs. personal event separation
 - Manual course override always supported
-
-#### Benefits
-- Cleaner organization
-- Better academic workload visibility
-- More accurate insights and filtering
-- Faster recognition of imported schedules
 
 ---
 
 ### 🔗 Enhanced Google iCal Integration
 
-The calendar import engine has been heavily upgraded with smarter parsing and improved event understanding.
+The calendar import engine supports both Canvas and Google Calendar feeds with smarter parsing and improved event understanding.
 
 #### Improvements
 - Better compatibility with Google Calendar exports and feeds
-- Improved handling of inconsistent `.ics` formatting
-- Smarter extraction of:
-  - titles
-  - descriptions
-  - dates
-  - times
-  - course identifiers
-  - assignment keywords
+- Improved handling of inconsistent `.ics` formatting including Quoted-Printable encoding
+- Smarter extraction of titles, descriptions, dates, times, course identifiers, and assignment keywords
 - More reliable recurring event parsing
 - Improved duplicate prevention during sync refreshes
-- Better consistency across Canvas, Google Calendar, and uploaded `.ics` files
+- Re-import updates existing tasks with improved URL resolution — no duplicates created
 
 ---
 
 ### 🤖 Improved AI-Assisted Categorization
 
-The local rule-based intelligence engine has been upgraded.
+The local rule-based intelligence engine classifies tasks automatically on every import and creation.
 
 #### Enhancements
 - Smarter task type detection
 - Better auto-tagging accuracy
 - Improved academic keyword recognition
 - More reliable classification of assignments, exams, classes, and events
-- Smarter categorization during imports and manual task creation
 
-> ⚠️ AI-assisted features are privacy-safe and rule-based. No external AI processing is required for task categorization or imports.
+> ⚠️ AI-assisted categorization is privacy-safe and rule-based. No external AI processing is required for task categorization or imports.
 
 ---
 
@@ -92,16 +126,7 @@ The local rule-based intelligence engine has been upgraded.
 - Runtime-generated canvas favicon with gradient styling
 
 ### 📋 Task Management
-- Create tasks with:
-  - title
-  - description
-  - due date
-  - optional time
-  - priority
-  - type
-  - tags
-  - course/category
-  - notes
+- Create tasks with title, description, due date, optional time, priority, type, tags, course/category, and notes
 - High, Medium, and Low priority scoring
 - Intelligent urgency calculation with time awareness
 - Visual urgency bars on every task card
@@ -110,14 +135,10 @@ The local rule-based intelligence engine has been upgraded.
 - Optional time field for every task
 - Same-day tasks prioritize earlier times automatically
 - All-day tasks sort toward end-of-day ordering
-- Sub-day urgency tiers:
-  - `<6h` → 97 urgency
-  - `<12h` → 93 urgency
-  - `<24h` → 88 urgency
+- Sub-day urgency tiers: `<6h` → 97, `<12h` → 93, `<24h` → 88
 
 ### 🏷️ Smart Tagging System
-- Multiple tags per task
-- Pill-style tag input with keyboard shortcuts
+- Multiple tags per task with pill-style input
 - Auto-tagging during creation and imports
 - Colored tag badges throughout the app
 - Searchable tags in All Tasks search
@@ -133,21 +154,15 @@ The local rule-based intelligence engine has been upgraded.
 | `event` | Meetings and activities |
 | `holiday` | Breaks and no-class days |
 
-- Automatic type inference
+- Automatic type inference on creation and import
 - Manual override support
 - Type filtering in All Tasks
 - Color-coded badges on task cards
 
 ### 👁️ Immersive Task Detail Panel
 - Full-screen detail experience
-- Displays:
-  - urgency score
-  - due date/time
-  - task type
-  - tags
-  - source
-  - course
-  - notes
+- Displays urgency score, due date/time, task type, tags, source, course, and notes
+- Direct Canvas link with "Open in Canvas →" action button
 - Built-in focus timer with custom duration support
 - Mark complete or delete directly from the panel
 
@@ -156,50 +171,35 @@ The local rule-based intelligence engine has been upgraded.
 - Week navigation controls
 - Click-to-filter day tiles
 - Task count indicators
-- Improved chip layout and spacing
 
 ### 📊 Dashboard & Insights
 - Animated statistic counters
 - Clickable stat navigation
-- Improved course-aware organization insights
+- Course-aware organization insights
 - Past Due management section
 - Bulk completion actions
 
 ### 🔍 Advanced Filtering & Search
-- Filter by:
-  - priority
-  - status
-  - type
-  - course
-- Free-text search across:
-  - titles
-  - notes
-  - tags
-  - courses
+- Filter by priority, status, type, and course
+- Free-text search across titles, notes, tags, and courses
 
 ### 🔄 Auto-Refresh Calendar Sources
-- Import from:
-  - Canvas iCal links
-  - Google Calendar feeds
-  - uploaded `.ics` files
+- Import from Canvas iCal links, Google Calendar feeds, or uploaded `.ics` files
 - Automatic sync every 5 minutes
 - Intelligent import categorization
 - Auto-priority, auto-tags, and auto-type assignment
+- Background Canvas URL resolver upgrades links silently after every sync
 
 ### ⏱️ Study Timer
-- Pomodoro-style timer
-- Animated SVG progress ring
-- Presets:
-  - 25 min
-  - 50 min
-  - 5 min break
+- Pomodoro-style timer with animated SVG progress ring
+- Presets: 25 min, 50 min, 5 min break
 - Custom duration support
 
 ### 💾 Data & Privacy
 - Fully local-first architecture
 - No accounts required
 - No servers or backend
-- Data stored locally in browser localStorage
+- All data stored locally in browser localStorage
 - Export as JSON or CSV
 
 ---
@@ -211,14 +211,23 @@ No installation. No dependencies. No build process.
 1. Clone or download the repository
 2. Open `index.html` in any modern browser
 3. Complete onboarding
-4. Start managing tasks instantly
+4. Paste your Canvas Calendar Feed URL in **⬇ Import**
+5. Start managing your semester
+
+### Finding your Canvas Calendar Feed URL
+1. Open Canvas and click the **Calendar** icon in the left sidebar
+2. On the Calendar page, find the **Calendars** panel on the right side
+3. Scroll to the bottom of that panel and click **Calendar Feed**
+4. Copy the URL that appears
+5. Paste it into the Canvas Calendar Feed URL field in the Import panel and click **Import & Watch**
 
 ---
 
 ## 📁 File Structure
 
 ```
-Taskmanagerpro/
+TaskManagerPro/
+    ├── index.html
     ├── README.md
     ├── CHANGELOG.md
     ├── CONTRIBUTING.md
@@ -229,16 +238,20 @@ Taskmanagerpro/
     └── .github/
         └── workflows/
             └── static.yml
-
 ```
+
+---
 
 ## 🔐 Privacy & Security
 
-No analytics or tracking
-No user accounts
-No backend infrastructure
-All data remains local to the browser
-Clearing browser storage removes saved tasks
+- No analytics or tracking
+- No user accounts
+- No backend infrastructure
+- All data remains local to the browser
+- Canvas links open using your existing browser session — no credentials are stored by the app
+- Clearing browser storage removes all saved tasks
+
+---
 
 ## 👤 Author
 
