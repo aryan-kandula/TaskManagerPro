@@ -47,7 +47,8 @@ button,input,select,textarea{font-family:inherit;}
 .land-features{margin:20px 0 40px;}
 .features-title{text-align:center;font-size:14px;font-weight:600;color:var(--tx2);font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;margin-bottom:24px;}
 .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-@media(max-width:700px){.features-grid{grid-template-columns:1fr;}}
+@media(max-width:900px){.features-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.features-grid{grid-template-columns:1fr;}}
 .feat-card{padding:22px 20px;transition:all .3s var(--ease);}
 .feat-card:hover{transform:translateY(-5px);border-color:var(--bd2);}
 .feat-icon{font-size:28px;margin-bottom:12px;display:block;}
@@ -134,7 +135,8 @@ button,input,select,textarea{font-family:inherit;}
 .chk:checked{background:var(--pri);border-color:var(--pri);}
 .chk:checked::after{content:'✓';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:11px;font-weight:700;}
 .tc-body{flex:1;min-width:0;}
-.tc-title{font-size:14px;font-weight:600;line-height:1.4;margin-bottom:8px;word-wrap:break-word;}
+.tc-title{font-size:14px;font-weight:600;line-height:1.4;margin-bottom:8px;word-wrap:break-word;display:flex;align-items:flex-start;gap:6px;}
+.tc-has-link{font-size:10px;opacity:.55;flex-shrink:0;margin-top:2px;}
 .tc-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:8px;}
 .tc-date{font-size:11px;color:var(--tx2);font-family:var(--mono);}
 .tc-date.od{color:var(--acc);}
@@ -449,6 +451,87 @@ input[type="file"].finput::file-selector-button:hover{
 /* AI DISCLAIMER */
 .ai-disclaimer{display:flex;align-items:flex-start;gap:8px;padding:10px 14px;border-radius:var(--r-sm);background:rgba(255,204,79,.08);border:1px solid rgba(255,204,79,.2);font-size:11px;color:var(--gld);font-family:var(--mono);line-height:1.5;margin-bottom:14px;}
 
+/* ══ TASK CARD — LINK BUTTON ══ */
+.tc-link{color:var(--pri)!important;border-color:rgba(90,171,255,.3)!important;background:rgba(90,171,255,.07)!important;}
+.tc-link:hover{background:rgba(90,171,255,.18)!important;color:#fff!important;}
+
+/* ══ DETAIL PANEL — DESCRIPTION BLOCK ══ */
+.dp-desc-block{
+  margin-bottom:22px;
+  border-radius:22px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+  overflow:hidden;
+}
+[data-theme="light"] .dp-desc-block{
+  background:rgba(255,255,255,.45);
+  border-color:rgba(255,255,255,.7);
+}
+.dp-desc-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px 10px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+[data-theme="light"] .dp-desc-header{border-bottom-color:rgba(0,0,0,.06);}
+.dp-desc-lbl{
+  font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.12em;
+  color:rgba(255,255,255,.45);font-weight:600;
+}
+[data-theme="light"] .dp-desc-lbl{color:rgba(6,16,48,.45);}
+.dp-src-badge{
+  font-size:10px;font-family:var(--mono);font-weight:700;
+  padding:3px 10px;border-radius:var(--r-pill);border:1px solid;
+  letter-spacing:.06em;
+}
+.dp-desc-text{
+  padding:14px 18px;
+  font-size:13px;line-height:1.75;
+  color:rgba(255,255,255,.82);
+  white-space:pre-wrap;word-break:break-word;
+  max-height:260px;overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent;
+}
+[data-theme="light"] .dp-desc-text{color:rgba(6,16,48,.85);}
+.dp-desc-empty{
+  padding:20px 18px;
+  font-size:13px;color:rgba(255,255,255,.35);
+  text-align:center;line-height:1.7;
+}
+[data-theme="light"] .dp-desc-empty{color:rgba(6,16,48,.35);}
+.dp-desc-more{
+  display:inline;
+  background:none;border:none;cursor:pointer;
+  font-size:12px;font-weight:600;
+  color:var(--pri);font-family:var(--font);
+  padding:0 2px;transition:opacity .2s;
+}
+.dp-desc-more:hover{opacity:.75;}
+
+/* ══ SOURCE DEEP-LINK BUTTON ══ */
+.dp-src-link{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:13px 18px;
+  background:color-mix(in srgb,var(--lc,#5aabff) 12%,transparent);
+  border-top:1px solid color-mix(in srgb,var(--lc,#5aabff) 22%,transparent);
+  color:var(--lc,#5aabff);
+  font-size:13px;font-weight:700;
+  text-decoration:none;
+  transition:background .25s,transform .2s;
+  letter-spacing:-.01em;
+}
+.dp-src-link:hover{
+  background:color-mix(in srgb,var(--lc,#5aabff) 22%,transparent);
+  transform:none;
+}
+.dp-src-no-link{
+  padding:12px 18px;
+  font-size:12px;font-family:var(--mono);
+  color:rgba(255,255,255,.3);
+  border-top:1px solid rgba(255,255,255,.06);
+  text-align:center;
+}
+[data-theme="light"] .dp-src-no-link{color:rgba(6,16,48,.3);border-top-color:rgba(0,0,0,.05);}
+
 /* TOAST */
 .tcontainer{position:fixed;bottom:26px;right:26px;z-index:99990;display:flex;flex-direction:column;gap:10px;}
 .toast{padding:12px 18px;border-radius:var(--r-sm);font-size:13px;font-weight:500;background:var(--glass-strong);border:1px solid var(--bd);backdrop-filter:var(--blur);box-shadow:var(--sh);animation:toastSlide .4s var(--ease) both;max-width:300px;}
@@ -474,6 +557,8 @@ input[type="file"].finput::file-selector-button:hover{
   .app-page{padding:0 12px 80px;}
   /* Timer tab stacks on mobile */
   #tab-timer > div{grid-template-columns:1fr!important;}
+  /* Student section 3-col → 1-col */
+  .student-grid{grid-template-columns:1fr!important;}
 }
 @media(max-width:480px){
   .wgrid{display:none;}
@@ -512,24 +597,60 @@ input[type="file"].finput::file-selector-button:hover{
     <div class="land-features">
       <div class="features-title">Everything You Need</div>
       <div class="features-grid">
-        <div class="g feat-card"><span class="feat-icon">🤖</span><div class="feat-name">AI Study Assistant</div><div class="feat-desc">Powered by Claude AI — schedules your week by importance, tells you what to focus on, and gives real advice based on your actual deadlines.</div></div>
-        <div class="g feat-card"><span class="feat-icon">🏫</span><div class="feat-name">Smart Course Detection</div><div class="feat-desc">Automatically extracts course codes like NOS-120-0001 or [CSC-251] from imported tasks and groups everything by course with progress tracking.</div></div>
-        <div class="g feat-card"><span class="feat-icon">📋</span><div class="feat-name">Task Detail View</div><div class="feat-desc">Click any task for a full immersive detail panel with urgency scoring, countdown, notes, and a custom focus timer.</div></div>
-        <div class="g feat-card"><span class="feat-icon">📅</span><div class="feat-name">Week Calendar View</div><div class="feat-desc">Navigate weeks with arrows, click any day to see just that day's tasks. Spot busy days before they sneak up on you.</div></div>
-        <div class="g feat-card"><span class="feat-icon">⏱️</span><div class="feat-name">Custom Study Timer</div><div class="feat-desc">Set any duration — not just presets. Pomodoro-style animated ring timer with task association per session.</div></div>
-        <div class="g feat-card"><span class="feat-icon">✅</span><div class="feat-name">Clean CSV Export</div><div class="feat-desc">Export a clean, clutter-free spreadsheet — only the columns that matter. No description dumps, no noise.</div></div>
+        <div class="g feat-card"><span class="feat-icon">🤖</span><div class="feat-name">AI Study Assistant</div><div class="feat-desc">Powered by Claude AI — generates a personalized weekly schedule, identifies your highest-priority tasks, and delivers actionable advice based on your actual deadlines and workload.</div></div>
+        <div class="g feat-card"><span class="feat-icon">🎓</span><div class="feat-name">Canvas &amp; Google Calendar Sync</div><div class="feat-desc">Paste your Canvas Calendar Feed URL or Google iCal link once. Tasks import instantly and auto-refresh every 5 minutes — no manual updates needed.</div></div>
+        <div class="g feat-card"><span class="feat-icon">🏫</span><div class="feat-name">Smart Course Detection</div><div class="feat-desc">Automatically extracts course codes like NOS-120 or [CSC-251] from imported assignments and groups everything by course with live completion progress bars.</div></div>
+        <div class="g feat-card"><span class="feat-icon">📋</span><div class="feat-name">Full Task Detail Panel</div><div class="feat-desc">Click any task for an immersive detail view with urgency scoring, live countdown, full assignment description, direct Canvas link, notes, and an inline focus timer.</div></div>
+        <div class="g feat-card"><span class="feat-icon">📅</span><div class="feat-name">Week Calendar View</div><div class="feat-desc">Navigate weeks with arrow buttons. Tap any day to see exactly what's due, color-coded by urgency. Spot busy weeks before they sneak up on you.</div></div>
+        <div class="g feat-card"><span class="feat-icon">⏱️</span><div class="feat-name">Pomodoro Study Timer</div><div class="feat-desc">Animated ring timer with preset and fully custom durations. Associate a specific task with each session to stay locked in on what matters most.</div></div>
+        <div class="g feat-card"><span class="feat-icon">🔍</span><div class="feat-name">Advanced Filtering &amp; Search</div><div class="feat-desc">Filter by priority, status, type, and course simultaneously. Full-text search across task names, tags, and course codes updates in real time as you type.</div></div>
+        <div class="g feat-card"><span class="feat-icon">⚠️</span><div class="feat-name">Past Due Management</div><div class="feat-desc">Overdue tasks are tracked separately so they never clutter your main view. Mark them done individually, all at once, or by a custom date range in one click.</div></div>
+        <div class="g feat-card"><span class="feat-icon">💾</span><div class="feat-name">Privacy-First &amp; Offline</div><div class="feat-desc">Everything lives in your browser — no account, no server, no tracking. Works fully offline. Export to clean CSV or JSON any time you want a backup.</div></div>
       </div>
     </div>
     <div class="land-steps">
       <div class="steps-title">How to Use It</div>
       <div class="steps-list">
-        <div class="g step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Add Tasks Manually</div><div class="step-desc">Hit <strong>+ Add Task</strong>. Fill in description, due date, priority, and course. Priority is also auto-detected from the task name.</div></div></div>
-        <div class="g step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Import from Canvas or Google Calendar</div><div class="step-desc">Click <strong>Import</strong>, paste your Canvas Calendar Feed URL or Google iCal link. Course codes like NOS-120 or [CSC-251] are detected and assigned automatically.</div></div></div>
-        <div class="g step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Browse by Course</div><div class="step-desc">The <strong>Courses</strong> tab groups all tasks by detected course code. Each course card shows pending/done counts and a completion bar.</div></div></div>
-        <div class="g step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Ask the AI Assistant</div><div class="step-desc">Click any Quick Question — it fires instantly. Ask things like <em>"schedule my tasks this week"</em> and get a real day-by-day plan.</div></div></div>
-        <div class="g step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Export Clean Data</div><div class="step-desc">Settings → Export CSV gives you a tidy spreadsheet: Task, Date, Time, Type, Priority, Status, Course. No cluttered description columns.</div></div></div>
+        <div class="g step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Import Your Canvas Assignments</div><div class="step-desc">This is the fastest way to get all your coursework in. On your PC, open <strong>Canvas</strong> and click the <strong>Calendar</strong> icon in the left sidebar. On the Calendar page, look to the right side of the screen where your course list appears under <strong>Calendars</strong>. Scroll to the bottom of that panel — you'll find a small link that says <strong>Calendar Feed</strong>. Click it, copy the URL that appears, then come back here, click <strong>⬇ Import</strong>, paste it into the <em>Canvas Calendar Feed URL</em> field, and hit <strong>Import &amp; Watch</strong>. Every assignment across all your courses will load automatically.</div></div></div>
+        <div class="g step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Connect Google Calendar (Optional)</div><div class="step-desc">In Google Calendar, open <strong>Settings → </strong> select a calendar → scroll to <strong>Integrate Calendar</strong> and copy the <em>Secret address in iCal format</em>. Paste it into the <strong>Google Calendar iCal URL</strong> field in the Import panel. Personal events will be imported and grouped under a separate Google Calendar bucket, keeping them distinct from your course assignments.</div></div></div>
+        <div class="g step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Add Tasks Manually</div><div class="step-desc">Hit <strong>✚ Add Task</strong> in the header. Fill in the description, due date, time, priority, course, type, and any tags or notes. Priority is also auto-detected from keywords in the task name — words like "exam" or "final" will automatically flag as high priority.</div></div></div>
+        <div class="g step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Explore the Dashboard &amp; Week View</div><div class="step-desc">The <strong>Dashboard</strong> shows your upcoming tasks ranked by urgency and a past-due section you can expand any time. Switch to <strong>Week View</strong> to see a full 7-day calendar — click any day to drill into exactly what's due. Use the arrow buttons to move forward and backward through weeks.</div></div></div>
+        <div class="g step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Review Courses &amp; Track Progress</div><div class="step-desc">The <strong>Courses</strong> tab groups every task by detected course code. Each course card shows total, pending, and completed assignments along with a visual progress bar. Click a course card to filter the full task list down to just that course.</div></div></div>
+        <div class="g step"><div class="step-num">6</div><div class="step-body"><div class="step-title">Ask the AI Assistant</div><div class="step-desc">Head to the <strong>🤖 AI Assistant</strong> tab. Use the <em>Quick Questions</em> on the right for instant answers, or type anything in the chat — like <em>"schedule my tasks this week"</em>, <em>"what's due tomorrow?"</em>, or <em>"which course has the most work?"</em>. The AI has full visibility into your tasks and will give you a real, personalized answer.</div></div></div>
+        <div class="g step"><div class="step-num">7</div><div class="step-body"><div class="step-title">Focus with the Study Timer</div><div class="step-desc">Go to the <strong>⏱ Study Timer</strong> tab. Pick a task from the list on the right to associate with your session, then choose a preset duration (25, 50, or 5-minute break) or enter a custom number of minutes. Hit <strong>Start</strong> and the animated ring timer will count you down. Stay in the zone.</div></div></div>
+        <div class="g step"><div class="step-num">8</div><div class="step-body"><div class="step-title">Export &amp; Manage Your Data</div><div class="step-desc">In <strong>⚙ Settings</strong> you can see all your active auto-refresh sources, view task counts, and export your data. <em>Export CSV</em> gives a clean spreadsheet with Task, Date, Time, Type, Priority, Status, and Course columns — no clutter. <em>Export JSON</em> gives a full data backup. You can also clear all tasks from this panel if you want a fresh start.</div></div></div>
       </div>
     </div>
+    <!-- MADE BY A STUDENT SECTION -->
+    <div class="g" style="margin-bottom:40px;padding:32px 28px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--pri),var(--purp),var(--acc));border-radius:var(--r) var(--r) 0 0;"></div>
+      <div style="text-align:center;margin-bottom:24px;">
+        <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 18px;border-radius:var(--r-pill);background:var(--pri-dim);border:1px solid rgba(90,171,255,.25);font-size:11px;font-family:var(--mono);font-weight:700;letter-spacing:.12em;color:var(--pri);text-transform:uppercase;margin-bottom:16px;">🎓 Made by a Student, for Students</div>
+        <h2 style="font-size:1.5rem;font-weight:800;letter-spacing:-.03em;margin-bottom:10px;">No need to open Canvas for every assignment.</h2>
+        <p style="font-size:13px;color:var(--tx2);max-width:560px;margin:0 auto;line-height:1.75;">This started as a personal problem — constantly switching tabs, losing track of deadlines, and wishing there was one place that just <em>did everything</em>. So I built it.</p>
+      </div>
+      <div class="student-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;">
+        <div style="padding:16px 18px;background:var(--glass-2);border:1px solid var(--bd);border-radius:var(--r-sm);">
+          <div style="font-size:22px;margin-bottom:8px;">🔗</div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:5px;">One App, Everything</div>
+          <div style="font-size:12px;color:var(--tx2);line-height:1.6;">Import once, log in to Canvas once. Open assignments, mark them done, and manage your entire semester — all without leaving this tab.</div>
+        </div>
+        <div style="padding:16px 18px;background:var(--glass-2);border:1px solid var(--bd);border-radius:var(--r-sm);">
+          <div style="font-size:22px;margin-bottom:8px;">🚀</div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:5px;">Not Just a Calendar</div>
+          <div style="font-size:12px;color:var(--tx2);line-height:1.6;">Other calendar apps just show you what's due. This one lets you plan with AI, track completion by course, set focus timers, and open assignments directly.</div>
+        </div>
+        <div style="padding:16px 18px;background:var(--glass-2);border:1px solid var(--bd);border-radius:var(--r-sm);">
+          <div style="font-size:22px;margin-bottom:8px;">✏️</div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:5px;">Mark Done, Stay on Track</div>
+          <div style="font-size:12px;color:var(--tx2);line-height:1.6;">Since this is a single-file app, mark tasks done after you finish them in Canvas. A future update will sync completion status automatically.</div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:16px 20px;background:rgba(90,171,255,.06);border:1px solid rgba(90,171,255,.15);border-radius:var(--r-sm);">
+        <p style="font-size:13px;color:var(--tx2);line-height:1.7;margin:0;"><span style="color:var(--pri);font-weight:700;">The idea was simple:</span> a student shouldn't need five different tools to stay on top of their classes. Import your schedule, use the strategy tools, open assignments directly, and always know what's next — all in one place.</p>
+      </div>
+    </div>
+
     <div class="land-bottom">
       <p>Ready to get on top of your deadlines?</p>
       <button class="land-cta" onclick="enterApp()"><span>Open Dashboard</span><span style="font-size:18px;">→</span></button>
@@ -709,6 +830,7 @@ input[type="file"].finput::file-selector-button:hover{
     <p style="font-size:12px;color:var(--tx2);margin-bottom:20px;font-family:var(--mono);">Paste a URL once — tasks auto-refresh every 5 minutes. Course codes are extracted automatically.</p>
     <div class="fg"><label class="flbl">🔗 Google Calendar iCal URL</label><input class="finput" id="gUrl" placeholder="https://calendar.google.com/...ical..."/><button class="btn" onclick="importUrl('google')" style="margin-top:8px;width:100%;justify-content:center;">Import &amp; Watch</button></div>
     <div class="fg"><label class="flbl">🎓 Canvas Calendar Feed URL</label><input class="finput" id="cUrl" placeholder="https://canvas.instructure.com/feeds/..."/><button class="btn" onclick="importUrl('canvas')" style="margin-top:8px;width:100%;justify-content:center;">Import &amp; Watch</button></div>
+    <div class="fg" id="canvasDebugWrap" style="display:none;"><label class="flbl" style="color:var(--gld);">🔍 Canvas Raw Debug (first event)</label><textarea class="finput" id="canvasDebugOut" style="font-size:10px;font-family:var(--mono);min-height:140px;color:var(--gld);background:rgba(255,204,79,.06);border-color:rgba(255,204,79,.2);" readonly></textarea></div>
     <div class="fg"><label class="flbl">📄 Upload .ics File</label><input class="finput" type="file" id="icsFile" accept=".ics"/><button class="btn" onclick="importICS()" style="margin-top:8px;width:100%;justify-content:center;">Import File</button></div>
     <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:22px;"><button class="btn" onclick="closeM('importModal')">Done</button></div>
   </div>
@@ -942,7 +1064,7 @@ function mkCard(t,delay){
     :'';
   return'<div class="g tc '+(t.done?'done-card':'')+' '+(isOD?'od-card':'')+'" style="animation-delay:'+delay+'ms" onclick="openDetail('+t.id+')">'
     +'<div onclick="event.stopPropagation()"><input type="checkbox" class="chk" '+(t.done?'checked':'')+' onchange="toggleTask('+t.id+')"/></div>'
-    +'<div class="tc-body"><div class="tc-title">'+esc(t.text)+'</div>'
+    +'<div class="tc-body"><div class="tc-title"><span style=\"flex:1;min-width:0;word-break:break-word;\">'+esc(t.text)+'</span>'+(t.eventUrl?'<span class="tc-has-link" title="Has direct link">🔗</span>':'')+'</div>'
     +'<div class="tc-meta"><span class="tc-date '+(isOD?'od':'')+'">📅 '+ds+timeStr+'</span>'
     +'<span class="badge b'+t.priority.charAt(0)+'">'+t.priority+'</span>'
     +(t.type&&t.type!=='task'?typeBadgeHTML(t.type):'')
@@ -951,7 +1073,7 @@ function mkCard(t,delay){
     +'<span style="font-size:10px;font-family:var(--mono);color:'+col+';">'+dlbl+'</span></div>'
     +(t.tags&&t.tags.filter(function(tg){return tg!==(t.type||'task');}).length?'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;">'+renderTagBadges(t.tags.filter(function(tg){return tg!==(t.type||'task');}))+'</div>':'')
     +'<div class="ubar"><div class="ufill" style="width:'+sc+'%;background:'+col+';"></div></div>'
-    +'<div class="tc-foot" onclick="event.stopPropagation()"><button class="tc-btn" onclick="openDetail('+t.id+')">👁 View</button><button class="tc-btn del" onclick="delTask('+t.id+')">🗑</button></div>'
+    +'<div class="tc-foot" onclick="event.stopPropagation()"><button class="tc-btn" onclick="openDetail('+t.id+')">👁 View</button>'+(t.eventUrl?'<a class="tc-btn tc-link" href="'+esc(t.eventUrl||'')+'" target="_blank" rel="noopener noreferrer">🔗 Open</a>':'')+'<button class="tc-btn del" onclick="delTask('+t.id+')">🗑</button></div>'
     +'</div></div>';
 }
 
@@ -1199,7 +1321,7 @@ async function _runAI(q){
   }).join('\n');
   var weekCtx='';var sow=new Date(TODAY);sow.setDate(TODAY.getDate()-TODAY.getDay());
   for(var i=0;i<7;i++){var d=new Date(sow);d.setDate(sow.getDate()+i);weekCtx+=d.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'})+'\n';}
-  var sys='You are a smart AI study assistant inside Task Manager Pro for a college student named Aryan.\n\nTODAY: '+TODAY.toDateString()+' ('+TODAY.toLocaleDateString('en-US',{weekday:'long'})+')\nTHIS WEEK:\n'+weekCtx+'STATS: '+tasks.length+' total | '+pen.length+' pending | '+od.length+' overdue | '+dn.length+' done | '+rate+'% completion\n\nPENDING TASKS (deduplicated, max 40):\n'+(ctx||'No tasks yet.')+'\n\nSCHEDULING RULES:\n- For weekly schedule: assign MAX 4-6 tasks per day, prioritize overdue first, then high priority, then by due date\n- Spread load across remaining days of the week — do NOT dump everything on one day\n- Skip Saturday/Sunday unless necessary for overdue tasks\n- Use format: DayName (Month Day):\\n  • Task name [priority, due date]\n- After the schedule add a 1-line summary tip\n\nGENERAL RULES:\n- Be concise and specific — always use actual task names\n- Under 300 words unless full schedule requested\n- Plain text, no markdown symbols\n- If no tasks, encourage adding some';
+  var sys='You are a smart AI study assistant inside Task Manager Pro for a college student.\n\nTODAY: '+TODAY.toDateString()+' ('+TODAY.toLocaleDateString('en-US',{weekday:'long'})+')\nTHIS WEEK:\n'+weekCtx+'STATS: '+tasks.length+' total | '+pen.length+' pending | '+od.length+' overdue | '+dn.length+' done | '+rate+'% completion\n\nPENDING TASKS (deduplicated, max 40):\n'+(ctx||'No tasks yet.')+'\n\nSCHEDULING RULES:\n- For weekly schedule: assign MAX 4-6 tasks per day, prioritize overdue first, then high priority, then by due date\n- Spread load across remaining days of the week — do NOT dump everything on one day\n- Skip Saturday/Sunday unless necessary for overdue tasks\n- Use format: DayName (Month Day):\\n  • Task name [priority, due date]\n- After the schedule add a 1-line summary tip\n\nGENERAL RULES:\n- Be concise and specific — always use actual task names\n- Under 300 words unless full schedule requested\n- Plain text, no markdown symbols\n- If no tasks, encourage adding some';
   try{
     var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,system:sys,messages:[{role:'user',content:q}]})});
     var data=await res.json();thk.remove();
@@ -1233,6 +1355,97 @@ function resetTimer(){clearInterval(timerIv);timerRunning=false;timerSec=timerTo
 function updTimer(){var m=Math.floor(timerSec/60).toString().padStart(2,'0'),s=(timerSec%60).toString().padStart(2,'0');document.getElementById('timerDisp').textContent=m+':'+s;var circle=document.getElementById('timerCircle');if(circle)circle.style.strokeDashoffset=477.5*(timerSec/timerTotal);}
 
 /* ══ DETAIL PANEL ══ */
+/* Build a source label + icon based on task.source */
+function srcLabel(t){
+  if(t.source==='canvas')return{icon:'🎓',label:'Canvas LMS',color:'#ffcc4f'};
+  if(t.source==='google')return{icon:'📅',label:'Google Calendar',color:'#5aabff'};
+  if(t.source==='ics-file')return{icon:'📄',label:'ICS File',color:'#b87fff'};
+  return{icon:'✏️',label:'Manual',color:'#3dffc0'};
+}
+
+/* Render the description block: full text if ≤340 chars, summarised (first 340 + "…") if longer, or a "no description" notice */
+function buildDescBlock(t){
+  var fn=t.fullNotes||t.notes||'';
+  var hasDesc=fn.trim().length>0;
+  var src=srcLabel(t);
+  var LIMIT=340;
+
+  /* Description content */
+  var descContent='';
+  if(hasDesc){
+    if(fn.length<=LIMIT){
+      /* Short enough — show in full */
+      descContent='<div class="dp-desc-text" id="dpDescText">'+esc(fn).replace(/\n/g,'<br/>')+'</div>';
+    } else {
+      /* Long — show truncated with expand toggle */
+      var preview=fn.substring(0,LIMIT);
+      descContent=''
+        +'<div class="dp-desc-text" id="dpDescText" data-full="+esc(fn)+">'+esc(preview).replace(/\n/g,'<br/>')+'<span id="dpDescEllipsis">… </span>'
+        +'<button class="dp-desc-more" id="dpDescMoreBtn" onclick="expandDesc()">Show more ↓</button>'
+        +'</div>';
+    }
+  } else {
+    /* No description available */
+    descContent=''
+      +'<div class="dp-desc-empty">'
+      +'<span style="font-size:18px;display:block;margin-bottom:6px;">📭</span>'
+      +'No description available for this item.'
+      +(t.eventUrl?'<br/><span style="font-size:11px;color:var(--tx3);">Open the link below to view full details in '+src.label+'.</span>':'')
+      +'</div>';
+  }
+
+  /* Source deep-link button */
+  var linkBtn='';
+  if(t.eventUrl){
+    var btnIcon=src.icon;
+    var btnLabel=t.source==='canvas'?'Open in Canvas →'
+      :t.source==='google'?'Open in Google Calendar →'
+      :'Open Source →';
+    var _fu=t.eventUrl||'';try{_fu=decodeURIComponent(_fu);}catch(e){}
+    if(_fu.indexOf('/courses/')<0){
+      var _fdom=(_fu.match(/https?:\/\/([^/?#]+)/)||[])[1]||'';
+      var _fcm=_fu.match(/include_contexts=[^&]*_(\d+)/i)||_fu.match(/course_id=(\d+)/i);
+      var _fam=_fu.match(/#assignment_(\d+)/i);
+      var _fqm=_fu.match(/#quiz_(\d+)/i);
+      var _fdm=_fu.match(/#discussion_topic_(\d+)/i);
+      if(_fdom&&_fcm&&_fcm[1]){
+        if(_fam)_fu='https://'+_fdom+'/courses/'+_fcm[1]+'/assignments/'+_fam[1];
+        else if(_fqm)_fu='https://'+_fdom+'/courses/'+_fcm[1]+'/quizzes/'+_fqm[1];
+        else if(_fdm)_fu='https://'+_fdom+'/courses/'+_fcm[1]+'/discussion_topics/'+_fdm[1];
+      }
+    }
+    linkBtn=''
+      +'<a href="'+esc(_fu)+'" target="_blank" rel="noopener noreferrer" class="dp-src-link" style="--lc:'+src.color+';">'
+      +btnIcon+' '+btnLabel+' <span style="font-size:11px;opacity:.7;">↗</span>'
+      +'</a>';
+  } else if(t.source!=='manual'){
+    /* Source is external but no URL captured */
+    var reImportHint=t.source==='canvas'?' Re-import from Canvas to pick up the assignment link.':'';
+    linkBtn='<div class="dp-src-no-link">🔗 No direct link captured for this '+src.label+' event.'+reImportHint+'</div>';
+  }
+
+  return ''
+    +'<div class="dp-desc-block">'
+    +'<div class="dp-desc-header">'
+    +'<span class="dp-desc-lbl">📋 Description</span>'
+    +'<span class="dp-src-badge" style="background:'+src.color+'22;color:'+src.color+';border-color:'+src.color+'44;">'+src.icon+' '+src.label+'</span>'
+    +'</div>'
+    +descContent
+    +linkBtn
+    +'</div>';
+}
+
+function expandDesc(){
+  var el=document.getElementById('dpDescText');
+  var btn=document.getElementById('dpDescMoreBtn');
+  var ell=document.getElementById('dpDescEllipsis');
+  if(!el)return;
+  var fullText=el.dataset.full||'';
+  el.innerHTML=esc(fullText).replace(/\n/g,'<br/>');
+  if(btn)btn.remove();
+  if(ell)ell.remove();
+}
+
 function openDetail(id){
   var t=tasks.find(function(t){return t.id===id;});if(!t)return;
   var due=parseLocalDate(t.date),isOD=!t.done&&due<TODAY,dl=Math.ceil((due-TODAY)/86400000);
@@ -1242,6 +1455,8 @@ function openDetail(id){
   var dateLabel=due.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})+(t.time?' at '+t.time:'');
   var isPersonal=(t.course===GOOGLE_PERSONAL_BUCKET);
   var courseDisplay=t.course?(isPersonal?'Personal · Google Calendar':t.course):'None';
+  var src=srcLabel(t);
+
   document.getElementById('dpInner').innerHTML=
     '<div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap;row-gap:8px;">'
     +'<div class="dp-pill" style="background:'+pc+'1a;color:'+pc+';border-color:'+pc+'33;">'+t.priority.toUpperCase()+' PRIORITY'+(isOD?' · <span style="color:#ff5b8d;">OVERDUE</span>':'')+'</div>'
@@ -1254,10 +1469,11 @@ function openDetail(id){
     +'<div class="dp-card"><div class="dp-card-lbl">Due Date'+(t.time?' &amp; Time':'')+'</div><div class="dp-card-val" style="font-size:13px;">'+dateLabel+'</div></div>'
     +'<div class="dp-card"><div class="dp-card-lbl">Time Left</div><div class="dp-card-val" style="color:'+col+';">'+dlbl+'</div></div>'
     +'<div class="dp-card"><div class="dp-card-lbl">Status</div><div class="dp-card-val" style="color:'+(t.done?'var(--grn)':'var(--tx)')+';">'+(t.done?'✓ Completed':'Pending')+'</div></div>'
-    +'<div class="dp-card"><div class="dp-card-lbl">Source</div><div class="dp-card-val" style="font-size:13px;">'+(t.source==='manual'?'✏️ Manual':t.source==='canvas'?'🎓 Canvas':t.source==='google'?'🔗 Google Calendar':'📄 ICS')+'</div></div>'
+    +'<div class="dp-card"><div class="dp-card-lbl">Source</div><div class="dp-card-val" style="font-size:13px;color:'+src.color+';">'+src.icon+' '+src.label+'</div></div>'
     +(t.course?'<div class="dp-card" style="grid-column:1/-1;"><div class="dp-card-lbl">'+(isPersonal?'Category':'Course')+'</div><div class="dp-card-val">'+esc(courseDisplay)+'</div></div>':'')
     +'</div>'
     +'<div class="dp-urg"><div class="dp-urg-lbl"><span>Urgency Score (time-aware)</span><span style="color:'+col+';">'+sc+'/100</span></div><div class="dp-urg-track"><div class="dp-urg-fill" id="dpUrgFill" style="width:0%;background:'+col+';"></div></div></div>'
+    +buildDescBlock(t)
     +'<div class="dp-timer"><div class="dp-timer-lbl">⏱ Focus Timer</div><div class="dp-timer-disp" id="dpTimerDisp">25:00</div>'
     +'<div class="dp-timer-btns"><button class="dp-tbtn start" onclick="startDT('+id+')">▶ Start</button><button class="dp-tbtn" onclick="pauseDT()">⏸ Pause</button><button class="dp-tbtn" onclick="resetDT()">↺ Reset</button></div>'
     +'<div class="dp-custom-timer"><input type="number" id="dpCustomMins" placeholder="min" min="1" max="600"/><label>min</label><button class="dp-tbtn" onclick="setDTCustom()" style="padding:5px 12px;font-size:11px;">Set</button></div>'
@@ -1277,6 +1493,63 @@ function resetDT(){clearInterval(dtIv);dtRunning=false;dtSec=dtTotal;updDT();}
 function setDTCustom(){var m=parseInt(document.getElementById('dpCustomMins').value);if(!m||m<1){toast('Enter a valid number of minutes','warn');return;}clearInterval(dtIv);dtRunning=false;dtSec=m*60;dtTotal=m*60;updDT();toast('Timer set to '+m+' min','inf');}
 function updDT(){var m=Math.floor(dtSec/60).toString().padStart(2,'0'),s=(dtSec%60).toString().padStart(2,'0'),el=document.getElementById('dpTimerDisp');if(el)el.textContent=m+':'+s;}
 
+/* == OPEN CANVAS LINK == */
+function openCanvasLink(rawUrl){
+  if(!rawUrl){toast('No link available for this task','warn');return;}
+  var url=rawUrl.replace(/^canvas-api:/,'');
+  try{url=decodeURIComponent(url);}catch(e){}
+  if(url.indexOf('/courses/')<0){
+    var _dom=(url.match(/https?:\/\/([^/?#]+)/)||[])[1]||'';
+    var _cm=url.match(/include_contexts=[^&]*_(\d+)/i)||url.match(/course_id=(\d+)/i);
+    var _am=url.match(/#assignment_(\d+)/i);
+    var _qm=url.match(/#quiz_(\d+)/i);
+    var _dm=url.match(/#discussion_topic_(\d+)/i);
+    if(_dom&&_cm&&_cm[1]){
+      if(_am)url='https://'+_dom+'/courses/'+_cm[1]+'/assignments/'+_am[1];
+      else if(_qm)url='https://'+_dom+'/courses/'+_cm[1]+'/quizzes/'+_qm[1];
+      else if(_dm)url='https://'+_dom+'/courses/'+_cm[1]+'/discussion_topics/'+_dm[1];
+    }
+  }
+  window.open(url,'_blank');
+}
+
+
+/* == RESOLVE CANVAS API URLS ==
+   Background resolver for tasks that still have canvas-api: URLs
+   (assignments with null descriptions where courseId couldn't be extracted). */
+async function resolveCanvasUrls(){
+  /* Fix tasks already saved in localStorage with bad URLs */
+  var changed=false;
+  for(var i=0;i<tasks.length;i++){
+    var t=tasks[i];if(!t.eventUrl)continue;
+    var url=t.eventUrl;
+    try{url=decodeURIComponent(url);}catch(e){}
+    /* Convert calendar URL → direct URL */
+    if(url.indexOf('/courses/')<0){
+      var _dom=(url.match(/https?:\/\/([^/?#]+)/)||[])[1]||'';
+      var _cm=url.match(/include_contexts=[^&]*_(\d+)/i)||url.match(/course_id=(\d+)/i);
+      var _am=url.match(/#assignment_(\d+)/i);
+      var _qm=url.match(/#quiz_(\d+)/i);
+      var _dm=url.match(/#discussion_topic_(\d+)/i);
+      if(_dom&&_cm&&_cm[1]){
+        if(_am){tasks[i].eventUrl='https://'+_dom+'/courses/'+_cm[1]+'/assignments/'+_am[1];changed=true;continue;}
+        if(_qm){tasks[i].eventUrl='https://'+_dom+'/courses/'+_cm[1]+'/quizzes/'+_qm[1];changed=true;continue;}
+        if(_dm){tasks[i].eventUrl='https://'+_dom+'/courses/'+_cm[1]+'/discussion_topics/'+_dm[1];changed=true;continue;}
+      }
+    }
+    /* canvas-api: fallback — fetch only if logged in */
+    if(url.indexOf('canvas-api:')<0)continue;
+    var apiUrl=t.eventUrl.replace(/^canvas-api:/,'');
+    try{
+      var r=await fetch(apiUrl,{credentials:'include',headers:{'Accept':'application/json','X-Requested-With':'XMLHttpRequest'}});
+      if(!r.ok)continue;
+      var data=await r.json();
+      var dest=(data.assignment&&data.assignment.html_url)||(data.quiz&&data.quiz.html_url)||(data.discussion_topic&&data.discussion_topic.html_url)||data.html_url||'';
+      if(dest&&dest.indexOf('/courses/')>=0){tasks[i].eventUrl=dest;changed=true;}
+    }catch(e){}
+  }
+  if(changed){save();renderTab(curTab);}
+}
 /* ══ TASK CRUD ══ */
 function addTask(){
   var text=document.getElementById('tText').value.trim(),date=document.getElementById('tDate').value;
@@ -1309,44 +1582,348 @@ async function importUrl(type){
     if(!sources.find(function(s){return s.url===url;})){sources.push({url:url,type:type,lastChecked:Date.now(),enabled:true});localStorage.setItem('tmp_sources',JSON.stringify(sources));}
     var cnt=parseICS(text,type);
     populateCourseFilter();
-    toast('Imported '+cnt+' task(s) from '+type+'!','ok');renderTab(curTab);
+    toast('Imported '+cnt+' task(s) from '+type+'!','ok');renderTab(curTab);resolveCanvasUrls();
   }catch(e){toast('Import failed: '+e.message,'warn');}
 }
-function importICS(){var f=document.getElementById('icsFile').files[0];if(!f){toast('Select a file','warn');return;}var rd=new FileReader();rd.onload=function(e){var cnt=parseICS(e.target.result,'ics-file');populateCourseFilter();toast('Imported '+cnt+' task(s)','ok');renderTab(curTab);};rd.readAsText(f);}
+function importICS(){var f=document.getElementById('icsFile').files[0];if(!f){toast('Select a file','warn');return;}var rd=new FileReader();rd.onload=function(e){var cnt=parseICS(e.target.result,'ics-file');populateCourseFilter();toast('Imported '+cnt+' task(s)','ok');renderTab(curTab);resolveCanvasUrls();};rd.readAsText(f);}
+
+/* ══ QUOTED-PRINTABLE DECODER ══
+   Canvas sometimes encodes DESCRIPTION with ENCODING=QUOTED-PRINTABLE.
+   In QP: =XX is a hex byte, = at end of line is a soft line break.
+   We decode this before trying any regex on the content.
+*/
+function decodeQP(str){
+  /* Rejoin soft-wrapped lines (trailing = before \n) */
+  str=str.replace(/=\r?\n/g,'');
+  /* Decode =XX hex sequences */
+  return str.replace(/=([0-9A-Fa-f]{2})/g,function(_,h){
+    return String.fromCharCode(parseInt(h,16));
+  });
+}
+
+/* ══ EXTRACT ALL URLS FROM A STRING ══
+   Returns array of all http(s) URLs found, in order, decoded.
+   Handles: href="..." href='...' bare URLs, &amp; encoded hrefs.
+*/
+function extractAllUrls(str){
+  var found=[];
+  /* Decode &amp; so href=3D"" (QP) and &amp; both work */
+  var s=str.replace(/&amp;/g,'&').replace(/=3D/gi,'=');
+  /* href="url" or href='url' */
+  var re1=/href=["']([^"']+)["']/gi;
+  var m;
+  while((m=re1.exec(s))!==null){
+    var u=m[1].trim();
+    if(u.startsWith('http'))found.push(u);
+  }
+  /* bare https://... URLs not inside an attribute */
+  var re2=/https?:\/\/[^\s<>"',\\)]+/gi;
+  while((m=re2.exec(s))!==null){
+    var u2=m[0].replace(/[.,;:!?]+$/,''); /* strip trailing punctuation */
+    if(!found.includes(u2))found.push(u2);
+  }
+  return found;
+}
+
+/* ══ PICK BEST CANVAS URL ══
+   Canvas iCal gives us two URLs:
+     URL: field  → calendar event page  (e.g. /calendar?event_id=xxx)  ← WRONG
+     DESCRIPTION → HTML with <a href="https://school.instructure.com/courses/123/assignments/456"> ← RIGHT
+
+   Priority order for Canvas:
+   1. Any URL containing /courses/NNN/(assignments|quizzes|discussion_topics|pages|modules)
+   2. Any instructure.com URL that is NOT a calendar URL
+   3. Fallback: the URL: field value
+
+   For Google / other sources: URL: field is correct as-is.
+*/
+function pickCanvasUrl(allUrls, urlFieldValue){
+  /* Patterns that indicate a direct assignment/content page */
+  var directPatterns=[
+    /\/courses\/\d+\/assignments\/\d+/i,
+    /\/courses\/\d+\/quizzes\/\d+/i,
+    /\/courses\/\d+\/discussion_topics\/\d+/i,
+    /\/courses\/\d+\/pages\//i,
+    /\/courses\/\d+\/modules/i,
+    /\/courses\/\d+\/files/i,
+    /\/courses\/\d+\/[a-z]/i,   /* any course sub-page */
+  ];
+  /* Try each URL against direct patterns first */
+  for(var i=0;i<allUrls.length;i++){
+    for(var j=0;j<directPatterns.length;j++){
+      if(directPatterns[j].test(allUrls[i]))return allUrls[i];
+    }
+  }
+  /* Next: any instructure.com URL that isn't the calendar */
+  for(var i=0;i<allUrls.length;i++){
+    if(/instructure\.com/i.test(allUrls[i])&&!/calendar/i.test(allUrls[i]))return allUrls[i];
+  }
+  return '';
+}
+
+/* ══ BUILD CANVAS DIRECT URL FROM UID ══════════════════════════════════════════
+   Canvas iCal UIDs have a stable format:
+     event-assignment-<ID>@<canvas-domain>
+     event-quiz_lti-<ID>@<canvas-domain>          (New Quizzes)
+     event-quiz-<ID>@<canvas-domain>              (Classic Quizzes)
+     event-discussion_topic-<ID>@<canvas-domain>
+     event-calendar_event-<ID>@<canvas-domain>    (manual calendar events — no direct page)
+     event-<ID>@<canvas-domain>                   (generic)
+
+   We extract the domain from the UID, look up the course ID from the
+   URL: field (which IS a valid canvas URL even if it points to calendar),
+   then construct the direct content URL.
+
+   URL: field looks like:
+     https://school.instructure.com/calendar?event_id=12345
+   which contains the domain but not the course or assignment ID.
+
+   The course + assignment IDs come from the UID itself in some formats,
+   but more commonly Canvas doesn't embed the course ID in the UID.
+   In that case we use the URL: field domain + the path derived from the UID type.
+
+   For assignments:  https://<domain>/courses/<courseId>/assignments/<assignId>
+   The course ID is NOT in the UID, but it IS embedded in the DESCRIPTION HTML
+   or we can route via the API redirect:
+     https://<domain>/calendar_events/<eventId>  → redirects to the assignment page
+
+   The event_id in the URL: field IS the calendar_event ID. Canvas redirects
+     https://<domain>/calendar_events/<eventId>
+   to the actual assignment page — this is the cleanest reliable approach.
+═══════════════════════════════════════════════════════════════════════════════ */
+function canvasUrlFromUid(uid, urlFieldValue, descriptionHtml){
+  if(!uid&&!urlFieldValue)return'';
+
+  /* Decode percent-encoding (handles percent-encoded spaces etc) */
+  var uvDecoded=urlFieldValue||'';
+  try{uvDecoded=decodeURIComponent(uvDecoded);}catch(e){}
+
+  /* ── Parse URL: field directly ───────────────────────────────────────────
+     Canvas URL: field: ...?include_contexts=course_XXXX&...#assignment_YYYYY
+     Match include_contexts=[anything]_(\d+) to handle encoding glitches */
+  if(uvDecoded){
+    var domMatch=uvDecoded.match(/https?:\/\/([^/?#]+)/);
+    var domain=domMatch?domMatch[1]:'';
+    /* course id: grab the number after the last underscore in include_contexts value */
+    var courseMatch=uvDecoded.match(/include_contexts=[^&]*_(\d+)/i)
+                  ||uvDecoded.match(/course_id=(\d+)/i)
+                  ||uvDecoded.match(/\/courses\/(\d+)/i);
+    var assignMatch=uvDecoded.match(/#assignment_(\d+)/i);
+    var quizMatch  =uvDecoded.match(/#quiz_(\d+)/i);
+    var discMatch  =uvDecoded.match(/#discussion_topic_(\d+)/i);
+    if(domain&&courseMatch&&courseMatch[1]){
+      var cId=courseMatch[1];
+      if(assignMatch)return'https://'+domain+'/courses/'+cId+'/assignments/'+assignMatch[1];
+      if(quizMatch)  return'https://'+domain+'/courses/'+cId+'/quizzes/'+quizMatch[1];
+      if(discMatch)  return'https://'+domain+'/courses/'+cId+'/discussion_topics/'+discMatch[1];
+    }
+  }
+
+  /* ── Fallback: parse UID ─────────────────────────────────────────────────
+     e.g. course_XXXX_user_X_event-assignment-YYYYY@school.instructure.com */
+  if(uid){
+    var atIdx=uid.lastIndexOf('@');
+    var domain2=atIdx>=0?uid.substring(atIdx+1).trim():'';
+    if(!domain2&&uvDecoded){var dm2=uvDecoded.match(/https?:\/\/([^/]+)/);if(dm2)domain2=dm2[1];}
+    if(domain2){
+      var uidBody=atIdx>=0?uid.substring(0,atIdx):uid;
+      var courseInUid=uidBody.match(/course_(\d+)/i);
+      var typeMatch=uidBody.match(/event-([a-z_]+)-(\d+)$/i)||uidBody.match(/-event-([a-z_]+)-(\d+)$/i);
+      if(courseInUid&&typeMatch){
+        var cId2=courseInUid[1],evType=typeMatch[1].toLowerCase(),evId=typeMatch[2];
+        if(evType==='assignment'||evType==='quiz_lti')return'https://'+domain2+'/courses/'+cId2+'/assignments/'+evId;
+        if(evType==='quiz')return'https://'+domain2+'/courses/'+cId2+'/quizzes/'+evId;
+        if(evType==='discussion_topic')return'https://'+domain2+'/courses/'+cId2+'/discussion_topics/'+evId;
+      }
+      if(typeMatch){
+        var evType2=typeMatch[1].toLowerCase(),evId2=typeMatch[2];
+        if(evType2==='assignment'||evType2==='quiz_lti'||evType2==='quiz'||evType2==='discussion_topic'){
+          var evIdFromUrl='';
+          if(uvDecoded){var mu=uvDecoded.match(/[?&]event_id=(\d+)/)||uvDecoded.match(/\/calendar_events\/(\d+)/);if(mu)evIdFromUrl=mu[1];}
+          return'canvas-api:https://'+domain2+'/api/v1/calendar_events/'+(evIdFromUrl||evId2);
+        }
+        if(evType2==='calendar_event'&&urlFieldValue)return urlFieldValue;
+      }
+    }
+  }
+
+  /* ── Last resort: direct URL in description HTML ─────────────────────── */
+  if(descriptionHtml){
+    var directUrl=descriptionHtml.match(/https?:\/\/[^\s"'<]+\/courses\/\d+\/(assignments|quizzes|discussion_topics)\/\d+/i);
+    if(directUrl)return directUrl[0];
+  }
+
+  return urlFieldValue||'';
+}
+
 
 function parseICS(text,source){
-  var unfolded=text.replace(/\r\n[ \t]/g,'').replace(/\n[ \t]/g,'');
+  /* ── STEP 1: RFC 5545 line unfolding ──
+     A logical line may be split across multiple physical lines; continuation
+     lines start with a space or tab. Unfold them by removing the CRLF + whitespace. */
+  var unfolded=text
+    .replace(/\r\n([ \t])/g,'$1')   /* CRLF fold */
+    .replace(/\n([ \t])/g,'$1');    /* LF fold (non-standard but seen in the wild) */
+
   var lines=unfolded.split(/\r?\n/);
   var cnt=0;var ev=null;
+  var debugLines=[];  /* collect raw lines of FIRST event for debug panel */
+  var debugDone=false;
+
   for(var i=0;i<lines.length;i++){
-    var line=lines[i].trim();
-    if(line==='BEGIN:VEVENT'){ev={id:Date.now()+Math.random(),text:'',date:'',notes:'',done:false,source:source,added:Date.now()};}
-    else if(line==='END:VEVENT'&&ev&&ev.text&&ev.date){
+    /* Do NOT trim — leading spaces are meaningful (they mark folded continuations, already joined).
+       Only rtrim to remove \r artifacts. */
+    var line=lines[i].replace(/\r$/,'');
+
+    if(line==='BEGIN:VEVENT'){
+      ev={id:Date.now()+Math.random(),text:'',date:'',notes:'',fullNotes:'',
+          eventUrl:'',_urlFieldValue:'',uid:'',done:false,source:source,added:Date.now()};
+      if(!debugDone)debugLines=[];
+    }
+    else if(line==='END:VEVENT'){
+      if(!debugDone){debugLines.push(line);debugDone=true;}
+      if(!ev||!ev.text||!ev.date){ev=null;continue;}
+
+      /* ── CANVAS: build direct URL from UID ──────────────────────────────────────
+         Canvas UIDs follow predictable patterns:
+           event-assignment-123456@school.instructure.com
+           event-quiz_lti-123456@school.instructure.com (new quizzes)
+           event-discussion_topic-123456@school.instructure.com
+           event-calendar_event-123456@school.instructure.com  ← skip, keep calendar URL
+         We parse the UID to extract item type + ID + domain, then build the direct URL.
+         This is MORE reliable than parsing the DESCRIPTION HTML because it doesn't
+         depend on encoding, line folding, or HTML structure.
+      ──────────────────────────────────────────────────────────────────────────── */
+      if(source==='canvas'&&ev.uid){
+        var hasDirectUrl=ev.eventUrl&&ev.eventUrl.indexOf('/courses/')>=0;
+        if(!hasDirectUrl){
+          var uidUrl=canvasUrlFromUid(ev.uid, ev._urlFieldValue, ev.fullNotes||'');
+          if(uidUrl)ev.eventUrl=uidUrl;
+        }
+      }
+
+      /* Final fallback for canvas: if UID gave nothing, try description-extracted URL */
+      /* (ev.eventUrl may already be set from DESCRIPTION parsing above) */
+
+      /* For all sources: if still no URL, use the URL: field value */
+      if(!ev.eventUrl&&ev._urlFieldValue)ev.eventUrl=ev._urlFieldValue;
+
       ev.priority=inferPriority(ev.text);
       if(!ev.type)ev.type=inferType(ev.text);
       if(!ev.course){
         var detected=extractCourseCode(ev.text);
-        if(detected){ev.course=detected.code;}
-        else if(ev.notes){var dnDetected=extractCourseCode(ev.notes);if(dnDetected)ev.course=dnDetected.code;}
+        if(detected)ev.course=detected.code;
+        else if(ev.fullNotes){var dn2=extractCourseCode(ev.fullNotes);if(dn2)ev.course=dn2.code;}
       }
-      if(!ev.course){ev.course=resolveCourseBucket(ev);}
+      if(!ev.course)ev.course=resolveCourseBucket(ev);
       ev.tags=inferAutoTags(ev.text,[]);
-      if(!tasks.some(function(t){return t.text.toLowerCase()===ev.text.toLowerCase()&&t.date===ev.date;})){tasks.push(ev);cnt++;}
+      /* Dedup: if this event already exists, UPDATE its eventUrl/notes (re-import fix)
+         rather than silently skipping it. If it truly doesn't exist, add it. */
+      var existIdx=tasks.findIndex(function(t){
+        return t.text.toLowerCase()===ev.text.toLowerCase()&&t.date===ev.date;
+      });
+      if(existIdx>=0){
+        /* Always update eventUrl — a re-import may have picked up the direct assignment URL
+           where the previous import only got the calendar fallback URL */
+        if(ev.eventUrl)tasks[existIdx].eventUrl=ev.eventUrl;
+        if(ev.fullNotes&&!tasks[existIdx].fullNotes)tasks[existIdx].fullNotes=ev.fullNotes;
+        if(ev.notes&&!tasks[existIdx].notes)tasks[existIdx].notes=ev.notes;
+      } else {
+        tasks.push(ev);cnt++;
+      }
       ev=null;
     }
     else if(ev){
-      if(line.startsWith('SUMMARY:')){ev.text=line.substring(8).replace(/\\,/g,',').replace(/\\n/g,' ').replace(/\\;/g,';').trim();}
-      else if(line.startsWith('DTSTART')){
-        var raw=line.split(':').slice(1).join(':').trim();var d=raw.substring(0,8);
-        if(d.length===8&&/^\d{8}$/.test(d)){var yr=d.substring(0,4);var mo=d.substring(4,6);var dy=d.substring(6,8);ev.date=yr+'-'+mo+'-'+dy;}
+      if(!debugDone)debugLines.push(line);
+
+      /* ── Property name extraction ──
+         Lines look like: PROPNAME:value  or  PROPNAME;PARAM=val:value
+         Split on first colon that isn't part of a URL. */
+      var colonIdx=line.indexOf(':');
+      if(colonIdx<1)continue;
+      var propRaw=line.substring(0,colonIdx).toUpperCase(); /* e.g. "SUMMARY", "DESCRIPTION;ENCODING=QUOTED-PRINTABLE" */
+      var propName=propRaw.split(';')[0];                   /* strip parameters */
+      var propParams=propRaw.includes(';')?propRaw.substring(propRaw.indexOf(';')+1):'';
+      var propVal=line.substring(colonIdx+1);               /* everything after first colon */
+
+      /* Decode quoted-printable if flagged */
+      var isQP=propParams.includes('QUOTED-PRINTABLE');
+      if(isQP)propVal=decodeQP(propVal);
+
+      /* Standard iCal escape sequences (backslash escapes) */
+      propVal=propVal.replace(/\\n/g,'\n').replace(/\\,/g,',').replace(/\\;/g,';').replace(/\\\\/g,'\\');
+
+      if(propName==='SUMMARY'){
+        ev.text=propVal.trim();
       }
-      else if(line.startsWith('DESCRIPTION:')){
-        var rawDesc=line.substring(12).replace(/\\n/g,'\n').replace(/\\,/g,',').replace(/\\;/g,';').trim();
-        rawDesc=rawDesc.replace(/<[^>]+>/g,' ').replace(/https?:\/\/\S+/g,'').replace(/\s{2,}/g,' ').trim();
-        if(rawDesc.length>0&&rawDesc.length<400)ev.notes=rawDesc;
+      else if(propName==='UID'){
+        ev.uid=propVal.trim();
+      }
+      else if(propName==='DTSTART'){
+        var d8=propVal.replace(/T.*/,'').trim(); /* strip time part */
+        if(/^\d{8}$/.test(d8)){
+          ev.date=d8.substring(0,4)+'-'+d8.substring(4,6)+'-'+d8.substring(6,8);
+        }
+      }
+      else if(propName==='URL'){
+        /* propVal already contains everything after the FIRST colon, so for
+           "URL:https://school.instructure.com/..." propVal = "https://school.instructure.com/..."
+           That's correct. But double-check it didn't get truncated. */
+        var uv=propVal.trim();
+        /* Sometimes URL is split like "URL;VALUE=URI:https://..." — propVal handles that fine */
+        if(uv&&(uv.startsWith('http')||uv.startsWith('webcal'))){
+          uv=uv.replace(/^webcal:/,'https:');
+          ev._urlFieldValue=uv;
+          /* Canvas: immediately convert calendar URL → direct assignment URL */
+          if(source==='canvas'&&!ev.eventUrl){
+            var _uv2=uv;try{_uv2=decodeURIComponent(uv);}catch(e){}
+            var _dom=(_uv2.match(/https?:\/\/([^/?#]+)/)||[])[1]||'';
+            var _cm=_uv2.match(/include_contexts=[^&]*_(\d+)/i)||_uv2.match(/course_id=(\d+)/i);
+            var _am=_uv2.match(/#assignment_(\d+)/i);
+            var _qm=_uv2.match(/#quiz_(\d+)/i);
+            var _dm=_uv2.match(/#discussion_topic_(\d+)/i);
+            if(_dom&&_cm&&_cm[1]){
+              if(_am)ev.eventUrl='https://'+_dom+'/courses/'+_cm[1]+'/assignments/'+_am[1];
+              else if(_qm)ev.eventUrl='https://'+_dom+'/courses/'+_cm[1]+'/quizzes/'+_qm[1];
+              else if(_dm)ev.eventUrl='https://'+_dom+'/courses/'+_cm[1]+'/discussion_topics/'+_dm[1];
+            }
+          }
+          /* For non-canvas sources the URL: field IS the correct direct link */
+          if(source!=='canvas')ev.eventUrl=uv;
+        }
+      }
+      else if(propName==='DESCRIPTION'){
+        var rawDesc=propVal;
+
+        /* Collect all URLs from the raw description (before HTML stripping) */
+        var allUrls=extractAllUrls(rawDesc);
+
+        if(source==='canvas'){
+          var picked=pickCanvasUrl(allUrls, ev._urlFieldValue);
+          if(picked&&picked.indexOf('/courses/')>=0)ev.eventUrl=picked;
+        } else if(!ev.eventUrl&&allUrls.length){
+          ev.eventUrl=allUrls[0];
+        }
+
+        /* Clean description for display */
+        var fullClean=rawDesc
+          .replace(/<br\s*\/?>/gi,'\n')
+          .replace(/<\/p>/gi,'\n')
+          .replace(/<\/li>/gi,'\n')
+          .replace(/<li[^>]*>/gi,'• ')
+          .replace(/<[^>]+>/g,'')             /* strip remaining HTML tags */
+          .replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&nbsp;/g,' ').replace(/&#\d+;/g,'').replace(/&[a-z]+;/gi,' ')
+          .replace(/https?:\/\/\S+/gi,'')     /* remove bare URLs — the button handles them */
+          .replace(/[ \t]{2,}/g,' ')
+          .replace(/\n{3,}/g,'\n\n')
+          .trim();
+
+        ev.fullNotes=fullClean;
+        ev.notes=fullClean.replace(/\n/g,' ').replace(/\s{2,}/g,' ').trim();
       }
     }
   }
+
   save();return cnt;
 }
 
@@ -1422,6 +1999,7 @@ function esc(t){var d=document.createElement('div');d.textContent=t;return d.inn
 
 /* ══ INIT ══ */
 document.getElementById('landing').style.display='flex';
+resolveCanvasUrls();
 document.getElementById('app').style.display='none';
 </script>
 </body>
