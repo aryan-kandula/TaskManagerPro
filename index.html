@@ -1743,48 +1743,113 @@ function toggleTask(id){var t=tasks.find(function(t){return t.id===id;});if(t){t
 function delTask(id){if(confirm('Delete this task?')){tasks=tasks.filter(function(t){return t.id!==id;});save();renderTab(curTab);toast('Deleted','inf');}}
 
 /* ══ MULTI-PROXY ICS FETCH ══
-   Tries multiple CORS proxies in order. Returns ICS text or throws. */
-async function fetchICSText(url){
+   Canvas ICS feed URLs are public (no login needed) but browsers block
+   cross-origin fetches unless the server sends CORS headers.  Canvas does
+   send  Access-Control-Allow-Origin: *  on its feed endpoints, so a direct
+   fetch usually works.  When it doesn't (network policy, school firewall)
+   we cascade through several free CORS proxy services.
+
+   Key fixes:
+   - webcal:// is rewritten to https:// before any attempt
+   - corsproxy.io requires  ?url=  param, not bare  ?<encoded>
+   - allorigins /get endpoint returns JSON {contents:...} handled separately
+   - per-proxy timeout so a stalled proxy doesn't block forever
+   - detailed per-proxy error list so the user sees what actually failed
+*/
+async function fetchICSText(rawUrl){
+  /* Normalise webcal:// -> https:// */
+  var url=rawUrl.trim().replace(/^webcal:/i,'https:');
+  var enc=encodeURIComponent(url);
+
+  /* Fetch with AbortController timeout */
+  async function timedFetch(resource,opts,ms){
+    ms=ms||9000;
+    var ctrl=typeof AbortController!=='undefined'?new AbortController():null;
+    var tid=ctrl?setTimeout(function(){ctrl.abort();},ms):null;
+    try{
+      var r=await fetch(resource,Object.assign({},opts,ctrl?{signal:ctrl.signal}:{}));
+      if(tid)clearTimeout(tid);
+      return r;
+    }catch(e){if(tid)clearTimeout(tid);throw e;}
+  }
+
   var proxies=[
-    /* 1. Direct — works if the server allows CORS or it's a same-origin URL */
-    async function(){var r=await fetch(url,{mode:'cors',cache:'no-cache'});if(!r.ok)throw new Error('HTTP '+r.status);return r.text();},
-    /* 2. corsproxy.io — free, usually fast */
-    async function(){var r=await fetch('https://corsproxy.io/?'+encodeURIComponent(url),{cache:'no-cache'});if(!r.ok)throw new Error('HTTP '+r.status);return r.text();},
-    /* 3. allorigins — returns raw content */
-    async function(){var r=await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(url),{cache:'no-cache'});if(!r.ok)throw new Error('HTTP '+r.status);return r.text();},
-    /* 4. codetabs (existing) */
-    async function(){var r=await fetch('https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(url),{cache:'no-cache'});if(!r.ok)throw new Error('HTTP '+r.status);return r.text();},
+    /* 1. Direct fetch — Canvas feeds send CORS headers, this is fastest */
+    async function(){
+      var r=await timedFetch(url,{mode:'cors',cache:'no-cache'},8000);
+      if(!r.ok)throw new Error('direct: HTTP '+r.status);
+      return r.text();
+    },
+    /* 2. corsproxy.io — correct param is ?url= (not bare ?) */
+    async function(){
+      var r=await timedFetch('https://corsproxy.io/?url='+enc,{cache:'no-cache'},10000);
+      if(!r.ok)throw new Error('corsproxy.io: HTTP '+r.status);
+      return r.text();
+    },
+    /* 3. allorigins /raw — streams the file directly */
+    async function(){
+      var r=await timedFetch('https://api.allorigins.win/raw?url='+enc,{cache:'no-cache'},10000);
+      if(!r.ok)throw new Error('allorigins/raw: HTTP '+r.status);
+      return r.text();
+    },
+    /* 4. allorigins /get — returns JSON {contents, status} */
+    async function(){
+      var r=await timedFetch('https://api.allorigins.win/get?url='+enc,{cache:'no-cache'},10000);
+      if(!r.ok)throw new Error('allorigins/get: HTTP '+r.status);
+      var j=await r.json();
+      if(j&&j.contents)return j.contents;
+      throw new Error('allorigins/get: empty contents');
+    },
+    /* 5. codetabs */
+    async function(){
+      var r=await timedFetch('https://api.codetabs.com/v1/proxy?quest='+enc,{cache:'no-cache'},10000);
+      if(!r.ok)throw new Error('codetabs: HTTP '+r.status);
+      return r.text();
+    },
+    /* 6. cors-anywhere public demo */
+    async function(){
+      var r=await timedFetch('https://cors-anywhere.herokuapp.com/'+url,{cache:'no-cache',headers:{'X-Requested-With':'XMLHttpRequest'}},12000);
+      if(!r.ok)throw new Error('cors-anywhere: HTTP '+r.status);
+      return r.text();
+    },
   ];
-  var lastErr='';
+
+  var errors=[];
   for(var i=0;i<proxies.length;i++){
     try{
       var text=await proxies[i]();
-      /* Validate it's actually an ICS file */
       if(text&&(text.includes('VCALENDAR')||text.includes('VEVENT'))){return text;}
-      /* Got a response but no ICS content — try next proxy */
-      lastErr='Response received but no calendar data found (proxy '+i+')';
+      errors.push('proxy '+(i+1)+': responded but no calendar data');
     }catch(e){
-      lastErr=e.message||String(e);
+      errors.push(e.message||String(e));
     }
   }
-  throw new Error('Could not load calendar: '+lastErr+'. Check the URL and try again.');
+  throw new Error(errors.join(' | '));
 }
 
 /* ══ IMPORT ══ */
 async function importUrl(type){
   var url=(type==='google'?document.getElementById('gUrl'):document.getElementById('cUrl')).value.trim();
   if(!url){toast('Please paste a URL','warn');return;}
-  toast('Fetching calendar — trying proxies...','inf');
+  toast('⏳ Fetching calendar…','inf',2000);
   try{
     var text=await fetchICSText(url);
     if(!sources.find(function(s){return s.url===url;})){sources.push({url:url,type:type,lastChecked:Date.now(),enabled:true});localStorage.setItem('tmp_sources',JSON.stringify(sources));}
     var cnt=parseICS(text,type);
     populateCourseFilter();
-    toast('Imported '+cnt+' task(s) from '+type+'!','ok');renderTab(curTab);resolveCanvasUrls();
+    toast('✅ Imported '+cnt+' task(s)!','ok');renderTab(curTab);resolveCanvasUrls();
   }catch(e){
-    toast('Import failed — '+e.message,'warn',6000);
+    /* All proxies failed. Show a helpful fallback message with a direct download link */
     var dbg=document.getElementById('canvasDebugWrap');
-    if(dbg){dbg.style.display='';document.getElementById('canvasDebugOut').value='Error: '+e.message+'\n\nURL tried: '+url+'\n\nIf this keeps failing:\n1. Confirm the URL starts with https://\n2. Try opening the URL directly in your browser first\n3. Use the .ics file download option instead';}
+    if(dbg){
+      dbg.style.display='';
+      document.getElementById('canvasDebugOut').value=
+        'All import methods failed.\n\n'
+        +'EASIEST FIX: Open this URL in your browser, save the file as .ics, then drag it into the import box above:\n'
+        +url.replace(/^webcal:/i,'https:')+'\n\n'
+        +'Error details: '+e.message;
+    }
+    toast('❌ Could not fetch URL — see instructions below','warn',7000);
   }
 }
 
@@ -2219,17 +2284,44 @@ function setWelcomeStatus(msg,type){
 async function welcomeImportUrl(){
   var url=document.getElementById('welcomeUrl').value.trim();
   if(!url){setWelcomeStatus('Please paste a URL first','warn');return;}
-  setWelcomeStatus('⏳ Fetching — trying proxies...','');
+  /* Normalise webcal:// immediately so the download link is also correct */
+  url=url.replace(/^webcal:/i,'https:');
+  document.getElementById('welcomeUrl').value=url;
+  setWelcomeStatus('⏳ Connecting to Canvas… (trying multiple methods)','');
   try{
     var type=url.includes('calendar.google.com')||url.includes('googleapis.com')?'google':'canvas';
     var text=await fetchICSText(url);
     if(!sources.find(function(s){return s.url===url;})){sources.push({url:url,type:type,lastChecked:Date.now(),enabled:true});localStorage.setItem('tmp_sources',JSON.stringify(sources));}
     var cnt=parseICS(text,type);
     populateCourseFilter();resolveCanvasUrls();
-    setWelcomeStatus('✅ Imported '+cnt+' task(s)! Opening app...','');
+    setWelcomeStatus('✅ Imported '+cnt+' task(s)! Opening app…','ok');
     setTimeout(function(){document.getElementById('welcomeModal').classList.remove('open');doEnterApp();},800);
   }catch(e){
-    setWelcomeStatus('❌ '+e.message,'err');
+    /* Show friendly fallback with a one-click download link */
+    var safeUrl=url.replace(/^webcal:/i,'https:');
+    setWelcomeStatus(
+      '⚠️ URL import blocked by your network. Instead:\n'
+      +'1. Click this link to download your calendar file:\n'
+      +safeUrl+'\n'
+      +'2. Save it as a .ics file\n'
+      +'3. Drag it into the box above (or click the box to browse)',
+      'err'
+    );
+    /* Also inject a clickable download button below the status */
+    var ws=document.getElementById('welcomeStatus');
+    if(ws){
+      ws.innerHTML='';
+      var msg=document.createElement('div');
+      msg.style.cssText='font-size:13px;line-height:1.7;text-align:left;';
+      msg.innerHTML='⚠️ URL blocked by your browser\'s network policy.<br><br>'
+        +'<strong>Easy fix — download your calendar then drag it in:</strong><br>'
+        +'<a href="'+safeUrl+'" target="_blank" rel="noopener" '
+        +'style="display:inline-block;margin:10px 0;padding:10px 18px;background:linear-gradient(135deg,#5aabff,#b87fff);'
+        +'color:#fff;border-radius:100px;text-decoration:none;font-weight:700;font-size:13px;">'
+        +'⬇️ Download Calendar File (.ics)</a><br>'
+        +'<span style="font-size:11px;color:var(--tx2);">Then drag the downloaded file into the box above, or click Browse.</span>';
+      ws.appendChild(msg);
+    }
   }
 }
 
