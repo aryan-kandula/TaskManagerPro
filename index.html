@@ -5,11 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Task Manager Pro — Aryan Kandula</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
-:root{--ease:cubic-bezier(0.34,1.56,0.64,1);--ease-s:cubic-bezier(0.4,0,0.2,1);--ease-spring:cubic-bezier(0.175,0.885,0.32,1.275);--font:'Sora',-apple-system,sans-serif;--mono:'JetBrains Mono',monospace;--r:22px;--r-sm:14px;--r-xs:8px;--r-pill:100px;}
-[data-theme="dark"]{--bg:#04060f;--bg2:#070912;--glass:rgba(255,255,255,0.055);--glass-2:rgba(255,255,255,0.09);--glass-3:rgba(255,255,255,0.13);--glass-strong:rgba(255,255,255,0.18);--bd:rgba(255,255,255,0.10);--bd2:rgba(255,255,255,0.16);--bd3:rgba(255,255,255,0.22);--tx:#f2f5ff;--tx2:#8899bb;--tx3:#3d4d6a;--pri:#5aabff;--pri-glow:rgba(90,171,255,0.25);--pri-dim:rgba(90,171,255,0.12);--acc:#ff5b8d;--grn:#3dffc0;--gld:#ffcc4f;--purp:#b87fff;--blur:blur(40px) saturate(1.8);--blur-light:blur(20px) saturate(1.4);--sh:0 24px 80px rgba(0,0,10,0.6),0 4px 20px rgba(0,0,0,0.4);--sh-sm:0 8px 32px rgba(0,0,0,0.4);--inset:inset 0 1px 0 rgba(255,255,255,0.10),inset 0 -1px 0 rgba(0,0,0,0.2);--orb1:rgba(20,70,220,0.2);--orb2:rgba(120,40,200,0.14);--orb3:rgba(0,140,100,0.10);--orb4:rgba(200,60,120,0.08);--select-bg:#0a0f22;--select-opt-bg:#0d1428;}
-[data-theme="light"]{--bg:#dce4f0;--bg2:#cfd8e8;--glass:rgba(255,255,255,0.52);--glass-2:rgba(255,255,255,0.68);--glass-3:rgba(255,255,255,0.82);--glass-strong:rgba(255,255,255,0.92);--bd:rgba(0,0,0,0.07);--bd2:rgba(0,0,0,0.11);--bd3:rgba(0,0,0,0.16);--tx:#08111f;--tx2:#4a5a78;--tx3:#8899bb;--pri:#1a7fff;--pri-glow:rgba(26,127,255,0.2);--pri-dim:rgba(26,127,255,0.10);--acc:#e0004e;--grn:#00b87a;--gld:#d48800;--purp:#8844dd;--blur:blur(40px) saturate(2.2);--blur-light:blur(20px) saturate(1.8);--sh:0 24px 80px rgba(0,0,0,0.12),0 4px 20px rgba(0,0,0,0.08);--sh-sm:0 8px 32px rgba(0,0,0,0.10);--inset:inset 0 1px 0 rgba(255,255,255,0.9),inset 0 -1px 0 rgba(0,0,0,0.04);--orb1:rgba(80,150,255,0.22);--orb2:rgba(180,100,255,0.16);--orb3:rgba(0,200,140,0.14);--orb4:rgba(255,80,140,0.10);--select-bg:#e8eef8;--select-opt-bg:#dce4f0;}
+:root{--ease:cubic-bezier(0.34,1.56,0.64,1);--ease-s:cubic-bezier(0.4,0,0.2,1);--ease-spring:cubic-bezier(0.175,0.885,0.32,1.275);--font:'Inter',-apple-system,sans-serif;--display:'Barlow Condensed','Inter',sans-serif;--mono:'JetBrains Mono',monospace;--r:22px;--r-sm:14px;--r-xs:8px;--r-pill:100px;}
+[data-theme="dark"]{--bg:#03050e;--bg2:#060811;--glass:rgba(255,255,255,0.07);--glass-2:rgba(255,255,255,0.11);--glass-3:rgba(255,255,255,0.16);--glass-strong:rgba(255,255,255,0.21);--bd:rgba(255,255,255,0.11);--bd2:rgba(255,255,255,0.18);--bd3:rgba(255,255,255,0.26);--tx:#f2f5ff;--tx2:#8899bb;--tx3:#3d4d6a;--pri:#5aabff;--pri-glow:rgba(90,171,255,0.25);--pri-dim:rgba(90,171,255,0.12);--acc:#ff5b8d;--grn:#3dffc0;--gld:#ffcc4f;--purp:#b87fff;--blur:blur(56px) saturate(2.1);--blur-light:blur(28px) saturate(1.7);--sh:0 24px 80px rgba(0,0,10,0.65),0 4px 20px rgba(0,0,0,0.45);--sh-sm:0 8px 32px rgba(0,0,0,0.4);--inset:inset 0 1px 0 rgba(255,255,255,0.13),inset 0 -1px 0 rgba(0,0,0,0.2);--orb1:rgba(20,70,220,0.22);--orb2:rgba(120,40,200,0.16);--orb3:rgba(0,140,100,0.12);--orb4:rgba(200,60,120,0.09);--select-bg:#0a0f22;--select-opt-bg:#0d1428;}
+[data-theme="light"]{--bg:#dae2f0;--bg2:#cdd6e6;--glass:rgba(255,255,255,0.58);--glass-2:rgba(255,255,255,0.74);--glass-3:rgba(255,255,255,0.86);--glass-strong:rgba(255,255,255,0.94);--bd:rgba(0,0,0,0.07);--bd2:rgba(0,0,0,0.12);--bd3:rgba(0,0,0,0.18);--tx:#08111f;--tx2:#4a5a78;--tx3:#8899bb;--pri:#1a7fff;--pri-glow:rgba(26,127,255,0.2);--pri-dim:rgba(26,127,255,0.10);--acc:#e0004e;--grn:#00b87a;--gld:#d48800;--purp:#8844dd;--blur:blur(56px) saturate(2.6);--blur-light:blur(28px) saturate(2.0);--sh:0 24px 80px rgba(0,0,0,0.12),0 4px 20px rgba(0,0,0,0.08);--sh-sm:0 8px 32px rgba(0,0,0,0.10);--inset:inset 0 1px 0 rgba(255,255,255,0.95),inset 0 -1px 0 rgba(0,0,0,0.04);--orb1:rgba(80,150,255,0.22);--orb2:rgba(180,100,255,0.16);--orb3:rgba(0,200,140,0.14);--orb4:rgba(255,80,140,0.10);--select-bg:#e8eef8;--select-opt-bg:#dce4f0;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;height:100%;}
 body{font-family:var(--font);background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden;transition:background .6s var(--ease-s),color .5s var(--ease-s);}
@@ -37,7 +38,7 @@ button,input,select,textarea{font-family:inherit;}
 .land-hero{text-align:center;padding:60px 0 40px;animation:fadeUp .8s var(--ease-s) both;}
 .land-logo{width:110px;height:110px;background:conic-gradient(from 30deg,#ff5b8d,#b87fff,#5aabff,#3dffc0,#ffcc4f,#ff5b8d);border-radius:32px;display:flex;align-items:center;justify-content:center;font-size:56px;color:#fff;margin:0 auto 28px;box-shadow:0 0 80px rgba(90,171,255,.35),0 0 160px rgba(184,127,255,.2),var(--inset);animation:logoPulse 3s ease-in-out infinite;border:1px solid rgba(255,255,255,.2);}
 @keyframes logoPulse{0%,100%{box-shadow:0 0 80px rgba(90,171,255,.35),0 0 160px rgba(184,127,255,.2),var(--inset);}50%{box-shadow:0 0 120px rgba(90,171,255,.5),0 0 200px rgba(184,127,255,.3),var(--inset);}}
-.land-title{font-size:clamp(2.2rem,6vw,4rem);font-weight:800;letter-spacing:-.04em;line-height:1.05;margin-bottom:14px;}
+.land-title{font-size:clamp(2.8rem,8vw,5.2rem);font-weight:800;letter-spacing:-.01em;line-height:1.0;margin-bottom:14px;font-family:var(--display);text-transform:uppercase;}
 .land-title .grad{background:linear-gradient(135deg,var(--pri) 0%,var(--purp) 40%,var(--acc) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .land-sub{font-size:1.05rem;color:var(--tx2);max-width:500px;margin:0 auto 36px;line-height:1.7;}
 .land-cta{display:inline-flex;align-items:center;gap:10px;padding:16px 36px;border-radius:var(--r-pill);font-size:15px;font-weight:700;cursor:pointer;border:none;background:linear-gradient(135deg,var(--pri),var(--purp));color:#fff;box-shadow:0 8px 40px var(--pri-glow),0 0 0 1px rgba(255,255,255,.15);transition:all .3s var(--ease);animation:ctaPulse 2.5s ease-in-out infinite;}
@@ -45,21 +46,21 @@ button,input,select,textarea{font-family:inherit;}
 .land-cta:hover{transform:translateY(-3px) scale(1.04);}
 .land-note{font-size:11px;color:var(--tx3);margin-top:14px;font-family:var(--mono);}
 .land-features{margin:20px 0 40px;}
-.features-title{text-align:center;font-size:14px;font-weight:600;color:var(--tx2);font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;margin-bottom:24px;}
+.features-title{text-align:center;font-size:14px;font-weight:700;color:var(--tx2);font-family:var(--display);text-transform:uppercase;letter-spacing:.18em;margin-bottom:24px;}
 .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
 @media(max-width:900px){.features-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:560px){.features-grid{grid-template-columns:1fr;}}
 .feat-card{padding:22px 20px;transition:all .3s var(--ease);}
 .feat-card:hover{transform:translateY(-5px);border-color:var(--bd2);}
 .feat-icon{font-size:28px;margin-bottom:12px;display:block;}
-.feat-name{font-size:14px;font-weight:700;margin-bottom:6px;}
+.feat-name{font-size:16px;font-weight:700;margin-bottom:6px;font-family:var(--display);letter-spacing:.02em;}
 .feat-desc{font-size:12px;color:var(--tx2);line-height:1.65;}
 .land-steps{margin-bottom:40px;}
-.steps-title{text-align:center;font-size:14px;font-weight:600;color:var(--tx2);font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;margin-bottom:24px;}
+.steps-title{text-align:center;font-size:14px;font-weight:700;color:var(--tx2);font-family:var(--display);text-transform:uppercase;letter-spacing:.18em;margin-bottom:24px;}
 .steps-list{display:flex;flex-direction:column;gap:12px;}
 .step{display:flex;align-items:flex-start;gap:16px;padding:18px 20px;}
 .step-num{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--pri),var(--purp));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 4px 16px var(--pri-glow);}
-.step-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+.step-title{font-size:15px;font-weight:700;margin-bottom:4px;font-family:var(--display);letter-spacing:.02em;}
 .step-desc{font-size:12px;color:var(--tx2);line-height:1.6;}
 .land-bottom{text-align:center;padding:20px 0 40px;}
 .land-bottom p{font-size:13px;color:var(--tx2);margin-bottom:20px;}
@@ -70,7 +71,7 @@ button,input,select,textarea{font-family:inherit;}
 .hdr-left{display:flex;align-items:center;gap:12px;flex-shrink:0;}
 .hdr-logo{width:40px;height:40px;background:conic-gradient(from 30deg,#ff5b8d,#b87fff,#5aabff,#3dffc0,#ffcc4f,#ff5b8d);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;flex-shrink:0;box-shadow:0 0 20px var(--pri-glow);animation:logoFloat 4s ease-in-out infinite;border:1px solid rgba(255,255,255,.2);}
 @keyframes logoFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
-.hdr-name{font-size:15px;font-weight:700;letter-spacing:-.02em;}
+.hdr-name{font-size:17px;font-weight:700;letter-spacing:.01em;font-family:var(--display);text-transform:uppercase;}
 .hdr-sub{font-size:10px;color:var(--tx2);font-family:var(--mono);}
 .hdr-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0;}
 .rpill{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:var(--r-pill);font-size:11px;font-family:var(--mono);color:var(--grn);background:rgba(61,255,192,.07);border:1px solid rgba(61,255,192,.18);cursor:pointer;transition:all .3s;position:relative;}
@@ -114,7 +115,7 @@ button,input,select,textarea{font-family:inherit;}
 .c-pri{color:var(--pri);} .c-grn{color:var(--grn);} .c-acc{color:var(--acc);} .c-gld{color:var(--gld);}
 
 /* SECTION HEAD */
-.sh{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:-.01em;margin-bottom:14px;margin-top:30px;color:var(--tx);}
+.sh{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;letter-spacing:.03em;margin-bottom:14px;margin-top:30px;color:var(--tx);font-family:var(--display);text-transform:uppercase;}
 .sh::after{content:'';flex:1;height:1px;background:var(--bd);}
 
 /* TASK GRID */
@@ -192,7 +193,7 @@ button,input,select,textarea{font-family:inherit;}
 .course-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0;}
 .course-card:hover{transform:translateY(-4px);border-color:var(--bd2);}
 .course-card-code{font-size:11px;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--tx2);margin-bottom:6px;}
-.course-card-name{font-size:18px;font-weight:700;margin-bottom:14px;line-height:1.3;}
+.course-card-name{font-size:20px;font-weight:700;margin-bottom:14px;line-height:1.2;font-family:var(--display);letter-spacing:.02em;}
 .course-card-stats{display:flex;gap:16px;}
 .course-stat{text-align:center;}
 .course-stat-val{font-size:22px;font-weight:700;font-family:var(--mono);line-height:1;}
@@ -369,7 +370,7 @@ input[type="file"].finput::file-selector-button:hover{
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 .mbox{width:min(560px,93vw);padding:32px;border-radius:30px;animation:mboxIn .45s var(--ease-spring);}
 @keyframes mboxIn{from{opacity:0;transform:scale(.88) translateY(24px);}to{opacity:1;transform:scale(1) translateY(0);}}
-.mtitle{font-size:20px;font-weight:700;margin-bottom:24px;}
+.mtitle{font-size:22px;font-weight:800;margin-bottom:24px;font-family:var(--display);letter-spacing:.02em;text-transform:uppercase;}
 .fg{margin-bottom:18px;}
 .flbl{display:block;font-size:11px;font-weight:600;font-family:var(--mono);text-transform:uppercase;letter-spacing:.09em;color:var(--tx2);margin-bottom:8px;}
 
@@ -564,15 +565,68 @@ input[type="file"].finput::file-selector-button:hover{
   .wgrid{display:none;}
   .dp-content{padding:24px 20px 20px;}
   .hdr-name,.hdr-sub{display:none;}
-  .land-title{font-size:2rem;}
+  .land-title{font-size:2.6rem;}
   .stats{grid-template-columns:1fr 1fr;gap:10px;}
   .stat-val{font-size:26px;}
   .tgrid{grid-template-columns:1fr;}
   .course-card-stats{gap:10px;}
-  /* Add task modal grid collapses on very small screens */
   .modal-addgrid{grid-template-columns:1fr!important;}
-  /* Bulk bar stacks vertically */
   .bulk-bar{flex-direction:column;align-items:flex-start;}
+  .land-cta{padding:14px 28px;font-size:14px;}
+}
+
+/* ══ DROP ZONE ══ */
+.drop-zone{border:2px dashed var(--bd2);border-radius:var(--r);padding:32px 20px;text-align:center;cursor:pointer;transition:all .3s var(--ease-s);background:var(--glass);position:relative;overflow:hidden;}
+.drop-zone:hover,.drop-zone.drag-over{border-color:var(--pri);background:var(--pri-dim);transform:scale(1.01);}
+.drop-zone.drag-over{border-color:var(--grn);background:rgba(61,255,192,.08);}
+.drop-zone-icon{font-size:36px;margin-bottom:10px;display:block;transition:transform .3s var(--ease);}
+.drop-zone:hover .drop-zone-icon,.drop-zone.drag-over .drop-zone-icon{transform:scale(1.15) translateY(-4px);}
+.drop-zone-title{font-size:15px;font-weight:700;margin-bottom:6px;font-family:var(--display);letter-spacing:.03em;text-transform:uppercase;}
+.drop-zone-sub{font-size:12px;color:var(--tx2);line-height:1.6;}
+.drop-zone-or{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--tx3);font-size:11px;font-family:var(--mono);}
+.drop-zone-or::before,.drop-zone-or::after{content:'';flex:1;height:1px;background:var(--bd);}
+
+/* ══ WELCOME POPUP ══ */
+.welcome-modal{position:fixed;inset:0;z-index:9500;background:rgba(0,0,10,.75);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);display:none;align-items:center;justify-content:center;padding:16px;}
+.welcome-modal.open{display:flex;animation:fadeIn .35s var(--ease-s);}
+.welcome-box{width:min(600px,100%);max-height:92vh;overflow-y:auto;border-radius:32px;padding:36px 32px 28px;border:1px solid var(--bd2);background:var(--glass-2);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);box-shadow:var(--sh),var(--inset);scrollbar-width:none;animation:mboxIn .5s var(--ease-spring);}
+.welcome-box::-webkit-scrollbar{display:none;}
+.welcome-logo{width:64px;height:64px;background:conic-gradient(from 30deg,#ff5b8d,#b87fff,#5aabff,#3dffc0,#ffcc4f,#ff5b8d);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:32px;color:#fff;margin:0 auto 20px;box-shadow:0 0 50px rgba(90,171,255,.35),var(--inset);border:1px solid rgba(255,255,255,.2);}
+.welcome-title{font-family:var(--display);font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;text-transform:uppercase;letter-spacing:.02em;text-align:center;margin-bottom:8px;}
+.welcome-sub{font-size:13px;color:var(--tx2);text-align:center;line-height:1.7;margin-bottom:28px;max-width:420px;margin-left:auto;margin-right:auto;}
+.welcome-instructions{background:var(--glass-2);border:1px solid var(--bd);border-radius:var(--r-sm);padding:16px 20px;margin-top:20px;margin-bottom:20px;}
+.welcome-step{display:flex;align-items:flex-start;gap:12px;padding:8px 0;border-bottom:1px solid var(--bd);}
+.welcome-step:last-child{border-bottom:none;}
+.welcome-step-num{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--pri),var(--purp));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0;margin-top:1px;}
+.welcome-step-text{font-size:12px;color:var(--tx2);line-height:1.65;}
+.welcome-step-text strong{color:var(--tx);}
+.welcome-skip{background:none;border:none;color:var(--tx3);font-family:var(--font);font-size:12px;cursor:pointer;padding:8px;transition:color .2s;display:block;margin:4px auto 0;text-decoration:underline;text-underline-offset:3px;}
+.welcome-skip:hover{color:var(--tx2);}
+.welcome-status{font-size:12px;font-family:var(--mono);color:var(--grn);text-align:center;margin-top:12px;min-height:20px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.welcome-status.warn{color:var(--gld);}
+.welcome-status.err{color:var(--acc);}
+
+/* ══ AI INSIGHTS PANEL ══ */
+.ai-insights-btn{width:100%;padding:12px;border-radius:var(--r-sm);background:linear-gradient(135deg,rgba(90,171,255,.12),rgba(184,127,255,.12));border:1px solid rgba(90,171,255,.25);color:var(--pri);font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;transition:all .3s;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.ai-insights-btn:hover{background:linear-gradient(135deg,rgba(90,171,255,.2),rgba(184,127,255,.2));transform:translateY(-1px);}
+.ai-insights-result{margin-top:12px;padding:14px;background:var(--glass);border:1px solid var(--bd);border-radius:var(--r-sm);font-size:12px;color:var(--tx);line-height:1.7;white-space:pre-wrap;max-height:260px;overflow-y:auto;scrollbar-width:thin;display:none;}
+.ai-insights-result.show{display:block;animation:tabFadeIn .3s var(--ease-s);}
+.ai-insights-loading{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--tx2);font-family:var(--mono);}
+
+/* ══ IMPORT STATUS BADGE ══ */
+.import-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:var(--r-pill);font-size:10px;font-family:var(--mono);font-weight:700;margin-bottom:4px;}
+.import-badge.ok{background:rgba(61,255,192,.1);color:var(--grn);border:1px solid rgba(61,255,192,.25);}
+.import-badge.warn{background:rgba(255,204,79,.1);color:var(--gld);border:1px solid rgba(255,204,79,.25);}
+.import-badge.err{background:rgba(255,91,141,.1);color:var(--acc);border:1px solid rgba(255,91,141,.25);}
+
+/* ══ MOBILE NAV IMPROVEMENTS ══ */
+@media(max-width:600px){
+  .nav{padding:10px 0 6px;gap:2px;}
+  .nbtn{padding:7px 11px;font-size:11px;}
+  .hdr{padding:10px 14px;margin:8px 10px 0;}
+  .btn{padding:7px 12px;font-size:11px;gap:5px;}
+  .welcome-box{padding:28px 20px 22px;}
+  .ai-wrap{gap:12px;}
 }
 </style>
 </head>
@@ -746,7 +800,12 @@ input[type="file"].finput::file-selector-button:hover{
       </div>
       <div>
         <div class="g ai-sug"><div class="ai-sug-title">Quick Questions</div><div class="sug-list" id="sugList"></div></div>
-        <div class="g ai-snap" id="aiSnap"></div>
+        <div class="g ai-snap" id="aiSnap">
+          <div style="font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--tx2);margin-bottom:12px;">Live Snapshot</div>
+          <div id="aiSnapRows"></div>
+          <button class="ai-insights-btn" onclick="generateAIInsights()">✨ Generate AI Insights</button>
+          <div class="ai-insights-result" id="aiInsightsResult"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -805,6 +864,49 @@ input[type="file"].finput::file-selector-button:hover{
   </div>
 </div></div>
 
+<!-- WELCOME POPUP -->
+<div class="welcome-modal" id="welcomeModal">
+  <div class="welcome-box">
+    <div class="welcome-logo">✓</div>
+    <div class="welcome-title">Let's Get You Set Up</div>
+    <div class="welcome-sub">Import your Canvas calendar once and your assignments load automatically — no manual entry needed.</div>
+
+    <!-- Drop Zone -->
+    <div class="drop-zone" id="welcomeDropZone" onclick="document.getElementById('welcomeFileInput').click()" ondragover="welcomeDragOver(event)" ondragleave="welcomeDragLeave(event)" ondrop="welcomeDrop(event)">
+      <input type="file" id="welcomeFileInput" accept=".ics" style="display:none;" onchange="welcomeFileChosen(event)"/>
+      <span class="drop-zone-icon">📅</span>
+      <div class="drop-zone-title">Drop your .ics file here</div>
+      <div class="drop-zone-sub">Or click to browse</div>
+    </div>
+    <div class="drop-zone-or">or paste a URL</div>
+    <div>
+      <input class="finput" id="welcomeUrl" placeholder="Paste Canvas Feed URL or Google Calendar iCal URL..." style="margin-bottom:10px;" onkeydown="if(event.key==='Enter')welcomeImportUrl()"/>
+      <button class="btn pri" style="width:100%;justify-content:center;padding:14px;" onclick="welcomeImportUrl()">⬇ Import &amp; Open App →</button>
+    </div>
+
+    <div class="welcome-status" id="welcomeStatus"></div>
+
+    <!-- How-to instructions -->
+    <div class="welcome-instructions">
+      <div style="font-size:11px;font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--tx2);margin-bottom:10px;">📍 How to get your Canvas link</div>
+      <div class="welcome-step">
+        <div class="welcome-step-num">1</div>
+        <div class="welcome-step-text">Open <strong>Canvas</strong> → click the <strong>Calendar</strong> icon in the left sidebar</div>
+      </div>
+      <div class="welcome-step">
+        <div class="welcome-step-num">2</div>
+        <div class="welcome-step-text">Look to the right side — under <strong>Calendars</strong>, scroll to the bottom and click <strong>Calendar Feed</strong></div>
+      </div>
+      <div class="welcome-step">
+        <div class="welcome-step-num">3</div>
+        <div class="welcome-step-text">Copy that URL and paste it above — all your courses load automatically</div>
+      </div>
+    </div>
+
+    <button class="welcome-skip" onclick="skipWelcome()">Skip — I'll add tasks manually</button>
+  </div>
+</div>
+
 <!-- MODALS -->
 <div class="modal" id="addModal">
   <div class="g mbox">
@@ -825,14 +927,23 @@ input[type="file"].finput::file-selector-button:hover{
   </div>
 </div>
 <div class="modal" id="importModal">
-  <div class="g mbox">
+  <div class="g mbox" style="width:min(580px,95vw);">
     <div class="mtitle">⬇ Import &amp; Auto-Refresh</div>
-    <p style="font-size:12px;color:var(--tx2);margin-bottom:20px;font-family:var(--mono);">Paste a URL once — tasks auto-refresh every 5 minutes. Course codes are extracted automatically.</p>
-    <div class="fg"><label class="flbl">🔗 Google Calendar iCal URL</label><input class="finput" id="gUrl" placeholder="https://calendar.google.com/...ical..."/><button class="btn" onclick="importUrl('google')" style="margin-top:8px;width:100%;justify-content:center;">Import &amp; Watch</button></div>
-    <div class="fg"><label class="flbl">🎓 Canvas Calendar Feed URL</label><input class="finput" id="cUrl" placeholder="https://canvas.instructure.com/feeds/..."/><button class="btn" onclick="importUrl('canvas')" style="margin-top:8px;width:100%;justify-content:center;">Import &amp; Watch</button></div>
-    <div class="fg" id="canvasDebugWrap" style="display:none;"><label class="flbl" style="color:var(--gld);">🔍 Canvas Raw Debug (first event)</label><textarea class="finput" id="canvasDebugOut" style="font-size:10px;font-family:var(--mono);min-height:140px;color:var(--gld);background:rgba(255,204,79,.06);border-color:rgba(255,204,79,.2);" readonly></textarea></div>
-    <div class="fg"><label class="flbl">📄 Upload .ics File</label><input class="finput" type="file" id="icsFile" accept=".ics"/><button class="btn" onclick="importICS()" style="margin-top:8px;width:100%;justify-content:center;">Import File</button></div>
-    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:22px;"><button class="btn" onclick="closeM('importModal')">Done</button></div>
+
+    <!-- Universal Drop Zone -->
+    <div class="drop-zone" id="importDropZone" style="margin-bottom:20px;" ondragover="importDragOver(event)" ondragleave="importDragLeave(event)" ondrop="importDrop(event)" onclick="document.getElementById('icsFileHidden').click()">
+      <input type="file" id="icsFileHidden" accept=".ics" style="display:none;" onchange="importICSfromFile(event)"/>
+      <span class="drop-zone-icon">📂</span>
+      <div class="drop-zone-title">Drop .ics file or calendar URL here</div>
+      <div class="drop-zone-sub">Click to browse for a file · or drag &amp; drop anywhere in this panel</div>
+    </div>
+
+    <div class="drop-zone-or">or enter a URL manually</div>
+
+    <div class="fg"><label class="flbl">🎓 Canvas Calendar Feed URL</label><input class="finput" id="cUrl" placeholder="https://faytechcc.instructure.com/feeds/calendars/..."/><button class="btn pri" onclick="importUrl('canvas')" style="margin-top:8px;width:100%;justify-content:center;">Import &amp; Watch Canvas</button></div>
+    <div class="fg" style="margin-top:14px;"><label class="flbl">🔗 Google Calendar iCal URL</label><input class="finput" id="gUrl" placeholder="https://calendar.google.com/...ical..."/><button class="btn" onclick="importUrl('google')" style="margin-top:8px;width:100%;justify-content:center;">Import &amp; Watch Google</button></div>
+    <div class="fg" id="canvasDebugWrap" style="display:none;"><label class="flbl" style="color:var(--gld);">🔍 Debug Output</label><textarea class="finput" id="canvasDebugOut" style="font-size:10px;font-family:var(--mono);min-height:100px;color:var(--gld);background:rgba(255,204,79,.06);border-color:rgba(255,204,79,.2);" readonly></textarea></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;"><button class="btn" onclick="closeM('importModal')">Done</button></div>
   </div>
 </div>
 <div class="detail-ov" id="detailOv" onclick="closeDetailEv(event)">
@@ -871,29 +982,42 @@ var FAKE_CODE_WORDS = /^(LAB|TEST|QUIZ|EXAM|HW|EC|AM|PM|EST|EDT|CST|CDT|MST|MDT|
 
 function extractCourseCode(text) {
   if (!text) return null;
-  var m = text.match(/\[([A-Z]{2,6}[\s\-]?\d{2,4}(?:[\-]\d{3,6})?)\]/i);
-  if (m) return { code: normCode(m[1]) };
+
+  /* ── Bracketed codes: [CIS-110-1902.2026SU], [COM-2 31-1908.2026SU], [CIS-1 10-...] ──
+     Capture everything inside [...] up to the first dot or closing bracket,
+     then normalize (strip spaces, extract base LETTERS-DIGITS). This handles
+     spaces injected anywhere inside the code by Canvas. */
+  var m = text.match(/\[([A-Z]{1,6}[\s\-A-Z\d]{2,20}?)\s*(?:[.\-]\d{4}|\])/i);
+  if (m) {
+    var raw = m[1];
+    /* normalizeCourseKey strips whitespace + pulls base code */
+    var normed = normalizeCourseKey(raw);
+    /* Only accept if it looks like a real code (LETTERS-DIGITS) */
+    if (/^[A-Z]{2,6}-\d{2,4}$/.test(normed)) return { code: normed };
+  }
+
+  /* ── Standard formats without brackets ── */
   m = text.match(/\b([A-Z]{2,6}-\d{2,4}-\d{3,6})\b/i);
   if (m) {
     var prefix = m[1].split('-')[0];
-    if (!FAKE_CODE_WORDS.test(prefix)) return { code: normCode(m[1]) };
+    if (!FAKE_CODE_WORDS.test(prefix)) return { code: normalizeCourseKey(m[1]) };
   }
   m = text.match(/\b([A-Z]{2,6})-(\d{3,4})\b/i);
   if (m) {
-    if (!FAKE_CODE_WORDS.test(m[1])) return { code: normCode(m[1] + '-' + m[2]) };
+    if (!FAKE_CODE_WORDS.test(m[1])) return { code: normalizeCourseKey(m[1] + '-' + m[2]) };
   }
   m = text.match(/\b([A-Z]{2,5})(\d{3,4})\b/i);
   if (m) {
     var pre = m[1].toUpperCase();
     if (!FAKE_CODE_WORDS.test(pre) && !isCommonWord(pre)) {
-      return { code: normCode(pre + '-' + m[2]) };
+      return { code: normalizeCourseKey(pre + '-' + m[2]) };
     }
   }
   m = text.match(/\b([A-Z]{2,6})\s(\d{3,4})\b/i);
   if (m) {
     var pre2 = m[1].toUpperCase();
     if (!FAKE_CODE_WORDS.test(pre2) && !isCommonWord(pre2)) {
-      return { code: normCode(pre2 + '-' + m[2]) };
+      return { code: normalizeCourseKey(pre2 + '-' + m[2]) };
     }
   }
   return null;
@@ -914,6 +1038,37 @@ function shortCode(code){
   return parts.join('-');
 }
 
+/* ══════════════════════════════════════════
+   SMART COURSE GROUPING — normalizeCourseKey
+   ══════════════════════════════════════════
+   Collapses variants of the same course into one canonical key.
+
+   Examples that all map to the same bucket:
+     COM-231-1908  →  COM-231   (section suffix stripped)
+     COM-231-190   →  COM-231
+     COM-231       →  COM-231
+     CIS-110-1902  →  CIS-110
+     COM-2 31      →  COM-231   (spaces inside code removed)
+     CO M-231      →  COM-231
+     CIS-1 10      →  CIS-110
+
+   Algorithm:
+   1. Strip ALL whitespace characters (handles any spacing pattern).
+   2. Regex-match from the start: 2-6 letters, optional hyphen, 2-4 digits.
+      Anything after that (e.g. section "-1908") is ignored.
+   3. Special buckets (Uncategorized, Google Calendar) pass through unchanged.
+*/
+function normalizeCourseKey(code){
+  if(!code)return code;
+  if(code===GOOGLE_PERSONAL_BUCKET||code==='Uncategorized')return code;
+  /* Remove all whitespace so "COM-2 31" → "COM-231", "CIS- 110" → "CIS-110" */
+  var s=code.trim().toUpperCase().replace(/\s+/g,'');
+  /* Match: letters (2-6) + optional hyphen + digits (2-4) — stop there */
+  var m=s.match(/^([A-Z]{2,6})-?(\d{2,4})/);
+  if(m)return m[1]+'-'+m[2];
+  return s;
+}
+
 var GOOGLE_PERSONAL_BUCKET = '📅 Google Calendar';
 var CANVAS_UNCODED_BUCKET  = 'Uncategorized';
 
@@ -926,7 +1081,8 @@ function resolveCourseBucket(ev) {
 function getAllCourses(){
   var codes={};
   tasks.forEach(function(t){
-    var c = t.course || 'Uncategorized';
+    var raw = t.course || 'Uncategorized';
+    var c = normalizeCourseKey(raw);
     if(!codes[c])codes[c]={total:0,done:0,pending:0,overdue:0};
     codes[c].total++;
     if(t.done)codes[c].done++;
@@ -1002,6 +1158,14 @@ function typeBadgeHTML(type){
 
 /* ══ LANDING ══ */
 function enterApp(){
+  /* Show welcome popup if user has no sources yet */
+  if(!sources.length&&!tasks.length){
+    document.getElementById('welcomeModal').classList.add('open');
+    return;
+  }
+  doEnterApp();
+}
+function doEnterApp(){
   var l=document.getElementById('landing');l.style.transition='opacity .6s, transform .6s';l.style.opacity='0';l.style.transform='scale(.97)';
   setTimeout(function(){l.style.display='none';var a=document.getElementById('app');a.style.display='block';a.style.opacity='0';a.style.transition='opacity .5s';setTimeout(function(){a.style.opacity='1';},20);renderDash();renderAISugs();populateCourseFilter();},500);
 }
@@ -1057,7 +1221,7 @@ function mkCard(t,delay){
   var sc=urgScore(t),col=urgColor(sc);
   var dl=Math.ceil((due-TODAY)/86400000);
   var dlbl=isOD?Math.abs(dl)+'d overdue':dl===0?'Due today':dl+'d left';
-  var courseDisplay=t.course?shortCode(t.course):null;
+  var courseDisplay=t.course?shortCode(normalizeCourseKey(t.course)):null;
   var isGooglePersonal=(t.course===GOOGLE_PERSONAL_BUCKET);
   var courseStyle=isGooglePersonal
     ?'background:rgba(90,171,255,.10);color:#5aabff;border:1px solid rgba(90,171,255,.25);font-size:9px;font-family:var(--mono);font-weight:700;padding:3px 9px;border-radius:var(--r-pill);'
@@ -1127,7 +1291,7 @@ function renderAll(){
   if(fs&&fs.value==='pending')f=f.filter(function(t){return!t.done;});
   if(fs&&fs.value==='done')f=f.filter(function(t){return t.done;});
   if(ft&&ft.value)f=f.filter(function(t){return(t.type||'task')===ft.value;});
-  if(fc&&fc.value){var fcv=fc.value;f=f.filter(function(t){return(t.course||'Uncategorized')===fcv;});}
+  if(fc&&fc.value){var fcv=fc.value;f=f.filter(function(t){return normalizeCourseKey(t.course||'Uncategorized')===fcv;});}
   if(sq&&sq.value.trim()){var q=sq.value.toLowerCase();f=f.filter(function(t){return t.text.toLowerCase().includes(q)||(t.notes||'').toLowerCase().includes(q)||(t.course||'').toLowerCase().includes(q)||(t.type||'').toLowerCase().includes(q)||((t.tags||[]).join(' ')).toLowerCase().includes(q);});}
   f.sort(function(a,b){if(a.done!==b.done)return a.done?1:-1;return urgScore(b)-urgScore(a);});
   document.getElementById('allGrid').innerHTML=f.length?f.map(function(t,i){return mkCard(t,i*30);}).join(''):'<div class="empty-state">No tasks match your filters</div>';
@@ -1194,7 +1358,7 @@ function renderCourses(){
       var desc=code===GOOGLE_PERSONAL_BUCKET?'Events imported from Google Calendar with no course code detected — personal, life, and work events.':'Tasks with no course code assigned.';
       contentHTML+='<div class="sh" style="margin-top:28px;">'+icon+' '+esc(label)+'</div>';
       contentHTML+='<div style="font-size:11px;color:var(--tx3);font-family:var(--mono);margin-bottom:12px;">'+esc(desc)+' ('+cd.total+' total · '+cd.pending+' pending)</div>';
-      var bucket=tasks.filter(function(t){return(t.course||'Uncategorized')===code;});
+      var bucket=tasks.filter(function(t){return normalizeCourseKey(t.course||'Uncategorized')===code;});
       bucket.sort(function(a,b){if(a.done!==b.done)return a.done?1:-1;return urgScore(b)-urgScore(a);});
       contentHTML+='<div class="tgrid">'+bucket.slice(0,12).map(function(t,i){return mkCard(t,i*30);}).join('')+'</div>';
       if(bucket.length>12){contentHTML+='<div style="margin-top:10px;"><button class="btn" onclick="setCourseFilter(\''+esc(code)+'\')">View all '+bucket.length+' →</button></div>';}
@@ -1205,7 +1369,7 @@ function renderCourses(){
     var ci=courseColorIdx(code);
     var cd=courses[code]||{total:0,done:0,pending:0,overdue:0};
     var pct=cd.total?Math.round(cd.done/cd.total*100):0;
-    var courseTasks=tasks.filter(function(t){return(t.course||'Uncategorized')===code;});
+    var courseTasks=tasks.filter(function(t){return normalizeCourseKey(t.course||'Uncategorized')===code;});
     courseTasks.sort(function(a,b){if(a.done!==b.done)return a.done?1:-1;return urgScore(b)-urgScore(a);});
 
     var isPersonal=(code===GOOGLE_PERSONAL_BUCKET);
@@ -1297,13 +1461,21 @@ function renderAISugs(){
   var container=document.getElementById('sugList');container.innerHTML=html;
   container.querySelectorAll('.ai-sug-btn').forEach(function(btn){btn.addEventListener('click',function(){askAI(btn.getAttribute('data-q'));});});
   var pen=tasks.filter(function(t){return!t.done;}),od=pen.filter(function(t){return parseLocalDate(t.date)<TODAY;});
-  var hi=pen.filter(function(t){return t.priority==='high';}),rate=tasks.length?Math.round(tasks.filter(function(t){return t.done;}).length/tasks.length*100):0;
+  var hi=pen.filter(function(t){return t.priority==='high';});
+  var exams=pen.filter(function(t){return t.type==='exam';});
+  var rate=tasks.length?Math.round(tasks.filter(function(t){return t.done;}).length/tasks.length*100):0;
   var nd=pen.slice().sort(function(a,b){return parseLocalDate(a.date)-parseLocalDate(b.date);})[0];
-  document.getElementById('aiSnap').innerHTML='<div style="font-size:10px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--tx2);margin-bottom:12px;">Live Snapshot</div>'
-    +'<div class="ai-snap-row"><span>Completion rate</span><span>'+rate+'%</span></div>'
-    +'<div class="ai-snap-row"><span>Overdue tasks</span><span style="color:var(--acc);">'+od.length+'</span></div>'
+  var nextExam=exams.slice().sort(function(a,b){return parseLocalDate(a.date)-parseLocalDate(b.date);})[0];
+  var urgLevel=od.length>0?'🔴 Behind':hi.length>3?'🟡 Busy':'🟢 On track';
+  var rows=document.getElementById('aiSnapRows');
+  if(rows){rows.innerHTML=''
+    +'<div class="ai-snap-row"><span>Status</span><span style="font-family:var(--font);">'+urgLevel+'</span></div>'
+    +'<div class="ai-snap-row"><span>Completion</span><span>'+rate+'%</span></div>'
+    +'<div class="ai-snap-row"><span>Overdue</span><span style="color:var(--acc);">'+od.length+'</span></div>'
     +'<div class="ai-snap-row"><span>High priority</span><span style="color:var(--gld);">'+hi.length+'</span></div>'
+    +(nextExam?'<div class="ai-snap-row"><span>Next exam</span><span style="color:var(--acc);">'+esc(nextExam.text.substring(0,18)+'…')+'</span></div>':'')
     +'<div class="ai-snap-row"><span>Next deadline</span><span>'+(nd?parseLocalDate(nd.date).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'None')+'</span></div>';
+  }
 }
 function askAI(msg){addMsg(msg,'user');_runAI(msg);}
 async function sendAI(){var inp=document.getElementById('aiIn'),q=inp.value.trim();if(!q)return;inp.value='';addMsg(q,'user');_runAI(q);}
@@ -1323,7 +1495,7 @@ async function _runAI(q){
   for(var i=0;i<7;i++){var d=new Date(sow);d.setDate(sow.getDate()+i);weekCtx+=d.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'})+'\n';}
   var sys='You are a smart AI study assistant inside Task Manager Pro for a college student.\n\nTODAY: '+TODAY.toDateString()+' ('+TODAY.toLocaleDateString('en-US',{weekday:'long'})+')\nTHIS WEEK:\n'+weekCtx+'STATS: '+tasks.length+' total | '+pen.length+' pending | '+od.length+' overdue | '+dn.length+' done | '+rate+'% completion\n\nPENDING TASKS (deduplicated, max 40):\n'+(ctx||'No tasks yet.')+'\n\nSCHEDULING RULES:\n- For weekly schedule: assign MAX 4-6 tasks per day, prioritize overdue first, then high priority, then by due date\n- Spread load across remaining days of the week — do NOT dump everything on one day\n- Skip Saturday/Sunday unless necessary for overdue tasks\n- Use format: DayName (Month Day):\\n  • Task name [priority, due date]\n- After the schedule add a 1-line summary tip\n\nGENERAL RULES:\n- Be concise and specific — always use actual task names\n- Under 300 words unless full schedule requested\n- Plain text, no markdown symbols\n- If no tasks, encourage adding some';
   try{
-    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,system:sys,messages:[{role:'user',content:q}]})});
+    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1200,system:sys,messages:[{role:'user',content:q}]})});
     var data=await res.json();thk.remove();
     addMsg(data.content&&data.content[0]?data.content[0].text:"Sorry, couldn't get a response.",'bot');
   }catch(e){thk.remove();addMsg(aiFallback(q),'bot');}
@@ -1334,7 +1506,7 @@ function aiFallback(q){
   if(query.includes('today')||query.includes('focus')){var td=pen.filter(function(t){return parseLocalDate(t.date)<=TODAY;}).sort(function(a,b){return urgScore(b)-urgScore(a);});if(!td.length)return"You're all clear for today! 🎉";return'Focus on today:\n'+td.slice(0,5).map(function(t,i){return(i+1)+'. '+t.text.substring(0,60)+(t.text.length>60?'…':'')+' ('+t.priority+')';}).join('\n');}
   if(query.includes('overdue')||query.includes('behind')){if(!od.length)return"Not behind on anything! 🎉";return od.length+' overdue tasks:\n'+od.slice(0,8).map(function(t){return'• '+t.text.substring(0,55)+(t.text.length>55?'…':'');}).join('\n');}
   if(query.includes('rank')||query.includes('urgent')||query.includes('important')){if(!pen.length)return'No pending tasks!';var ranked=pen.slice().sort(function(a,b){return urgScore(b)-urgScore(a);});return'Top tasks by urgency:\n'+ranked.slice(0,8).map(function(t,i){return(i+1)+'. '+t.text.substring(0,50)+(t.text.length>50?'…':'')+' — score '+urgScore(t)+'/100 ['+t.priority+']';}).join('\n');}
-  if(query.includes('course')||query.includes('group')||query.includes('categor')){var groups={};pen.forEach(function(t){var k=t.course||'Uncategorized';if(!groups[k])groups[k]=[];groups[k].push(t);});if(!Object.keys(groups).length)return'No pending tasks to group.';return Object.keys(groups).map(function(k){return shortCode(k)+' ('+groups[k].length+' tasks):\n'+groups[k].slice(0,5).map(function(t){return'  • '+t.text.substring(0,50);}).join('\n')+(groups[k].length>5?'\n  … and '+(groups[k].length-5)+' more':'');}).join('\n\n');}
+  if(query.includes('course')||query.includes('group')||query.includes('categor')){var groups={};pen.forEach(function(t){var k=normalizeCourseKey(t.course||'Uncategorized');if(!groups[k])groups[k]=[];groups[k].push(t);});if(!Object.keys(groups).length)return'No pending tasks to group.';return Object.keys(groups).map(function(k){return shortCode(k)+' ('+groups[k].length+' tasks):\n'+groups[k].slice(0,5).map(function(t){return'  • '+t.text.substring(0,50);}).join('\n')+(groups[k].length>5?'\n  … and '+(groups[k].length-5)+' more':'');}).join('\n\n');}
   if(query.includes('completion')||query.includes('rate')){return'Completion: '+rate+'% ('+tasks.filter(function(t){return t.done;}).length+'/'+tasks.length+'). '+(rate>=70?'Great work! 🔥':rate>=40?'Keep pushing! 💪':'Time to start! 📚');}
   if(query.includes('7 days')||query.includes('next week')||query.includes('this week')){var nw=pen.filter(function(t){var dl=Math.ceil((parseLocalDate(t.date)-TODAY)/86400000);return dl>=0&&dl<=7;}).sort(function(a,b){return parseLocalDate(a.date)-parseLocalDate(b.date);});if(!nw.length)return'Nothing due in the next 7 days.';return nw.length+' tasks in 7 days:\n'+nw.slice(0,10).map(function(t){var dl=Math.ceil((parseLocalDate(t.date)-TODAY)/86400000);return'• '+t.text.substring(0,50)+(t.text.length>50?'…':'')+' — '+(dl===0?'today':dl+'d');}).join('\n');}
   return'You have '+pen.length+' pending tasks, '+od.length+' overdue. Rate: '+rate+'%.\nTry: "schedule my tasks this week" or "what should I focus on today?"';
@@ -1380,7 +1552,7 @@ function buildDescBlock(t){
       /* Long — show truncated with expand toggle */
       var preview=fn.substring(0,LIMIT);
       descContent=''
-        +'<div class="dp-desc-text" id="dpDescText" data-full="+esc(fn)+">'+esc(preview).replace(/\n/g,'<br/>')+'<span id="dpDescEllipsis">… </span>'
+        +'<div class="dp-desc-text" id="dpDescText" data-full="'+esc(fn)+'">'+esc(preview).replace(/\n/g,'<br/>')+'<span id="dpDescEllipsis">… </span>'
         +'<button class="dp-desc-more" id="dpDescMoreBtn" onclick="expandDesc()">Show more ↓</button>'
         +'</div>';
     }
@@ -1570,22 +1742,63 @@ function addTask(){
 function toggleTask(id){var t=tasks.find(function(t){return t.id===id;});if(t){t.done=!t.done;save();renderTab(curTab);}}
 function delTask(id){if(confirm('Delete this task?')){tasks=tasks.filter(function(t){return t.id!==id;});save();renderTab(curTab);toast('Deleted','inf');}}
 
+/* ══ MULTI-PROXY ICS FETCH ══
+   Tries multiple CORS proxies in order. Returns ICS text or throws. */
+async function fetchICSText(url){
+  var proxies=[
+    /* 1. Direct — works if the server allows CORS or it's a same-origin URL */
+    async function(){var r=await fetch(url,{mode:'cors',cache:'no-cache'});if(!r.ok)throw new Error('HTTP '+r.status);return r.text();},
+    /* 2. corsproxy.io — free, usually fast */
+    async function(){var r=await fetch('https://corsproxy.io/?'+encodeURIComponent(url),{cache:'no-cache'});if(!r.ok)throw new Error('HTTP '+r.status);return r.text();},
+    /* 3. allorigins — returns raw content */
+    async function(){var r=await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(url),{cache:'no-cache'});if(!r.ok)throw new Error('HTTP '+r.status);return r.text();},
+    /* 4. codetabs (existing) */
+    async function(){var r=await fetch('https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(url),{cache:'no-cache'});if(!r.ok)throw new Error('HTTP '+r.status);return r.text();},
+  ];
+  var lastErr='';
+  for(var i=0;i<proxies.length;i++){
+    try{
+      var text=await proxies[i]();
+      /* Validate it's actually an ICS file */
+      if(text&&(text.includes('VCALENDAR')||text.includes('VEVENT'))){return text;}
+      /* Got a response but no ICS content — try next proxy */
+      lastErr='Response received but no calendar data found (proxy '+i+')';
+    }catch(e){
+      lastErr=e.message||String(e);
+    }
+  }
+  throw new Error('Could not load calendar: '+lastErr+'. Check the URL and try again.');
+}
+
 /* ══ IMPORT ══ */
 async function importUrl(type){
   var url=(type==='google'?document.getElementById('gUrl'):document.getElementById('cUrl')).value.trim();
   if(!url){toast('Please paste a URL','warn');return;}
-  toast('Fetching from '+type+'...','inf');
+  toast('Fetching calendar — trying proxies...','inf');
   try{
-    var text;
-    try{var r=await fetch(url);text=await r.text();}catch(e){var r2=await fetch('https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(url));text=await r2.text();}
-    if(!text||!text.includes('VEVENT')){toast('No events found in that URL','warn');return;}
+    var text=await fetchICSText(url);
     if(!sources.find(function(s){return s.url===url;})){sources.push({url:url,type:type,lastChecked:Date.now(),enabled:true});localStorage.setItem('tmp_sources',JSON.stringify(sources));}
     var cnt=parseICS(text,type);
     populateCourseFilter();
     toast('Imported '+cnt+' task(s) from '+type+'!','ok');renderTab(curTab);resolveCanvasUrls();
-  }catch(e){toast('Import failed: '+e.message,'warn');}
+  }catch(e){
+    toast('Import failed — '+e.message,'warn',6000);
+    var dbg=document.getElementById('canvasDebugWrap');
+    if(dbg){dbg.style.display='';document.getElementById('canvasDebugOut').value='Error: '+e.message+'\n\nURL tried: '+url+'\n\nIf this keeps failing:\n1. Confirm the URL starts with https://\n2. Try opening the URL directly in your browser first\n3. Use the .ics file download option instead';}
+  }
 }
-function importICS(){var f=document.getElementById('icsFile').files[0];if(!f){toast('Select a file','warn');return;}var rd=new FileReader();rd.onload=function(e){var cnt=parseICS(e.target.result,'ics-file');populateCourseFilter();toast('Imported '+cnt+' task(s)','ok');renderTab(curTab);resolveCanvasUrls();};rd.readAsText(f);}
+
+function importICSfromFile(e){
+  var f=e.target.files[0];if(!f)return;
+  var rd=new FileReader();
+  rd.onload=function(ev){var cnt=parseICS(ev.target.result,'ics-file');populateCourseFilter();toast('Imported '+cnt+' task(s) from file!','ok');renderTab(curTab);resolveCanvasUrls();};
+  rd.readAsText(f);
+  toast('Reading .ics file...','inf');
+}
+/* Legacy alias kept in case anything references it */
+function importICS(){
+  var f=document.getElementById('icsFileHidden');if(f)f.click();
+}
 
 /* ══ QUOTED-PRINTABLE DECODER ══
    Canvas sometimes encodes DESCRIPTION with ENCODING=QUOTED-PRINTABLE.
@@ -1932,8 +2145,7 @@ async function autoRefresh(){
   for(var i=0;i<sources.length;i++){
     var src=sources[i];if(!src.enabled)continue;
     try{
-      var text;
-      try{var r=await fetch(src.url);text=await r.text();}catch(e){var r2=await fetch('https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(src.url));text=await r2.text();}
+      var text=await fetchICSText(src.url);
       if(!text||!text.includes('VEVENT'))continue;
       var before=tasks.length;parseICS(text,src.type);var added=tasks.length-before;
       if(added>0){newFromRefresh+=added;var badge=document.getElementById('rbadge');badge.textContent=newFromRefresh;badge.classList.add('show');populateCourseFilter();toast(added+' new task(s) from '+src.type,'inf');renderTab(curTab);}
@@ -1993,12 +2205,185 @@ function exportData(fmt){
 }
 function clearAll(){if(confirm('Delete all tasks? Cannot be undone.')){tasks=[];save();renderTab(curTab);toast('All tasks cleared','warn');}}
 
+/* ══ WELCOME POPUP ══ */
+function skipWelcome(){
+  document.getElementById('welcomeModal').classList.remove('open');
+  doEnterApp();
+}
+
+function setWelcomeStatus(msg,type){
+  var s=document.getElementById('welcomeStatus');
+  s.textContent=msg;s.className='welcome-status '+(type||'');
+}
+
+async function welcomeImportUrl(){
+  var url=document.getElementById('welcomeUrl').value.trim();
+  if(!url){setWelcomeStatus('Please paste a URL first','warn');return;}
+  setWelcomeStatus('⏳ Fetching — trying proxies...','');
+  try{
+    var type=url.includes('calendar.google.com')||url.includes('googleapis.com')?'google':'canvas';
+    var text=await fetchICSText(url);
+    if(!sources.find(function(s){return s.url===url;})){sources.push({url:url,type:type,lastChecked:Date.now(),enabled:true});localStorage.setItem('tmp_sources',JSON.stringify(sources));}
+    var cnt=parseICS(text,type);
+    populateCourseFilter();resolveCanvasUrls();
+    setWelcomeStatus('✅ Imported '+cnt+' task(s)! Opening app...','');
+    setTimeout(function(){document.getElementById('welcomeModal').classList.remove('open');doEnterApp();},800);
+  }catch(e){
+    setWelcomeStatus('❌ '+e.message,'err');
+  }
+}
+
+function welcomeDragOver(e){e.preventDefault();document.getElementById('welcomeDropZone').classList.add('drag-over');}
+function welcomeDragLeave(e){document.getElementById('welcomeDropZone').classList.remove('drag-over');}
+async function welcomeDrop(e){
+  e.preventDefault();
+  document.getElementById('welcomeDropZone').classList.remove('drag-over');
+  /* Check for dropped file */
+  var files=e.dataTransfer.files;
+  if(files&&files.length){
+    var f=files[0];
+    if(f.name.endsWith('.ics')||f.type.includes('calendar')){
+      var rd=new FileReader();
+      rd.onload=function(ev){
+        var cnt=parseICS(ev.target.result,'ics-file');
+        populateCourseFilter();resolveCanvasUrls();
+        setWelcomeStatus('✅ Imported '+cnt+' task(s) from file! Opening...','');
+        setTimeout(function(){document.getElementById('welcomeModal').classList.remove('open');doEnterApp();},800);
+      };
+      rd.readAsText(f);
+      setWelcomeStatus('📂 Reading file...','');
+      return;
+    }
+  }
+  /* Check for dropped URL text */
+  var txt=(e.dataTransfer.getData('text/plain')||e.dataTransfer.getData('text/uri-list')||'').trim();
+  if(txt.startsWith('http')){
+    document.getElementById('welcomeUrl').value=txt;
+    welcomeImportUrl();
+  }
+}
+
+function welcomeFileChosen(e){
+  var f=e.target.files[0];if(!f)return;
+  var rd=new FileReader();
+  rd.onload=function(ev){
+    var cnt=parseICS(ev.target.result,'ics-file');
+    populateCourseFilter();resolveCanvasUrls();
+    setWelcomeStatus('✅ Imported '+cnt+' task(s)! Opening...','');
+    setTimeout(function(){document.getElementById('welcomeModal').classList.remove('open');doEnterApp();},800);
+  };
+  rd.readAsText(f);
+  setWelcomeStatus('📂 Reading file...','');
+}
+
+/* ══ IMPORT MODAL DROP ZONE ══ */
+function importDragOver(e){e.preventDefault();document.getElementById('importDropZone').classList.add('drag-over');}
+function importDragLeave(e){document.getElementById('importDropZone').classList.remove('drag-over');}
+async function importDrop(e){
+  e.preventDefault();
+  document.getElementById('importDropZone').classList.remove('drag-over');
+  var files=e.dataTransfer.files;
+  if(files&&files.length){
+    var f=files[0];
+    if(f.name.endsWith('.ics')||f.type.includes('calendar')){
+      var rd=new FileReader();
+      rd.onload=function(ev){var cnt=parseICS(ev.target.result,'ics-file');populateCourseFilter();toast('Imported '+cnt+' task(s) from file!','ok');renderTab(curTab);resolveCanvasUrls();};
+      rd.readAsText(f);toast('Reading file...','inf');return;
+    }
+  }
+  var txt=(e.dataTransfer.getData('text/plain')||e.dataTransfer.getData('text/uri-list')||'').trim();
+  if(txt.startsWith('http')){
+    var type=txt.includes('calendar.google.com')?'google':'canvas';
+    if(type==='canvas'){document.getElementById('cUrl').value=txt;}else{document.getElementById('gUrl').value=txt;}
+    importUrl(type);
+  }
+}
+
+/* ══ AI INSIGHTS GENERATOR ══ */
+async function generateAIInsights(){
+  var btn=document.querySelector('.ai-insights-btn');
+  var result=document.getElementById('aiInsightsResult');
+  if(!tasks.length){toast('No tasks yet — import your calendar first','warn');return;}
+  btn.innerHTML='<span class="ai-insights-loading"><span>⏳</span> Analyzing your tasks...</span>';
+  btn.disabled=true;
+  result.style.display='none';
+
+  var pen=tasks.filter(function(t){return!t.done;});
+  var od=pen.filter(function(t){return parseLocalDate(t.date)<TODAY;});
+  var exams=pen.filter(function(t){return t.type==='exam';});
+  var hi=pen.filter(function(t){return t.priority==='high';});
+  var rate=tasks.length?Math.round(tasks.filter(function(t){return t.done;}).length/tasks.length*100):0;
+
+  var taskCtx=pen.slice(0,30).map(function(t){
+    var dl=Math.ceil((parseLocalDate(t.date)-TODAY)/86400000);
+    return'"'+t.text.substring(0,55)+'" | '+t.date+' | '+(dl>0?dl+'d left':dl===0?'TODAY':Math.abs(dl)+'d OVERDUE')+' | '+t.priority+(t.type&&t.type!=='task'?' | '+t.type:'')+(t.course?' | '+shortCode(t.course):'');
+  }).join('\n');
+
+  var insightPrompt='You are an AI study coach. Analyze this student\'s task list and give 5 concise, practical insights:\n\nTODAY: '+TODAY.toDateString()+'\nSTATS: '+tasks.length+' total, '+pen.length+' pending, '+od.length+' overdue, '+hi.length+' high-priority, '+rate+'% done\nEXAMS: '+exams.length+'\n\nPENDING:\n'+taskCtx+'\n\nProvide 5 numbered insights covering:\n1. Urgency alert (most critical task RIGHT NOW, why)\n2. Difficulty/effort analysis (hardest item based on type — exams > quizzes > projects > assignments)\n3. Workload balance warning (is there a dangerous pile-up day?)\n4. Quick wins (2-3 things they can knock out fast to build momentum)\n5. One specific recommendation for the next 24 hours\n\nBe direct and specific. Use actual task names. No markdown. Under 280 words.';
+
+  try{
+    var res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,messages:[{role:'user',content:insightPrompt}]})});
+    var data=await res.json();
+    var txt=data.content&&data.content[0]?data.content[0].text:null;
+    if(txt){result.textContent=txt;result.classList.add('show');}
+    else{throw new Error('No response');}
+  }catch(e){
+    /* Fallback insight generation */
+    var fallback=generateLocalInsights(pen,od,hi,exams,rate);
+    result.textContent=fallback;result.classList.add('show');
+  }
+  btn.innerHTML='✨ Refresh Insights';btn.disabled=false;
+}
+
+function generateLocalInsights(pen,od,hi,exams,rate){
+  var lines=[];
+  /* 1. Urgency */
+  var top=pen.slice().sort(function(a,b){return urgScore(b)-urgScore(a);})[0];
+  if(od.length>0){lines.push('1. URGENT: You have '+od.length+' overdue task'+(od.length>1?'s':'')+'. Start with: "'+od[0].text.substring(0,50)+'" — it\'s already late.');}
+  else if(top){lines.push('1. TOP PRIORITY: "'+top.text.substring(0,50)+'" ('+urgScore(top)+'/100 urgency) — tackle this first today.');}
+  else{lines.push('1. You\'re clear — no urgent items right now. Great position to be in.');}
+  /* 2. Hardest */
+  if(exams.length){var nextExam=exams.slice().sort(function(a,b){return parseLocalDate(a.date)-parseLocalDate(b.date);})[0];var dl=Math.ceil((parseLocalDate(nextExam.date)-TODAY)/86400000);lines.push('2. HARDEST ITEM: "'+nextExam.text.substring(0,50)+'" is an exam '+( dl>0?'in '+dl+' days':'TODAY')+'. Exams require the most prep — block dedicated study time now.');}
+  else if(hi.length){lines.push('2. HARDEST ITEM: "'+hi[0].text.substring(0,50)+'" is flagged high priority. Estimate 2-3 hours minimum.');}
+  else{lines.push('2. No exams detected — focus on any high-effort assignments first.');}
+  /* 3. Workload warning */
+  var dayCounts={};pen.forEach(function(t){dayCounts[t.date]=(dayCounts[t.date]||0)+1;});var maxDay=Object.keys(dayCounts).sort(function(a,b){return dayCounts[b]-dayCounts[a];})[0];
+  if(maxDay&&dayCounts[maxDay]>=4){var d=parseLocalDate(maxDay);lines.push('3. PILE-UP ALERT: '+dayCounts[maxDay]+' tasks are due on '+d.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'})+'. Start some of those now to avoid crunch.');}
+  else{lines.push('3. Your workload is reasonably spread out. Keep it that way by pacing 1-2 tasks per day.');}
+  /* 4. Quick wins */
+  var easy=pen.filter(function(t){return t.priority==='low';}).slice(0,3);
+  if(easy.length){lines.push('4. QUICK WINS: Complete these fast to hit '+rate+'% → '+(rate+Math.floor(easy.length/tasks.length*100))+'%:\n   '+easy.map(function(t){return'• '+t.text.substring(0,45);}).join('\n   '));}
+  else{lines.push('4. Most tasks are medium-high priority. Batch similar ones together to work efficiently.');}
+  /* 5. Next 24h */
+  var today24=pen.filter(function(t){var dl=Math.ceil((parseLocalDate(t.date)-TODAY)/86400000);return dl<=1;}).sort(function(a,b){return urgScore(b)-urgScore(a);});
+  if(today24.length){lines.push('5. NEXT 24H: Focus on '+today24.slice(0,2).map(function(t){return'"'+t.text.substring(0,40)+'"';}).join(' then ')+'.');}
+  else{lines.push('5. Nothing due in 24h — use this window to get ahead on the '+pen.length+' pending items.');}
+  return lines.join('\n\n');
+}
+
 /* ══ PERSIST ══ */
 function save(){localStorage.setItem('tmp_tasks',JSON.stringify(tasks));}
 function esc(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML;}
 
+/* ══ STARTUP MIGRATION — fix spaced course codes ══
+   Tasks imported before the space-aware extraction fix may have course=null
+   (fell into Uncategorized). Re-run extractCourseCode on them now so they
+   join the correct course bucket without needing a re-import. */
+function migrateSpacedCourseCodes(){
+  var changed=false;
+  tasks.forEach(function(t){
+    if(t.course&&t.course!=='Uncategorized')return; /* already assigned */
+    if(!t.text)return;
+    var detected=extractCourseCode(t.text);
+    if(!detected&&t.fullNotes)detected=extractCourseCode(t.fullNotes);
+    if(detected){t.course=detected.code;changed=true;}
+  });
+  if(changed)save();
+}
+
 /* ══ INIT ══ */
 document.getElementById('landing').style.display='flex';
+migrateSpacedCourseCodes();
 resolveCanvasUrls();
 document.getElementById('app').style.display='none';
 </script>
